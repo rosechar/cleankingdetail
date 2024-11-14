@@ -20,7 +20,7 @@ export const Services = () => {
           <div 
             key={service.id}
             onClick={() => handleServiceClick(service.id)}
-            className="bg-white rounded-lg shadow-lg p-3 transform hover:scale-105 transition-transform duration-300 ease-in-out cursor-pointer"
+            className="bg-white rounded-lg shadow-lg p-3 cursor-pointer md:hover:scale-105 md:transition-transform md:duration-300 md:ease-in-out"
           >
             <div className="flex justify-between items-center mb-2">
               <h3 className="text-xl font-bold">{service.name}</h3>

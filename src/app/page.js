@@ -5,6 +5,7 @@ import { Services } from './components/Services';
 import { Testimonials } from './components/Testimonials';
 import { SocialLinks } from './components/SocialLinks';
 import AppointmentButton from './components/AppointmentButton';
+import OfferToast from './components/OfferToast';
 
 const Home = () => {
   return (
@@ -31,6 +32,7 @@ const Home = () => {
       <AppointmentButton />
       <Testimonials />
       <SocialLinks />
+      <OfferToast />
     </div>
   );
 };

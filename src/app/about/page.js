@@ -17,7 +17,7 @@ const Contact = () => {
     {
       id: 1,
       question: "What forms of payment do you accept?",
-      answer: "We accept all major credit cards, cash, and digital payments including Apple Pay and Google Pay."
+      answer: "We accept all major credit cards and cash."
     },
     {
       id: 2,
@@ -39,19 +39,19 @@ const Contact = () => {
               </h1>
 
               {/* Contact Info Section */}
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="bg-white rounded-lg shadow-md p-6 text-lg">
                   <div className="space-y-4">
-                      <a href="tel:+1234567890" className="flex items-center p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                      <a href="tel:+1234567890" className="flex items-center p-3 hover:bg-gray-50 rounded-lg transition-colors gap-4">
                           <Phone className="w-6 h-6 text-red-600 mr-3" />
                           <span className="text-gray-700">(123) 456-7890</span>
                       </a>
 
-                      <a href="mailto:info@detailing.com" className="flex items-center p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                      <a href="mailto:info@detailing.com" className="flex items-center p-3 hover:bg-gray-50 rounded-lg transition-colors gap-4">
                           <Mail className="w-6 h-6 text-red-600 mr-3" />
                           <span className="text-gray-700">info@detailing.com</span>
                       </a>
 
-                      <a href="https://maps.google.com" target="_blank" className="flex items-center p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                      <a href="https://maps.google.com" target="_blank" className="flex items-center p-3 hover:bg-gray-50 rounded-lg transition-colors gap-4">
                           <MapPin className="w-6 h-6 text-red-600 mr-3" />
                           <span className="text-gray-700">123 Detail Street, Car City, ST 12345</span>
                       </a>
@@ -60,11 +60,11 @@ const Contact = () => {
 
               {/* Hours Section */}
               <div className="bg-white rounded-lg shadow-md p-6">
-                  <div className="flex items-center mb-4">
+                  <div className="flex items-center mb-4 gap-4 p-3">
                       <Clock className="w-6 h-6 text-red-600 mr-2" />
                       <h2 className="text-xl font-semibold text-gray-800">Business Hours</h2>
                   </div>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 gap-2 text-lg">
                       {hours.map((item, index) => (
                           <div key={index} className="p-2">
                               <div className="font-medium text-gray-700">{item.day}</div>
@@ -77,7 +77,7 @@ const Contact = () => {
               {/* FAQ Section */}
               <div className="bg-white rounded-lg shadow-md p-6">
                   <h2 className="text-xl font-semibold mb-4 text-gray-800">Policies & FAQs</h2>
-                  <div className="space-y-4">
+                  <div className="space-y-4 text-lg">
                       {faqs.map((faq) => (
                           <div key={faq.id} className="border-b border-gray-200 last:border-0">
                               <button

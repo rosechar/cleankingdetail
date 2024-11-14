@@ -2,12 +2,24 @@
 import React, { useState } from 'react';
 
 const FormField = ({ label, name, error, touched, type = "text", options, ...props }) => {
+  // Base input styles that will be applied to all input types
   const inputClassName = `
-    block w-full rounded-md bg-zinc-100 border-zinc-600 
+    block w-full rounded-md bg-white border-zinc-600 
     text-gray-900 shadow-sm outline-none
     focus:border-zinc-800 focus:ring-zinc-800 focus:ring-2
     text-md p-2.5
+    min-h-[42px] appearance-none
     ${error && touched ? 'border-red-500' : ''}
+  `;
+
+  // Additional wrapper styles for select inputs to handle custom arrow
+  const selectWrapperClassName = `
+    relative block
+    after:content-[''] after:pointer-events-none
+    after:absolute after:right-3 after:top-1/2 after:-translate-y-1/2
+    after:border-8 after:border-transparent
+    after:border-t-zinc-600
+    after:ml-1
   `;
 
   return (
@@ -21,20 +33,22 @@ const FormField = ({ label, name, error, touched, type = "text", options, ...pro
         )}
       </div>
       {type === "select" ? (
-        <select
-          id={name}
-          name={name}
-          className={inputClassName}
-          required
-          {...props}
-        >
-          <option value="">Select {label.toLowerCase()}</option>
-          {options?.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
+        <div className={selectWrapperClassName}>
+          <select
+            id={name}
+            name={name}
+            className={`${inputClassName} pr-10`}
+            required
+            {...props}
+          >
+            <option value="">Select {label.toLowerCase()}</option>
+            {options?.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
       ) : (
         <input
           type={type}
@@ -50,6 +64,7 @@ const FormField = ({ label, name, error, touched, type = "text", options, ...pro
 };
 
 const AppointmentForm = ({ onSubmit }) => {
+  // Rest of the component remains the same
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -120,7 +135,6 @@ const AppointmentForm = ({ onSubmit }) => {
   };
 
   const validateForm = () => {
-    // Mark all fields as touched
     setTouched(Object.keys(formData).reduce((acc, key) => ({ ...acc, [key]: true }), {}));
     
     const newErrors = {};

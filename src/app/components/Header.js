@@ -13,17 +13,19 @@ export default function Header() {
             <div className="max-w-7xl mx-auto flex flex-row items-center justify-between md:justify-evenly p-6 text-white">
                 <h1 className="flex-shrink-0">
                     <Link href="/" className="hover:text-red-600 transition-colors duration-200 flex items-center gap-2">
-                        <Image
-                            src="/cleanking.svg"
-                            alt="Detailed car"
-                            width={150}
-                            height={150}
-                        />
+                        <div className="w-[120px] h-[120px] md:w-[150px] md:h-[150px] relative">
+                            <Image
+                                src="/cleanking.svg"
+                                alt="Detailed car"
+                                fill
+                                className="object-contain"
+                            />
+                        </div>
                     </Link>
                 </h1>
 
                 <nav>
-                    <ul className="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-8 list-none p-0 m-0 text-right text-xl">
+                    <ul className="flex flex-col space-y-1 md:flex-row md:space-y-0 md:space-x-8 list-none p-0 m-0 text-right text-sm md:text-xl">
                         {[
                             { path: '/services', label: 'Services' },
                             { path: '/about', label: 'About' },

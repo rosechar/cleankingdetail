@@ -1,44 +1,45 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
-  theme: {
-    extend: {
-      colors: {
-        background: 'var(--background)',
-        foreground: 'var(--foreground)',
-        customRed: '#ba000d',
-      },
-      keyframes: {
-        'slide-in': {
-          '0%': {
-            opacity: '0',
-            transform: 'translateY(1rem)',
-          },
-          '100%': {
-            opacity: '1',
-            transform: 'translateY(0)',
-          },
+export const content = [
+  './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+  './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+  './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+];
+export const theme = {
+  extend: {
+    fontFamily: {
+      sans: ['Poppins', 'sans-serif'],
+    },
+    colors: {
+      background: 'var(--background)',
+      foreground: 'var(--foreground)',
+      customRed: '#ba000d',
+    },
+    keyframes: {
+      'slide-in': {
+        '0%': {
+          opacity: '0',
+          transform: 'translateY(1rem)',
         },
-        'fade-out': {
-          '0%': {
-            opacity: '1',
-            transform: 'translateY(0)',
-          },
-          '100%': {
-            opacity: '0',
-            transform: 'translateY(1rem)',
-          },
+        '100%': {
+          opacity: '1',
+          transform: 'translateY(0)',
         },
       },
-      animation: {
-        'slide-in': 'slide-in 0.3s ease-out',
-        'fade-out': 'fade-out 0.3s ease-out',
+      'fade-out': {
+        '0%': {
+          opacity: '1',
+          transform: 'translateY(0)',
+        },
+        '100%': {
+          opacity: '0',
+          transform: 'translateY(1rem)',
+        },
       },
     },
+    animation: {
+      'slide-in': 'slide-in 0.3s ease-out',
+      'fade-out': 'fade-out 0.3s ease-out',
+    },
   },
-  plugins: [],
 };
+export const plugins = [];

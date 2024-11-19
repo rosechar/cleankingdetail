@@ -9,7 +9,7 @@ export const Services = () => {
   return (
     <section className="mx-auto max-w-6xl px-4 py-8">
       <h2 className="mb-8 text-center text-4xl font-bold text-gray-800">
-        Our Services
+        Services
         <div className="mx-auto mt-4 h-1 w-24 bg-red-600" />
       </h2>
 
@@ -29,7 +29,7 @@ export const Services = () => {
             </div>
 
             <div className="mt-2 flex items-center justify-between">
-              <p className="italic text-gray-600">{service.description}</p>
+              <p className="text-gray-600">{service.description}</p>
               {/* <ChevronRight className="ml-2 size-5 shrink-0 text-customRed" /> */}
             </div>
           </div>

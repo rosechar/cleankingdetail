@@ -22,7 +22,7 @@ const AppointmentForm = ({ onSubmit }) => {
     email: '',
     phone: '',
     service: '',
-    date: null, // Changed from '' to null for DatePicker
+    date: null,
     time: '',
   });
 
@@ -127,10 +127,7 @@ const AppointmentForm = ({ onSubmit }) => {
         )}
       </button>
       <div className="rounded-lg px-4 text-base text-gray-900">
-        <p>
-          This form will submit a request for an appointment. We will follow up
-          within one day to confirm your booking.
-        </p>
+        <p>We will follow up within one day to confirm your booking.</p>
       </div>
     </form>
   );

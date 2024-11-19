@@ -11,13 +11,13 @@ import GiftCertificates from '../components/GiftCertificates';
 const Home = () => {
   return (
     <div className="min-h-screen">
-      <section className="relative flex h-72 items-center justify-center bg-black text-white">
+      <section className="relative flex h-64 items-center justify-center bg-black text-white md:h-80 lg:h-96">
         <div className="absolute inset-0">
           <Image
-            src="/tire.jpg"
+            src="/tire.webp"
             alt="Detailed car"
             fill
-            sizes="(max-width: 768px) 100vw, 1920px"
+            sizes="(max-width: 768px) 768px, 1920px"
             priority
             className="object-cover opacity-50"
           />

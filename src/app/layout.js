@@ -26,7 +26,7 @@ export const metadata = {
   description:
     'Premier car detailing in Blissfield, MI. From quick $35 Spiffy Details to comprehensive $160 Deluxe Details. Professional interior, exterior, engine bay cleaning & more. Serving Lenawee County.',
   keywords:
-    'car detailing Blissfield MI, auto detailing, interior detailing, exterior detailing, Clean King Detailing, engine bay cleaning, clay bar service, car waxing, car buffing, Lenawee County car detailing',
+    'car detailing Blissfield MI, auto detailing, interior detailing, exterior detailing, Clean King Detailing, engine bay cleaning, clay bar service, car waxing, car buffing, Lenawee County car detailing, car cleaning near me',
   openGraph: {
     title: 'Clean King Detailing - Professional Car Detailing in Blissfield',
     description:
@@ -35,7 +35,7 @@ export const metadata = {
     locale: 'en_US',
     images: [
       {
-        url: '/cleanking.jpg',
+        url: 'https://www.cleankingdetail.com/cleanking.jpg',
         width: 1200,
         height: 630,
         alt: 'Clean King Detailing - Professional Car Detailing Services',
@@ -46,12 +46,17 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Clean King Detailing - Professional Car Detailing Services',
     description: 'Expert car detailing services in Blissfield, MI',
-    images: ['/cleanking.jpg'],
+    images: ['https://www.cleankingdetail.com/cleanking.jpg'],
   },
   other: {
     'geo.region': 'US-MI',
     'geo.placename': 'Blissfield',
   },
+  icons: {
+    icon: [{ rel: 'icon', url: '/favicon.ico' }],
+    shortcut: ['/favicon.ico'],
+  },
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({ children }) {

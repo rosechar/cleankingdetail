@@ -1,10 +1,22 @@
-"use client";
+'use client';
 import React, { useState } from 'react';
+import emailjs from '@emailjs/browser';
+import { Loader2 } from 'lucide-react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
-const FormField = ({ label, name, error, touched, type = "text", options, ...props }) => {
-  // Base input styles that will be applied to all input types
+const FormField = ({
+  label,
+  name,
+  error,
+  touched,
+  type = 'text',
+  options,
+  component: Component,
+  ...props
+}) => {
   const inputClassName = `
-    block w-full rounded-md bg-white border-zinc-600 
+    block w-full rounded-md bg-white border-zinc-600
     text-gray-900 shadow-sm outline-none
     focus:border-zinc-800 focus:ring-zinc-800 focus:ring-2
     text-md p-2.5
@@ -12,7 +24,6 @@ const FormField = ({ label, name, error, touched, type = "text", options, ...pro
     ${error && touched ? 'border-red-500' : ''}
   `;
 
-  // Additional wrapper styles for select inputs to handle custom arrow
   const selectWrapperClassName = `
     relative block
     after:content-[''] after:pointer-events-none
@@ -22,17 +33,24 @@ const FormField = ({ label, name, error, touched, type = "text", options, ...pro
     after:ml-1
   `;
 
+  const datePickerWrapperClassName = `
+    w-full [&_.react-datepicker-wrapper]:w-full
+    [&_.react-datepicker-wrapper_.react-datepicker__input-container]:w-full
+  `;
+
   return (
-    <div>
-      <div className="flex items-center gap-4 justify-between">
+    <div className="flex flex-col gap-1">
+      <div className="flex items-center justify-between">
         <label htmlFor={name} className="text-lg font-medium text-gray-900">
           {label}
         </label>
-        {error && touched && (
-          <p className="text-md text-red-500">{error}</p>
-        )}
+        {error && touched && <p className="text-base text-red-500">{error}</p>}
       </div>
-      {type === "select" ? (
+      {Component ? (
+        <div className={datePickerWrapperClassName}>
+          <Component className={inputClassName} {...props} />
+        </div>
+      ) : type === 'select' ? (
         <div className={selectWrapperClassName}>
           <select
             id={name}
@@ -64,25 +82,25 @@ const FormField = ({ label, name, error, touched, type = "text", options, ...pro
 };
 
 const AppointmentForm = ({ onSubmit }) => {
-  // Rest of the component remains the same
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     service: '',
     date: '',
-    time: ''
+    time: '',
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
 
   const services = [
-    "Premium Full Detail",
-    "Exterior Detail",
-    "Interior Deep Clean",
-    "Paint Correction",
-    "Ceramic Coating"
+    'Interior Detail',
+    'Full Detail',
+    'Deluxe Detail',
+    'Spiffy Detail',
+    'Clar Bar / Buff / Wax',
   ];
 
   const timeSlots = [];
@@ -92,6 +110,11 @@ const AppointmentForm = ({ onSubmit }) => {
     timeSlots.push(`${displayHour}:00 ${period}`);
     timeSlots.push(`${displayHour}:30 ${period}`);
   }
+
+  const isWeekday = (date) => {
+    const day = date.getDay();
+    return day !== 0 && day !== 6;
+  };
 
   const validateField = (name, value) => {
     let error = '';
@@ -108,13 +131,8 @@ const AppointmentForm = ({ onSubmit }) => {
       case 'service':
       case 'date':
       case 'time':
-        if (!value) error = `Please select ${name === 'date' ? 'a' : ''} ${name}`;
-        if (name === 'date') {
-          const selectedDate = new Date(value);
-          const today = new Date();
-          today.setHours(0, 0, 0, 0);
-          if (selectedDate < today) error = 'Please select a future date';
-        }
+        if (!value)
+          error = `Please select ${name === 'date' ? 'a' : ''} ${name}`;
         break;
     }
     return error;
@@ -122,23 +140,32 @@ const AppointmentForm = ({ onSubmit }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     if (touched[name]) {
-      setErrors(prev => ({ ...prev, [name]: validateField(name, value) }));
+      setErrors((prev) => ({ ...prev, [name]: validateField(name, value) }));
+    }
+  };
+
+  const handleDateChange = (date) => {
+    setFormData((prev) => ({ ...prev, date: date }));
+    if (touched.date) {
+      setErrors((prev) => ({ ...prev, date: validateField('date', date) }));
     }
   };
 
   const handleBlur = (e) => {
     const { name, value } = e.target;
-    setTouched(prev => ({ ...prev, [name]: true }));
-    setErrors(prev => ({ ...prev, [name]: validateField(name, value) }));
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    setErrors((prev) => ({ ...prev, [name]: validateField(name, value) }));
   };
 
   const validateForm = () => {
-    setTouched(Object.keys(formData).reduce((acc, key) => ({ ...acc, [key]: true }), {}));
-    
+    setTouched(
+      Object.keys(formData).reduce((acc, key) => ({ ...acc, [key]: true }), {})
+    );
+
     const newErrors = {};
-    Object.keys(formData).forEach(key => {
+    Object.keys(formData).forEach((key) => {
       const error = validateField(key, formData[key]);
       if (error) newErrors[key] = error;
     });
@@ -146,11 +173,38 @@ const AppointmentForm = ({ onSubmit }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log('Form submitted:', formData);
-      onSubmit?.(formData);
+      setIsSubmitting(true);
+
+      try {
+        const templateParams = {
+          name: formData.name,
+          email: formData.email,
+          service: formData.service,
+          date: formData.date ? formData.date.toISOString().split('T')[0] : '',
+          time: formData.time,
+          phone: formData.phone,
+        };
+
+        await emailjs.send(
+          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+          templateParams,
+          process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+        );
+
+        onSubmit?.(formData);
+      } catch (error) {
+        console.error('Error sending email:', error);
+        setErrors((prev) => ({
+          ...prev,
+          submit: 'Failed to submit appointment request. Please try again.',
+        }));
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -159,33 +213,66 @@ const AppointmentForm = ({ onSubmit }) => {
     { name: 'email', label: 'Email', type: 'email' },
     { name: 'phone', label: 'Phone Number', type: 'tel' },
     { name: 'service', label: 'Service', type: 'select', options: services },
-    { name: 'date', label: 'Preferred Date', type: 'date', min: new Date().toISOString().split('T')[0] },
-    { name: 'time', label: 'Preferred Time', type: 'select', options: timeSlots },
+    {
+      name: 'date',
+      label: 'Preferred Date',
+      component: DatePicker,
+      selected: formData.date,
+      onChange: handleDateChange,
+      filterDate: isWeekday,
+      minDate: new Date(),
+      placeholderText: 'Select a weekday',
+      dateFormat: 'MMMM d, yyyy',
+    },
+    {
+      name: 'time',
+      label: 'Preferred Time',
+      type: 'select',
+      options: timeSlots,
+    },
   ];
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
-      {formFields.map(field => (
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-2 md:gap-4"
+      noValidate
+    >
+      {formFields.map((field) => (
         <FormField
           key={field.name}
           {...field}
-          value={formData[field.name]}
-          onChange={handleChange}
+          value={field.selected || formData[field.name]}
+          onChange={field.onChange || handleChange}
           onBlur={handleBlur}
           error={errors[field.name]}
           touched={touched[field.name]}
         />
       ))}
 
+      {errors.submit && (
+        <p className="text-center text-sm text-red-500">{errors.submit}</p>
+      )}
+
       <button
         type="submit"
-        className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-xl font-semibold text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-150"
+        disabled={isSubmitting}
+        className="my-4 flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-3 text-xl font-semibold text-white shadow-sm transition duration-150 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:bg-red-400"
       >
-        Request Appointment
+        {isSubmitting ? (
+          <>
+            <Loader2 className="mr-2 size-6 animate-spin" />
+            Submitting...
+          </>
+        ) : (
+          'Request Appointment'
+        )}
       </button>
-
-      <div className="rounded-lg p-4 text-md text-gray-900">
-        <p>This form will submit a request for an appointment. We will follow up within one day to confirm your booking.</p>
+      <div className="rounded-lg px-4 text-base text-gray-900">
+        <p>
+          This form will submit a request for an appointment. We will follow up
+          within one day to confirm your booking.
+        </p>
       </div>
     </form>
   );

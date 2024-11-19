@@ -6,16 +6,13 @@ const OfferToast = () => {
   const [isLeaving, setIsLeaving] = useState(false);
 
   useEffect(() => {
-    // Check if user has seen the toast this session
     const hasSeenToast = sessionStorage.getItem('hasSeenDiscountToast');
-    
+
     if (!hasSeenToast) {
-      // Delay showing the toast by 1 second
       const showDelay = setTimeout(() => {
         setIsVisible(true);
         sessionStorage.setItem('hasSeenDiscountToast', 'true');
-        
-        // Start the auto-close timer after showing the toast
+
         const hideTimer = setTimeout(() => {
           handleClose();
         }, 10000);
@@ -44,30 +41,12 @@ const OfferToast = () => {
   return (
     <div
       onClick={handleClick}
-      className={`
-        fixed bottom-16 left-4 right-4 md:left-1/2 md:-translate-x-1/2
-        bg-gray-900 
-        shadow-lg 
-        rounded-lg 
-        p-4 
-        w-auto
-        md:max-w-md
-        border 
-        border-gray-200
-        flex 
-        items-center 
-        gap-3
-        transition-all duration-300 ease-in-out
-        hover:bg-gray-800
-        cursor-pointer
-        mx-auto
-        ${isLeaving ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}
-      `}
+      className={`fixed inset-x-4 bottom-16 mx-auto flex w-auto cursor-pointer items-center gap-3 rounded-lg border border-gray-200 bg-gradient-to-r from-gray-900 to-gray-800 p-4 shadow-lg transition-all duration-300 ease-in-out hover:bg-gray-800 md:left-1/2 md:right-auto md:w-full md:max-w-md md:-translate-x-1/2 ${
+        isLeaving ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'
+      }`}
     >
-      {/* Phone Icon */}
-      <Phone className="w-7 h-7 flex-shrink-0 text-red-600" strokeWidth={2} />
+      <Phone className="size-7 shrink-0 text-red-600" strokeWidth={2} />
 
-      {/* Toast Content */}
       <div className="min-w-0">
         <div className="font-semibold text-white">Limited Time Offer!</div>
         <div className="text-white">
@@ -75,13 +54,12 @@ const OfferToast = () => {
         </div>
       </div>
 
-      {/* Close Button */}
       <button
         onClick={handleClose}
-        className="flex-shrink-0 absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+        className="absolute right-2 top-2 shrink-0 text-gray-400 hover:text-gray-600"
       >
         <svg
-          className="w-8 h-8"
+          className="size-8"
           fill="none"
           strokeWidth="2"
           stroke="currentColor"
@@ -94,22 +72,6 @@ const OfferToast = () => {
           />
         </svg>
       </button>
-
-      <style jsx>{`
-        @keyframes slideIn {
-          from { opacity: 0; transform: translateY(1rem); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .fixed {
-          animation: slideIn 0.3s ease-out;
-        }
-        @media (min-width: 768px) {
-          @keyframes slideIn {
-            from { opacity: 0; transform: translate(-50%, 1rem); }
-            to { opacity: 1; transform: translate(-50%, 0); }
-          }
-        }
-      `}</style>
     </div>
   );
 };

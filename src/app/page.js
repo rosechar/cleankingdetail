@@ -33,7 +33,7 @@ const Home = () => {
       <Testimonials />
       <GiftCertificates />
       <SocialLinks />
-      <OfferToast />
+      {/* <OfferToast /> */}
     </div>
   );
 };

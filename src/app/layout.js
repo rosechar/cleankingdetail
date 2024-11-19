@@ -1,21 +1,26 @@
-import localFont from 'next/font/local';
+import { Poppins } from 'next/font/google';
 import './globals.css';
 import Header from '../components/Header';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
-});
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900',
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-poppins',
+  display: 'swap',
+  preload: true,
+  fallback: [
+    'system-ui',
+    '-apple-system',
+    'BlinkMacSystemFont',
+    'Segoe UI',
+    'Roboto',
+    'sans-serif',
+  ],
 });
 
 export const metadata = {
-  metadataBase: new URL('https://cleankingdetailing.com'), // Replace with your actual domain
+  metadataBase: new URL('https://cleankingdetail.com'),
   title:
     'Clean King Detailing | Professional Car Detailing Services in Blissfield, MI',
   description:
@@ -58,54 +63,134 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               '@context': 'https://schema.org',
-              '@type': 'AutoDetailing',
+              '@type': 'AutoWash',
               name: 'Clean King Detailing',
-              // "image": "https://yourwebsite.com/images/clean-king-og.jpg", // Replace with your actual domain
+              image: 'https://cleankingdetail.com/images/cleanking.jpg',
+              url: 'https://cleankingdetail.com',
+              telephone: '(517) 682-1919',
               address: {
                 '@type': 'PostalAddress',
+                streetAddress: '610 W Adrian St',
                 addressLocality: 'Blissfield',
                 addressRegion: 'MI',
+                postalCode: '49228',
                 addressCountry: 'US',
               },
+              geo: {
+                '@type': 'GeoCoordinates',
+                latitude: '41.832791',
+                longitude: '-83.873159',
+              },
+              openingHours: ['Mo-Fr 09:00-17:00', 'Sa 10:00-15:00'],
               priceRange: '$35-$160',
               description:
-                'Premier car detailing services in Blissfield, MI offering interior, exterior, and full-service packages',
-              areaServed: 'Lenawee County',
-              offers: [
+                'Premier car detailing services in Blissfield, MI offering interior, exterior, and full-service packages. Professional car cleaning, waxing, and protection services.',
+              areaServed: [
                 {
-                  '@type': 'Offer',
-                  name: 'Spiffy Detail',
-                  price: '35',
-                  priceCurrency: 'USD',
+                  '@type': 'City',
+                  name: 'Blissfield',
                 },
                 {
-                  '@type': 'Offer',
-                  name: 'Interior Detail',
-                  price: '110',
-                  priceCurrency: 'USD',
-                },
-                {
-                  '@type': 'Offer',
-                  name: 'Full Detail',
-                  price: '140',
-                  priceCurrency: 'USD',
-                },
-                {
-                  '@type': 'Offer',
-                  name: 'Deluxe Detail',
-                  price: '160',
-                  priceCurrency: 'USD',
+                  '@type': 'County',
+                  name: 'Lenawee County',
                 },
               ],
+              sameAs: [
+                'https://www.facebook.com/people/Clean-King/100063915012506/',
+              ],
+              aggregateRating: {
+                '@type': 'AggregateRating',
+                ratingValue: '5',
+                bestRating: '5',
+              },
+              paymentAccepted: ['Cash', 'Credit Card', 'Debit Card'],
+              currenciesAccepted: 'USD',
+              hasOfferCatalog: {
+                '@type': 'OfferCatalog',
+                name: 'Car Detailing Services',
+                itemListElement: [
+                  {
+                    '@type': 'OfferCatalog',
+                    name: 'Interior Services',
+                    itemListElement: [
+                      {
+                        '@type': 'Offer',
+                        name: 'Interior Detail',
+                        price: '110',
+                        priceCurrency: 'USD',
+                        description:
+                          'Comprehensive interior cleaning and detailing service including deep cleaning of seats, carpets, and all interior surfaces',
+                        availability: 'https://schema.org/InStock',
+                      },
+                    ],
+                  },
+                  {
+                    '@type': 'OfferCatalog',
+                    name: 'Exterior Services',
+                    itemListElement: [
+                      {
+                        '@type': 'Offer',
+                        name: 'Spiffy Detail',
+                        price: '35',
+                        priceCurrency: 'USD',
+                        description:
+                          'Quick detail service including interior vacuum and exterior wash',
+                        availability: 'https://schema.org/InStock',
+                      },
+                      {
+                        '@type': 'Offer',
+                        name: 'Full Detail',
+                        price: '140',
+                        priceCurrency: 'USD',
+                        description:
+                          'Complete interior and exterior detailing service',
+                        availability: 'https://schema.org/InStock',
+                      },
+                      {
+                        '@type': 'Offer',
+                        name: 'Deluxe Detail',
+                        price: '160',
+                        priceCurrency: 'USD',
+                        description:
+                          'Premium detailing package including clay bar treatment and engine bay cleaning',
+                        availability: 'https://schema.org/InStock',
+                      },
+                    ],
+                  },
+                ],
+              },
+              amenityFeature: [
+                {
+                  '@type': 'LocationFeatureSpecification',
+                  name: 'On-site Service',
+                  value: true,
+                },
+                {
+                  '@type': 'LocationFeatureSpecification',
+                  name: 'Professional Equipment',
+                  value: true,
+                },
+              ],
+              potentialAction: {
+                '@type': 'ReserveAction',
+                target: {
+                  '@type': 'EntryPoint',
+                  urlTemplate: 'https://cleankingdetail.com/appointment',
+                },
+                result: {
+                  '@type': 'Reservation',
+                  name: 'Car Detailing Appointment',
+                },
+              },
             }),
           }}
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-gray-100 text-black antialiased`}
+        className={`${poppins.variable} bg-gray-100 font-sans text-black antialiased`}
       >
         <Header />
-        {children}
+        <main className="min-h-screen">{children}</main>
         <SpeedInsights />
       </body>
     </html>

@@ -30,7 +30,7 @@ const services = [
       'All Glass Cleaned (Interior & Exterior)',
       'Spray Wax',
     ],
-    includesText: 'Includes all interior detail services',
+    includesText: 'Includes all interior services',
     includes: [
       'Upholstery Vacuumed & Shampooed',
       'Carpets Vacuumed & Shampooed',
@@ -53,7 +53,7 @@ const services = [
       'Clean Trunk Channels',
       'Clean & Condition Engine Bay',
     ],
-    includesText: 'Includes full detail services',
+    includesText: 'Includes full services',
     includes: [
       'Upholstery Vacuumed & Shampooed',
       'Carpets Vacuumed & Shampooed',

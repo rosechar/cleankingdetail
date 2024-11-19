@@ -1,6 +1,6 @@
 import localFont from 'next/font/local';
 import './globals.css';
-import Header from './components/Header';
+import Header from '../components/Header';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const geistSans = localFont({

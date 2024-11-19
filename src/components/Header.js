@@ -16,7 +16,7 @@ export default function Header() {
             href="/"
             className="flex items-center gap-2 transition-colors duration-200 hover:text-red-600"
           >
-            <div className="relative size-[140px]">
+            <div className="relative size-[125px]">
               <Image
                 src="/cleanking.svg"
                 alt="Clean King Detailing"
@@ -28,7 +28,7 @@ export default function Header() {
         </h1>
 
         <nav>
-          <ul className="m-0 flex list-none flex-col items-end space-y-1 p-0 text-right text-lg md:flex-row md:space-x-8 md:space-y-0 md:text-xl">
+          <ul className="m-0 flex list-none flex-col items-end space-y-1 p-0 text-right text-base md:flex-row md:space-x-8 md:space-y-0 md:text-xl">
             {[
               { path: '/services', label: 'Services' },
               { path: '/contact', label: 'Contact' },

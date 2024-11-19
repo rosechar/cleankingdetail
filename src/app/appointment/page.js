@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import AppointmentForm from '../components/AppointmentForm';
-import { AppointmentConfirmation } from '../components/AppointmentConfirmation';
+import AppointmentForm from '../../components/AppointmentForm';
+import { AppointmentConfirmation } from '../../components/AppointmentConfirmation';
 
 const Appointment = () => {
   const [submittedData, setSubmittedData] = useState(null);

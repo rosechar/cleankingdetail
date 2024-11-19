@@ -21,7 +21,7 @@ export const Services = () => {
             className="cursor-pointer rounded-lg bg-white p-4 shadow-sm transition-transform hover:scale-105"
           >
             <div className="flex justify-between">
-              <h3 className="text-xl font-bold">{service.name}</h3>
+              <h3 className="text-xl font-medium">{service.name}</h3>
               {/* <span className="text-lg font-semibold text-customRed">
                 {service.price}
               </span> */}

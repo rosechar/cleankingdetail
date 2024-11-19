@@ -8,9 +8,7 @@ const AppointmentButton = () => {
         {/* <div className="flex flex-row gap-4">
           <Sparkles className="size-12 text-white" />
         </div> */}
-        <h2 className="text-3xl font-bold text-white">
-          Ready to Make Your Car Shine?
-        </h2>
+        <h2 className="text-3xl text-white">Ready to Make Your Car Shine?</h2>
         <span
           className="flex flex-row items-center justify-center gap-4 rounded-lg bg-white px-8 py-4 text-lg font-semibold text-customRed transition-colors duration-300 hover:bg-gray-100"
           href="/appointment"

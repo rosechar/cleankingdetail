@@ -3,8 +3,8 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import services from '../../data/services';
-import ServiceCard from '../components/ServiceCard';
-import AppointmentButton from '../components/AppointmentButton';
+import ServiceCard from '../../components/ServiceCard';
+import AppointmentButton from '../../components/AppointmentButton';
 
 const ServicesContent = () => {
   const searchParams = useSearchParams();

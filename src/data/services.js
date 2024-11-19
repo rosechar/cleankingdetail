@@ -13,7 +13,7 @@ const services = [
       'Air Vents Cleaned',
       'Leather Seats Cleaned & Conditioned',
       'All Glass Cleaned (Interior Only)',
-      'Vacuum Interior & Trunk',
+      'Vacuum Interior',
     ],
   },
   {

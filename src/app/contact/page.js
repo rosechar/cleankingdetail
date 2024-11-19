@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { SocialLinks } from '../components/SocialLinks';
-import AppointmentButton from '../components/AppointmentButton';
+import { SocialLinks } from '../../components/SocialLinks';
+import AppointmentButton from '../../components/AppointmentButton';
 import { contactInfo } from '@/data/contact';
 import { faqs } from '@/data/faqs';
 
@@ -18,7 +18,7 @@ const Contact = () => {
           <div className="mx-auto mt-4 h-1 w-24 bg-red-600" />
         </h1>
 
-        <div className="flex flex-col gap-3 rounded-lg bg-white p-7 text-lg shadow-sm">
+        <div className="flex flex-col gap-3 rounded-lg bg-white p-7 text-lg font-medium shadow-sm">
           {contactInfo.map(({ Icon, href, text }, i) =>
             href ? (
               <a
@@ -36,7 +36,7 @@ const Contact = () => {
             ) : (
               <div key={i} className="flex items-center gap-8">
                 <Icon className="size-6 text-red-600" />
-                <span className="font-medium text-gray-700">{text}</span>
+                <span className="text-gray-700">{text}</span>
               </div>
             )
           )}

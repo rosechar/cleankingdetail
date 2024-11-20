@@ -21,6 +21,7 @@ export default function Header() {
                 src="/cleanking.svg"
                 alt="Clean King Detailing"
                 fill
+                priority
                 className="object-contain"
               />
             </div>

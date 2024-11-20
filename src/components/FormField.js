@@ -1,6 +1,5 @@
 'use client';
 import React from 'react';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const FormField = ({
@@ -34,7 +33,20 @@ const FormField = ({
     [&_.react-datepicker__day--keyboard-selected]:bg-zinc-600
     [&_.react-datepicker__day:hover]:bg-zinc-100
     [&_.react-datepicker__day-name]:text-base [&_.react-datepicker__day-name]:text-zinc-600
+    [&_.react-datepicker__triangle]:hidden
   `;
+
+  const CustomCalendarContainer = ({ className, children }) => {
+    return (
+      <div className="-translate-y-3 scale-110">
+        <div
+          className={`${className} rounded-lg border border-zinc-200 bg-white shadow-lg`}
+        >
+          {children}
+        </div>
+      </div>
+    );
+  };
 
   const renderCustomHeader = ({
     date,
@@ -79,10 +91,12 @@ const FormField = ({
       {Component ? (
         <div className={datePickerWrapperClassName}>
           <Component
+            popperPlacement="top"
             renderCustomHeader={renderCustomHeader}
+            calendarContainer={CustomCalendarContainer}
             className={`${getInputClassName(error && touched)} [&:placeholder-shown]:text-gray-900`}
             {...props}
-            onBlur={(e) => {
+            onBlur={() => {
               props.onBlur?.({ target: { name, value: props.selected } });
             }}
           />

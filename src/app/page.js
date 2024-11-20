@@ -5,7 +5,6 @@ import { Services } from '../components/Services';
 import { Testimonials } from '../components/Testimonials';
 import { SocialLinks } from '../components/SocialLinks';
 import AppointmentButton from '../components/AppointmentButton';
-import OfferToast from '../components/OfferToast';
 import GiftCertificates from '../components/GiftCertificates';
 
 const Home = () => {
@@ -17,7 +16,7 @@ const Home = () => {
             src="/tire.webp"
             alt="Detailed car"
             fill
-            sizes="(max-width: 768px) 768px, 1920px"
+            sizes="100vw"
             priority
             className="object-cover opacity-50"
           />

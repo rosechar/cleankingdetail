@@ -1,4 +1,4 @@
-import { Phone, Mail, MapPin, Clock } from 'lucide-react';
+import { Phone, MapPin, Clock } from 'lucide-react';
 
 export const contactInfo = [
   { Icon: Phone, href: 'tel:+(517) 682-1919', text: '(517) 682-1919' },

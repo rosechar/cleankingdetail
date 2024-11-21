@@ -44,8 +44,11 @@ const ServicesContent = () => {
               </button>
             ))}
           </div>
-          <div className="flex items-center justify-center">
+          <div className="flex flex-col items-center justify-center">
             <ServiceCard selectedService={selectedServiceDetails} />
+            <p className="mt-4 text-center text-sm text-gray-600">
+              *Large SUV/VANS & Pet Hair Extra
+            </p>
           </div>
         </div>
       </div>

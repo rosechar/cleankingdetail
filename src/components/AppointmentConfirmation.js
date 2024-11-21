@@ -9,15 +9,15 @@ export const AppointmentConfirmation = ({ submittedData }) => {
           <div className="rounded-full p-2">
             <CalendarCheck className="size-20 text-red-600" />
           </div>
-          <p className="text-center text-lg">
+          <p className="text-center text-lg font-medium">
             Thank you for choosing our detail service, we will reach out shortly
             to confirm your appointment.
           </p>
         </div>
 
-        <div className="mb-4 divide-y divide-gray-100 rounded-lg border border-gray-100 bg-gray-50">
+        <div className="mb-1 divide-y divide-gray-100 rounded-lg border border-gray-100 bg-gray-50">
           <div className="flex items-center gap-3 p-4">
-            <Car className="size-5 text-gray-500" />
+            <Car className="size-5 text-customRed" />
             <div>
               <p className="text-sm font-medium text-gray-500">Service</p>
               <p className="font-medium text-gray-900">
@@ -27,7 +27,7 @@ export const AppointmentConfirmation = ({ submittedData }) => {
           </div>
 
           <div className="flex items-center gap-3 p-4">
-            <Calendar className="size-5 text-gray-500" />
+            <Calendar className="size-5 text-customRed" />
             <div>
               <p className="text-sm font-medium text-gray-500">
                 Requested Date
@@ -49,7 +49,7 @@ export const AppointmentConfirmation = ({ submittedData }) => {
           drop-offs between 9:30 AM - 10:00 AM
         </div>
 
-        <div className="flex items-center justify-between gap-2 rounded-lg bg-white p-6 py-4 text-lg font-medium shadow-sm">
+        <div className="flex items-center justify-between gap-2 rounded-lg bg-white p-6 py-4 text-lg font-medium">
           Questions?
           <a href="tel:+(517) 682-1919" className="flex items-center gap-2">
             <Phone className="size-6 shrink-0 text-red-600" />

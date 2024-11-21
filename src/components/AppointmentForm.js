@@ -78,7 +78,7 @@ const AppointmentForm = ({ onSubmit }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-2 md:gap-4"
+      className="flex flex-col gap-2 md:gap-3"
       noValidate
     >
       {formFields.map((field) => (
@@ -93,7 +93,7 @@ const AppointmentForm = ({ onSubmit }) => {
           />
         </div>
       ))}
-      <div className="mt-2 rounded-lg px-4 text-sm text-gray-900">
+      <div className="rounded-lg px-2 text-sm text-gray-900 md:mt-0">
         To deliver the best possible detail, we kindly ask for vehicle drop-offs
         between 9:30 AM - 10:00 AM
       </div>
@@ -105,7 +105,7 @@ const AppointmentForm = ({ onSubmit }) => {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="my-4 flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-3 text-xl font-semibold text-white shadow-sm transition duration-150 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:bg-red-400"
+        className="mt-2 flex w-full items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-3 text-xl font-semibold text-white shadow-sm transition duration-150 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:bg-red-400"
       >
         {isSubmitting ? (
           <>
@@ -116,9 +116,6 @@ const AppointmentForm = ({ onSubmit }) => {
           'Request Appointment'
         )}
       </button>
-      <div className="rounded-lg px-4 text-base font-semibold text-gray-900">
-        <p>We will follow up within one day to confirm your booking.</p>
-      </div>
     </form>
   );
 };

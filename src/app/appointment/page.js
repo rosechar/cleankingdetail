@@ -1,10 +1,16 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppointmentForm from '../../components/AppointmentForm';
 import { AppointmentConfirmation } from '../../components/AppointmentConfirmation';
 
 const Appointment = () => {
   const [submittedData, setSubmittedData] = useState(null);
+
+  useEffect(() => {
+    if (submittedData) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [submittedData]);
 
   const handleSubmit = (formData) => {
     setSubmittedData(formData);

@@ -13,13 +13,15 @@ const useFormValidation = (initialState) => {
         break;
       case 'email':
         if (!value) error = 'Email is required';
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          error = 'Please enter a valid email';
+        }
         break;
       case 'phone':
         if (!value) error = 'Phone is required';
         break;
       case 'service':
       case 'date':
-      case 'time':
         if (!value)
           error = `Please select ${name === 'date' ? 'a' : ''} ${name}`;
         break;

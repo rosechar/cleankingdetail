@@ -23,7 +23,6 @@ const AppointmentForm = ({ onSubmit }) => {
     phone: '',
     service: '',
     date: null,
-    time: '',
   });
 
   const services = [
@@ -33,14 +32,6 @@ const AppointmentForm = ({ onSubmit }) => {
     'Spiffy Detail',
     'Clar Bar / Buff / Wax',
   ];
-
-  const timeSlots = [];
-  for (let hour = 9; hour <= 17; hour++) {
-    const period = hour >= 12 ? 'PM' : 'AM';
-    const displayHour = hour > 12 ? hour - 12 : hour;
-    timeSlots.push(`${displayHour}:00 ${period}`);
-    timeSlots.push(`${displayHour}:30 ${period}`);
-  }
 
   const isWeekday = (date) => {
     const day = date.getDay();
@@ -76,17 +67,11 @@ const AppointmentForm = ({ onSubmit }) => {
       label: 'Preferred Date',
       component: DatePicker,
       selected: formData.date,
-      onChange: (date) => handleDateChange(date, 'date'), // Fixed date handling
+      onChange: (date) => handleDateChange(date, 'date'),
       filterDate: isWeekday,
       minDate: new Date(),
       placeholderText: 'Select a weekday',
       dateFormat: 'MMMM d, yyyy',
-    },
-    {
-      name: 'time',
-      label: 'Preferred Time',
-      type: 'select',
-      options: timeSlots,
     },
   ];
 
@@ -97,16 +82,21 @@ const AppointmentForm = ({ onSubmit }) => {
       noValidate
     >
       {formFields.map((field) => (
-        <FormField
-          key={field.name}
-          {...field}
-          value={field.selected || formData[field.name]}
-          onChange={field.onChange || handleChange}
-          onBlur={handleBlur}
-          error={errors[field.name]}
-          touched={touched[field.name]}
-        />
+        <div key={field.name} className="flex flex-col">
+          <FormField
+            {...field}
+            value={field.selected || formData[field.name]}
+            onChange={field.onChange || handleChange}
+            onBlur={handleBlur}
+            error={errors[field.name]}
+            touched={touched[field.name]}
+          />
+        </div>
       ))}
+      <div className="mt-2 rounded-lg px-4 text-sm text-gray-900">
+        To deliver the best possible detail, we kindly ask for vehicle drop-offs
+        between 9:30 AM - 10:00 AM
+      </div>
 
       {errors.submit && (
         <p className="text-center text-sm text-red-500">{errors.submit}</p>
@@ -126,7 +116,7 @@ const AppointmentForm = ({ onSubmit }) => {
           'Request Appointment'
         )}
       </button>
-      <div className="rounded-lg px-4 text-base text-gray-900">
+      <div className="rounded-lg px-4 text-base font-semibold text-gray-900">
         <p>We will follow up within one day to confirm your booking.</p>
       </div>
     </form>

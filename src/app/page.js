@@ -21,9 +21,16 @@ const Home = () => {
             className="object-cover opacity-50"
           />
         </div>
-        <div className="relative z-10 text-center font-semibold uppercase">
-          <p className="mb-4 text-4xl">The King of Clean</p>
-          <p className="text-xl">Blissfield, MI</p>
+        <div className="relative z-10">
+          <div className="relative size-[175px] md:size-[250px]">
+            <Image
+              src="/cleanking.svg"
+              alt="Clean King Detailing"
+              fill
+              priority
+              className="object-contain"
+            />
+          </div>
         </div>
       </section>
 

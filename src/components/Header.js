@@ -3,7 +3,6 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import Image from 'next/image';
 
 export default function Header() {
   const currentPath = usePathname();
@@ -12,19 +11,9 @@ export default function Header() {
     <header className="bg-gradient-to-r from-gray-900 to-gray-800 shadow-lg">
       <div className="flex flex-row items-center justify-between px-6 py-4 text-white md:justify-evenly md:py-6">
         <h1 className="">
-          <Link
-            href="/"
-            className="flex items-center gap-2 transition-colors duration-200 hover:text-red-600"
-          >
-            <div className="relative size-[125px]">
-              <Image
-                src="/cleanking.svg"
-                alt="Clean King Detailing"
-                fill
-                priority
-                className="object-contain"
-              />
-            </div>
+          <Link href="/" className="text-center font-semibold uppercase">
+            <p className="text-xl md:text-2xl">The King of Clean</p>
+            <p className="md:text-lg">Blissfield, MI</p>
           </Link>
         </h1>
 

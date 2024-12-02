@@ -1,6 +1,29 @@
 'use client';
-import React from 'react';
+import React, { forwardRef } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
+
+const CustomDateInput = forwardRef(({ error, touched, ...props }, ref) => {
+  const getInputClassName = (hasError) => `
+    block w-full rounded-md bg-white
+    text-gray-900 shadow-sm outline-none
+    text-lg p-3
+    min-h-[48px] appearance-none
+    placeholder:text-gray-900
+    ${hasError ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-zinc-600 focus:border-zinc-800 focus:ring-zinc-800'}
+    focus:ring-2
+  `;
+
+  return (
+    <input
+      {...props}
+      ref={ref}
+      readOnly
+      className={`${getInputClassName(error && touched)} [&:placeholder-shown]:text-gray-900`}
+    />
+  );
+});
+
+CustomDateInput.displayName = 'CustomDateInput';
 
 const FormField = ({
   label,
@@ -12,16 +35,6 @@ const FormField = ({
   component: Component,
   ...props
 }) => {
-  const getInputClassName = (hasError) => `
-    block w-full rounded-md bg-white
-    text-gray-900 shadow-sm outline-none
-    text-lg p-3
-    min-h-[48px] appearance-none
-    placeholder:text-gray-900
-    ${hasError ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-zinc-600 focus:border-zinc-800 focus:ring-zinc-800'}
-    focus:ring-2
-  `;
-
   const datePickerWrapperClassName = `
     [&_.react-datepicker]:font-sans
     w-full [&_.react-datepicker-wrapper]:w-full
@@ -33,20 +46,7 @@ const FormField = ({
     [&_.react-datepicker__day--keyboard-selected]:bg-zinc-600
     [&_.react-datepicker__day:hover]:bg-zinc-100
     [&_.react-datepicker__day-name]:text-base [&_.react-datepicker__day-name]:text-zinc-600
-    [&_.react-datepicker__triangle]:hidden
   `;
-
-  const CustomCalendarContainer = ({ className, children }) => {
-    return (
-      <div className="-translate-y-3 scale-110">
-        <div
-          className={`${className} rounded-lg border border-zinc-200 bg-white shadow-lg`}
-        >
-          {children}
-        </div>
-      </div>
-    );
-  };
 
   const renderCustomHeader = ({
     date,
@@ -78,6 +78,16 @@ const FormField = ({
     </div>
   );
 
+  const getInputClassName = (hasError) => `
+    block w-full rounded-md bg-white
+    text-gray-900 shadow-sm outline-none
+    text-lg p-3
+    min-h-[48px] appearance-none
+    placeholder:text-gray-900
+    ${hasError ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-zinc-600 focus:border-zinc-800 focus:ring-zinc-800'}
+    focus:ring-2
+  `;
+
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex items-center justify-between">
@@ -91,14 +101,13 @@ const FormField = ({
       {Component ? (
         <div className={datePickerWrapperClassName}>
           <Component
+            customInput={<CustomDateInput error={error} touched={touched} />}
             popperPlacement="top"
             renderCustomHeader={renderCustomHeader}
-            calendarContainer={CustomCalendarContainer}
-            className={`${getInputClassName(error && touched)} [&:placeholder-shown]:text-gray-900`}
-            {...props}
-            onBlur={() => {
+            onCalendarClose={() => {
               props.onBlur?.({ target: { name, value: props.selected } });
             }}
+            {...props}
           />
         </div>
       ) : type === 'select' ? (

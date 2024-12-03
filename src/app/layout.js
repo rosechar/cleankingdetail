@@ -3,6 +3,7 @@ import './globals.css';
 import Header from '../components/Header';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/react';
+import { ScrollToTop } from '@/components/ScrollToTop';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -195,6 +196,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${poppins.variable} bg-gray-100 font-sans text-black antialiased`}
       >
+        <ScrollToTop />
         <Header />
         <main className="min-h-screen">{children}</main>
         <SpeedInsights />

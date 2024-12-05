@@ -109,6 +109,7 @@ export default function RootLayout({ children }) {
                 '@type': 'AggregateRating',
                 ratingValue: '5',
                 bestRating: '5',
+                ratingCount: '3',
               },
               paymentAccepted: ['Cash', 'Credit Card', 'Debit Card'],
               currenciesAccepted: 'USD',

@@ -9,7 +9,7 @@ export default function Header() {
   const currentPath = usePathname();
 
   return (
-    <header className="bg-slate-900 text-white">
+    <header className="bg-gradient-to-r from-slate-900 to-slate-800 text-white shadow-lg">
       <div className="container">
         <div className="flex flex-col md:flex-row md:items-center md:justify-evenly">
           <div className="py-2 md:py-4">

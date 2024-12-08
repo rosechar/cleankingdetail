@@ -83,7 +83,7 @@ const services = [
   {
     id: 'a-la-carte',
     name: 'A La Carte',
-    price: '$70/$110',
+    price: '$70-$110',
     description: 'Clay Bar / Buff / Wax',
     details: ['Clay Bar / Wax', 'Clay Bar / Buff / Wax'],
   },

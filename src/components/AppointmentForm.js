@@ -30,7 +30,8 @@ const AppointmentForm = ({ onSubmit }) => {
     'Full Detail',
     'Deluxe Detail',
     'Spiffy Detail',
-    'Clar Bar / Buff / Wax',
+    'Clay Bar / Wax',
+    'Clay Bar / Buff / Wax',
   ];
 
   const isWeekday = (date) => {

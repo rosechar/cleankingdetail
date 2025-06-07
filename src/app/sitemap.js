@@ -7,6 +7,12 @@ export default function sitemap() {
       priority: 1,
     },
     {
+      url: 'https://www.cleankingdetail.com/car-detailing-adrian-mi',
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 1,
+    },
+    {
       url: 'https://cleankingdetail.com/services',
       lastModified: new Date(),
       changeFrequency: 'weekly',

@@ -15,7 +15,7 @@ export const Testimonials = () => {
           prev === testimonials.length - 1 ? 0 : prev + 1
         );
         setIsAnimating(false);
-      }, 300); // Match this with the transition duration
+      }, 300);
     }, 5000);
     return () => clearInterval(timer);
   }, []);

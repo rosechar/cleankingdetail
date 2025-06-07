@@ -9,7 +9,7 @@ import { GiftCertificates } from '@/components/GiftCertificates';
 
 const Home = () => {
   return (
-    <div className="min-h-screen">
+    <div className="mb-2 min-h-screen">
       <section className="relative flex h-64 items-center justify-center bg-black text-white md:h-80 lg:h-96">
         <div className="absolute inset-0">
           <Image

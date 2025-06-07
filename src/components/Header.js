@@ -33,7 +33,7 @@ export default function Header() {
             </Link>
           </div>
 
-          <nav className="flex justify-evenly border-t border-slate-800 py-1 md:gap-6 md:border-t-0 md:py-4">
+          <nav className="flex justify-evenly border-t border-slate-600 py-1 md:gap-6 md:border-t-0 md:py-4">
             {[
               { path: '/services', label: 'Services' },
               { path: '/contact', label: 'Contact' },

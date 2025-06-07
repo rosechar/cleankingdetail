@@ -31,7 +31,7 @@ export const Services = () => {
                   </span>
                 </div>
 
-                <div className="mt-1 font-thin leading-snug text-gray-600">
+                <div className="mt-1 font-thin leading-snug text-gray-600 md:text-lg">
                   {service.highlights.join(' • ')}
                 </div>
 

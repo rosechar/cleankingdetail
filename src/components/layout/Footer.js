@@ -1,9 +1,8 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
-import { AreasServedFooter } from './AreasServedFooter';
+import { AreasServedFooter } from '@/components/home/AreasServedFooter';
 
 export default function Footer() {
   return (

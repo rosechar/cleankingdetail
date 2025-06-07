@@ -50,7 +50,7 @@ const services = [
     highlights: [
       'Complete interior detail',
       'Exterior wash & wax',
-      'Clay bar treatment',
+      'Clean wheels & tires',
     ],
     isPopular: true,
     details: [
@@ -147,7 +147,7 @@ export const Services = () => {
             }`}
           >
             <div className="flex items-center gap-3">
-              <div className="shrink-0 text-2xl">{service.icon}</div>
+              <div className="shrink-0 text-3xl">{service.icon}</div>
 
               <div className="flex-1">
                 <div className="flex items-center justify-between">
@@ -157,7 +157,7 @@ export const Services = () => {
                   </span>
                 </div>
 
-                <div className="mt-1 text-sm leading-tight text-gray-600">
+                <div className="mt-1 text-base font-thin leading-tight text-gray-600">
                   {service.highlights.join(' | ')}
                 </div>
 
@@ -167,9 +167,6 @@ export const Services = () => {
                   </div>
                 )}
               </div>
-
-              {/* Arrow */}
-              <ChevronRight className="ml-2 size-5 shrink-0 text-customRed" />
             </div>
           </div>
         ))}

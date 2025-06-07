@@ -15,7 +15,7 @@ export default function Header() {
           <div className="py-2 md:py-4">
             <Link
               href="/"
-              className="flex items-center justify-evenly gap-3 md:justify-start md:gap-4"
+              className="flex items-center justify-evenly md:justify-start md:gap-4"
             >
               <div className="relative size-[80px]">
                 <Image
@@ -27,8 +27,7 @@ export default function Header() {
                 />
               </div>
               <div className="text-right md:text-left">
-                <h1 className="text-xl font-bold">THE KING OF CLEAN</h1>
-                <p className="text-xs text-gray-400">BLISSFIELD, MI</p>
+                <h1 className="text-2xl font-thin">THE KING OF CLEAN</h1>
               </div>
             </Link>
           </div>

@@ -235,7 +235,7 @@ export default function RootLayout({ children }) {
       >
         <ScrollToTop />
         <Header />
-        <main className="min-h-screen">{children}</main>
+        <main>{children}</main>
         <Footer />
         <SpeedInsights />
         <Analytics />

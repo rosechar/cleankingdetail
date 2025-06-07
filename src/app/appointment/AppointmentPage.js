@@ -17,7 +17,7 @@ const AppointmentPage = () => {
   };
 
   return (
-    <div className="min-h-screen p-4 sm:px-6 lg:px-8">
+    <div className="p-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-md">
         <div className="space-y-6 border-red-700 p-4 text-gray-800">
           <div className="text-center">

@@ -23,4 +23,28 @@ export const faqs = [
     answer:
       'We ask for at least 24-hour notice for cancellations or reschedules.',
   },
+  {
+    id: 5,
+    question: 'What areas do you serve for car detailing services?',
+    answer:
+      'We proudly serve Adrian, Blissfield, Tecumseh, Monroe and Lenawee County, Michigan.',
+  },
+  {
+    id: 6,
+    question: 'How long does a full car detail take?',
+    answer:
+      "A complete car detailing service typically takes 3-6 hours depending on your vehicle's size and condition. We serve Adrian, Blissfield, and Tecumseh customers with same-day service when you drop off in the morning.",
+  },
+  {
+    id: 7,
+    question: 'How often should I get my car detailed in Michigan?',
+    answer:
+      "Due to Michigan's harsh winters with road salt and variable weather conditions, we recommend professional detailing every 3-4 months. This helps protect your vehicle from salt damage year-round.",
+  },
+  {
+    id: 8,
+    question: 'Do you detail trucks and SUVs in the Tecumseh area?',
+    answer:
+      'Absolutely! We detail all vehicle types including cars, trucks, SUVs, and vans. Our Tecumseh, Adrian, Monroe, and surrounding area customers love our specialized attention to larger vehicles.',
+  },
 ];

@@ -6,6 +6,8 @@ import { Testimonials } from '@/components/Testimonials';
 import { SocialLinks } from '@/components/SocialLinks';
 import { AppointmentButton } from '@/components/AppointmentButton';
 import { GiftCertificates } from '@/components/GiftCertificates';
+import { AreasServed } from '@/components/AreasServed';
+import { AreasServedFooter } from '@/components/AreasServedFooter';
 
 const Home = () => {
   return (
@@ -25,7 +27,7 @@ const Home = () => {
           <div className="relative size-[175px] md:size-[250px]">
             <Image
               src="/cleanking.svg"
-              alt="Clean King Detailing"
+              alt="Clean King Auto Detailing"
               fill
               priority
               className="object-contain"
@@ -37,8 +39,9 @@ const Home = () => {
       <Services />
       <AppointmentButton />
       <Testimonials />
-      <GiftCertificates />
       <SocialLinks />
+      <GiftCertificates />
+      <AreasServed />
       {/* <OfferToast /> */}
     </div>
   );

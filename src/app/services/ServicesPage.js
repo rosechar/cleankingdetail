@@ -3,8 +3,9 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import services from '../../data/services';
-import { ServiceCard } from '@/components/ServiceCard';
+import { ServiceCard } from '@/app/services/ServiceCard';
 import { AppointmentButton } from '@/components/AppointmentButton';
+import { DetailedServices } from '@/components/DetailedServices';
 
 const ServicesContent = () => {
   const searchParams = useSearchParams();
@@ -53,6 +54,7 @@ const ServicesContent = () => {
         </div>
       </div>
       <AppointmentButton />
+      {/* <DetailedServices /> */}
     </>
   );
 };

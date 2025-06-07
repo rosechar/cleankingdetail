@@ -1,9 +1,10 @@
 import { Poppins } from 'next/font/google';
 import './globals.css';
-import Header from '../components/Header';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/react';
-import { ScrollToTop } from '@/components/ScrollToTop';
+import { ScrollToTop } from '@/components/layout/ScrollToTop';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -235,6 +236,7 @@ export default function RootLayout({ children }) {
         <ScrollToTop />
         <Header />
         <main className="min-h-screen">{children}</main>
+        <Footer />
         <SpeedInsights />
         <Analytics />
       </body>

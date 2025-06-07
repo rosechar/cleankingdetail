@@ -21,7 +21,7 @@ export const Testimonials = () => {
   }, []);
 
   return (
-    <section className="px-4 py-8">
+    <section className="px-4 py-8 pb-2">
       <h2 className="mb-8 text-center text-4xl font-bold text-gray-800">
         What Our Customers Say
         <div className="mx-auto mt-4 h-1 w-24 bg-red-600"></div>

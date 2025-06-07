@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import DatePicker from 'react-datepicker';
 import FormField from './FormField';
-import useFormValidation from '../hooks/useFormValidation';
-import { sendAppointmentEmail } from '../services/appointment';
+import useFormValidation from '@/hooks/useFormValidation';
+import { sendAppointmentEmail } from '@/services/appointment';
 
 const AppointmentForm = ({ onSubmit }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);

@@ -20,7 +20,7 @@ export default function Header() {
               <div className="relative size-[80px]">
                 <Image
                   src="/cleanking.svg"
-                  alt="Clean King Detailing"
+                  alt="Clean King Auto Detailing"
                   fill
                   priority
                   className="object-contain"

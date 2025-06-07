@@ -1,7 +1,7 @@
 import React from 'react';
 import { Gift } from 'lucide-react';
 
-const GiftCertificates = () => {
+export const GiftCertificates = () => {
   return (
     <section className="bg-gradient-to-r from-slate-900 to-slate-800 p-6">
       <div className="mx-auto flex max-w-5xl flex-col items-center justify-evenly gap-4 px-4 text-center text-gray-200 md:flex-row">
@@ -16,5 +16,3 @@ const GiftCertificates = () => {
     </section>
   );
 };
-
-export default GiftCertificates;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Check, ChevronDown } from 'lucide-react';
 
-const ServiceCard = ({ selectedService }) => {
+export const ServiceCard = ({ selectedService }) => {
   const {
     name,
     price,
@@ -54,5 +54,3 @@ const ServiceCard = ({ selectedService }) => {
     </div>
   );
 };
-
-export default ServiceCard;

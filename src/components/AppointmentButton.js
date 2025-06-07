@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-const AppointmentButton = () => {
+export const AppointmentButton = () => {
   return (
     <Link href="/appointment">
       <div className="mx-auto flex flex-col items-center justify-center gap-6 bg-gradient-to-b from-customRed to-[#820009] px-4 py-12 text-center">
@@ -19,5 +19,3 @@ const AppointmentButton = () => {
     </Link>
   );
 };
-
-export default AppointmentButton;

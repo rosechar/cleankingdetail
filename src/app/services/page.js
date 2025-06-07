@@ -1,4 +1,4 @@
-import ServicesPage from './ServicesPage';
+import { ServicesPage } from './ServicesPage';
 
 export const metadata = {
   title:

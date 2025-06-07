@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { SocialLinks } from '../../components/SocialLinks';
-import AppointmentButton from '../../components/AppointmentButton';
+import { SocialLinks } from '@/components/SocialLinks';
+import { AppointmentButton } from '@/components/AppointmentButton';
 import { contactInfo } from '@/data/contact';
 import { faqs } from '@/data/faqs';
 
-const ContactPage = () => {
+export const ContactPage = () => {
   const [openFaq, setOpenFaq] = useState(null);
 
   return (
@@ -69,5 +69,3 @@ const ContactPage = () => {
     </>
   );
 };
-
-export default ContactPage;

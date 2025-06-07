@@ -1,11 +1,11 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
-import { Services } from '../components/Services';
-import { Testimonials } from '../components/Testimonials';
-import { SocialLinks } from '../components/SocialLinks';
-import AppointmentButton from '../components/AppointmentButton';
-import GiftCertificates from '../components/GiftCertificates';
+import { Services } from '@/components/Services';
+import { Testimonials } from '@/components/Testimonials';
+import { SocialLinks } from '@/components/SocialLinks';
+import { AppointmentButton } from '@/components/AppointmentButton';
+import { GiftCertificates } from '@/components/GiftCertificates';
 
 const Home = () => {
   return (

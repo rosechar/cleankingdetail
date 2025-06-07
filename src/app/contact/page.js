@@ -1,4 +1,4 @@
-import ContactPage from './ContactPage';
+import { ContactPage } from './ContactPage';
 
 export const metadata = {
   title:

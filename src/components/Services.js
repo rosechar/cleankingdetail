@@ -151,14 +151,14 @@ export const Services = () => {
 
               <div className="flex-1">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-bold">{service.name}</h3>
-                  <span className="text-lg font-bold text-blue-600">
+                  <h3 className="text-xl font-semibold">{service.name}</h3>
+                  <span className="text-lg font-semibold text-blue-600">
                     {service.price}
                   </span>
                 </div>
 
-                <div className="mt-1 text-base font-thin leading-tight text-gray-600">
-                  {service.highlights.join(' | ')}
+                <div className="mt-1 text-lg font-thin leading-tight text-gray-600">
+                  {service.highlights.join(' - ')}
                 </div>
 
                 {service.isPopular && (

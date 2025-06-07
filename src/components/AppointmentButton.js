@@ -2,7 +2,7 @@ import { Phone } from 'lucide-react';
 
 export const AppointmentButton = () => {
   return (
-    <div className="mx-auto flex flex-col items-center justify-center gap-6 bg-gradient-to-br from-customRed to-pink-800 px-4 py-12 text-center">
+    <div className="mx-auto flex flex-col items-center justify-center gap-6 bg-gradient-to-br from-customRed to-pink-800 px-4 py-8 text-center">
       {/* <div className="flex flex-row gap-4">
           <Sparkles className="size-12 text-white" />
         </div> */}

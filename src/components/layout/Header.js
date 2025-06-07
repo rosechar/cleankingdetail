@@ -43,8 +43,8 @@ export default function Header() {
                 href={path}
                 className={`relative block rounded-lg px-3 py-2 font-semibold tracking-wide transition-all duration-200 md:py-2 ${
                   currentPath === path
-                    ? 'bg-red-600/10 text-red-600 after:scale-x-100'
-                    : 'text-white hover:bg-red-600/5 hover:text-red-600'
+                    ? 'bg-red-600/10 after:scale-x-100'
+                    : 'hover:bg-red-600/10'
                 } after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-red-600 after:transition-transform after:duration-200 after:content-['']`}
               >
                 {label}

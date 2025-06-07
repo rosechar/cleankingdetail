@@ -158,7 +158,7 @@ export const Services = () => {
                 </div>
 
                 <div className="mt-1 text-lg font-thin leading-tight text-gray-600">
-                  {service.highlights.join(' - ')}
+                  {service.highlights.join(' • ')}
                 </div>
 
                 {service.isPopular && (

@@ -157,7 +157,7 @@ export const Services = () => {
                   </span>
                 </div>
 
-                <div className="mt-1 text-lg font-thin leading-tight text-gray-600">
+                <div className="mt-1 font-thin leading-snug text-gray-600">
                   {service.highlights.join(' • ')}
                 </div>
 

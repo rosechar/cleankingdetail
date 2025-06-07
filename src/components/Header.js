@@ -27,7 +27,7 @@ export default function Header() {
                 />
               </div>
               <div className="text-right md:text-left">
-                <h1 className="text-2xl font-thin">THE KING OF CLEAN</h1>
+                <h1 className="text-2xl">THE KING OF CLEAN</h1>
               </div>
             </Link>
           </div>

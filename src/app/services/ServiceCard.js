@@ -27,7 +27,7 @@ export const ServiceCard = ({ selectedService }) => {
             onClick={() => setIsOpen(!isOpen)}
             className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-left transition-colors hover:bg-gray-100"
           >
-            <span className="text-lg text-gray-700">{includesText}</span>
+            <span className="text-gray-700">{includesText}</span>
             <ChevronDown
               className={`size-5 shrink-0 text-red-500 transition-transform ${
                 isOpen ? 'rotate-180' : ''
@@ -37,7 +37,7 @@ export const ServiceCard = ({ selectedService }) => {
 
           {isOpen && (
             <div className="rounded-lg bg-gray-50 p-4">
-              <ul className="flex flex-col gap-3">
+              <ul className="flex flex-col gap-2">
                 {includes?.map((item, index) => (
                   <li key={index} className="flex items-start">
                     <Check className="mr-3 mt-0.5 size-5 shrink-0 text-red-500" />
@@ -51,8 +51,8 @@ export const ServiceCard = ({ selectedService }) => {
       )}
 
       {/* Service Details */}
-      <div className="flex flex-col gap-4">
-        <ul className="flex flex-col gap-3">
+      <div>
+        <ul className="flex flex-col gap-2">
           {details?.map((detail, index) => (
             <li key={index} className="flex items-start">
               <Check className="mr-3 mt-0.5 size-5 shrink-0 text-red-500" />

@@ -1,132 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { ChevronRight } from 'lucide-react';
-
-const services = [
-  {
-    id: 'spiffy-detail',
-    name: 'Spiffy Detail',
-    price: '$35',
-    description: 'Quick but thorough cleaning service',
-    icon: '🚗',
-    highlights: [
-      'Interior vacuum',
-      'Exterior wash',
-      'Windows cleaned',
-      'Quick & affordable',
-    ],
-    details: ['Exterior Wash', 'Interior Vacuum', 'Interior Glass Cleaned'],
-  },
-  {
-    id: 'interior-detail',
-    name: 'Interior Detail',
-    price: '$110',
-    description: 'Deep cleaning of all interior surfaces',
-    icon: '🧽',
-    highlights: [
-      'Deep interior cleaning',
-      'Seat & carpet cleaning',
-      'Dashboard detailing',
-      'Leather treatment',
-    ],
-    details: [
-      'Upholstery Vacuumed & Shampooed',
-      'Carpets Vacuumed & Shampooed',
-      'Dashboard Cleaned & Conditioned',
-      'Door Panels Cleaned & Conditioned',
-      'Instrument Panel Cleaned',
-      'Air Vents Cleaned',
-      'Leather Seats Cleaned & Conditioned',
-      'All Glass Cleaned (Interior Only)',
-      'Vacuum Interior',
-    ],
-  },
-  {
-    id: 'full-detail',
-    name: 'Full Detail',
-    price: '$140',
-    description: 'Complete interior and exterior detailing',
-    icon: '⭐',
-    highlights: [
-      'Complete interior detail',
-      'Exterior wash & wax',
-      'Clean wheels & tires',
-    ],
-    isPopular: true,
-    details: [
-      'Exterior Wash',
-      'Chamois Dry',
-      'Clean Door Jambs',
-      'Clean & Condition Tires',
-      'Clean Wheels',
-      'All Glass Cleaned (Interior & Exterior)',
-      'Spray Wax',
-    ],
-    includesText: 'Includes interior detail services',
-    includes: [
-      'Upholstery Vacuumed & Shampooed',
-      'Carpets Vacuumed & Shampooed',
-      'Dashboard Cleaned & Conditioned',
-      'Door Panels Cleaned & Conditioned',
-      'Instrument Panel Cleaned',
-      'Air Vents Cleaned',
-      'Leather Seats Cleaned & Conditioned',
-      'All Glass Cleaned (Interior Only)',
-      'Vacuum Interior & Trunk',
-    ],
-  },
-  {
-    id: 'deluxe-detail',
-    name: 'Deluxe Detail',
-    price: '$160',
-    description: 'Premium detail with trunk and engine bay cleaning',
-    icon: '💎',
-    highlights: [
-      'Premium full detail',
-      'Engine bay cleaning',
-      'Trunk cleaning',
-      'Ultimate service',
-    ],
-    details: [
-      'Vacuum Trunk',
-      'Clean Trunk Channels',
-      'Clean & Condition Engine Bay',
-    ],
-    includesText: 'Includes full detail services',
-    includes: [
-      'Upholstery Vacuumed & Shampooed',
-      'Carpets Vacuumed & Shampooed',
-      'Dashboard Cleaned & Conditioned',
-      'Door Panels Cleaned & Conditioned',
-      'Instrument Panel Cleaned',
-      'Air Vents Cleaned',
-      'Leather Seats Cleaned & Conditioned',
-      'All Glass Cleaned (Interior Only)',
-      'Vacuum Interior & Trunk',
-      'Exterior Wash',
-      'Chamois Dry',
-      'Clean Door Jambs',
-      'Clean & Condition Tires',
-      'Clean Wheels',
-      'All Glass Cleaned (Interior & Exterior)',
-      'Spray Wax',
-    ],
-  },
-  {
-    id: 'a-la-carte',
-    name: 'A La Carte',
-    price: '$70-$110',
-    description: 'Clay Bar / Buff / Wax',
-    icon: '🪣',
-    highlights: [
-      'Clay bar treatment',
-      'Paint buffing',
-      'Premium wax',
-      'Custom service',
-    ],
-    details: ['Clay Bar / Wax', 'Clay Bar / Buff / Wax'],
-  },
-];
+import services from '@/data/services';
 
 export const Services = () => {
   const router = useRouter();
@@ -147,7 +21,7 @@ export const Services = () => {
             }`}
           >
             <div className="flex items-center gap-3">
-              <div className="shrink-0 text-3xl">{service.icon}</div>
+              <div className="shrink-0 px-1 text-3xl">{service.icon}</div>
 
               <div className="flex-1">
                 <div className="flex items-center justify-between">

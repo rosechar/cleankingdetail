@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import services from '../../data/services';
 import { ServiceCard } from '@/components/ServiceCard';
 import { AppointmentButton } from '@/components/AppointmentButton';
 
-export const ServicesPage = () => {
+const ServicesContent = () => {
   const searchParams = useSearchParams();
   const [selectedService, setSelectedService] = useState('interior-detail');
 
@@ -54,5 +54,13 @@ export const ServicesPage = () => {
       </div>
       <AppointmentButton />
     </>
+  );
+};
+
+export const ServicesPage = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ServicesContent />
+    </Suspense>
   );
 };

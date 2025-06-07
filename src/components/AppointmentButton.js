@@ -7,7 +7,7 @@ export const AppointmentButton = () => {
           <Sparkles className="size-12 text-white" />
         </div> */}
       <h2 className="text-3xl text-white">Ready to Make Your Car Shine?</h2>
-      <div className="flex w-full flex-col gap-8 md:w-full md:flex-row md:gap-10">
+      <div className="flex w-full flex-col gap-8 md:max-w-2xl md:flex-row md:gap-10">
         <a
           className="flex w-full flex-row items-center justify-center gap-4 rounded-lg bg-white py-3 text-lg font-semibold text-customRed transition-colors duration-300 hover:bg-gray-100"
           href="/appointment"

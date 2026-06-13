@@ -26,7 +26,7 @@ const Home = () => {
               Book Appointment
             </Link>
             <a className="ck-btn ck-btn-ghost" href={site.phoneHref}>
-              Call {site.phone}
+              {site.phone}
             </a>
           </div>
           <div className="hstats">

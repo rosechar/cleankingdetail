@@ -14,7 +14,7 @@
     "react/prop-types": "off",
     "@typescript-eslint/no-unused-vars": "warn",
     "tailwindcss/classnames-order": "warn",
-    "tailwindcss/no-custom-classname": "warn",
+    "tailwindcss/no-custom-classname": "off",
     "prettier/prettier": ["error", {}, { "usePrettierrc": true }]
   },
   "settings": {

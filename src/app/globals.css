@@ -7,10 +7,6 @@
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
   }
-
-  body {
-    @apply bg-background text-foreground;
-  }
 }
 
 @layer utilities {
@@ -19,24 +15,24 @@
   }
 }
 
-.container {
-  @apply mx-auto px-4 sm:px-6 lg:px-8;
-  max-width: 1280px;
-}
-
 html {
   scroll-behavior: smooth;
+  background: #0d0d0f;
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
+body {
+  background: #0d0d0f;
+  color: #f4f3ef;
+}
+
+/* Keep autofilled inputs on-theme inside the dark design */
+.ck-dir input:-webkit-autofill,
+.ck-dir input:-webkit-autofill:hover,
+.ck-dir input:-webkit-autofill:focus,
+.ck-dir textarea:-webkit-autofill,
+.ck-dir select:-webkit-autofill {
+  -webkit-text-fill-color: #f4f3ef;
+  -webkit-box-shadow: 0 0 0px 1000px #0d0d0f inset;
+  caret-color: #f4f3ef;
   transition: background-color 5000s ease-in-out 0s;
 }

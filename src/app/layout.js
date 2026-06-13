@@ -1,39 +1,45 @@
-import { Poppins } from 'next/font/google';
+import { Anton, Hanken_Grotesk, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
+import './garage.css';
+import Strip from '@/components/layout/Strip';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/react';
 import { ScrollToTop } from '@/components/layout/ScrollToTop';
 
-const poppins = Poppins({
+const anton = Anton({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-poppins',
+  weight: ['400'],
+  variable: '--font-anton',
   display: 'swap',
-  preload: true,
-  fallback: [
-    'system-ui',
-    '-apple-system',
-    'BlinkMacSystemFont',
-    'Segoe UI',
-    'Roboto',
-    'sans-serif',
-  ],
+});
+
+const hanken = Hanken_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-hanken',
+  display: 'swap',
+  fallback: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+});
+
+const jetbrains = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-jetbrains',
+  display: 'swap',
+  fallback: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
 });
 
 export const metadata = {
-  metadataBase: new URL('https://cleankingdetail.com'),
-  title:
-    'Clean King Detailing | Best Car Wash & Window Tinting Near Me in Blissfield, MI',
+  metadataBase: new URL('https://www.cleankingdetail.com'),
+  title: 'Car Detailing & Window Tinting in Blissfield, MI | Clean King',
   description:
-    'Best car wash & detailing near me! Clean King offers professional car wash, auto detailing from $35, window tinting, paint protection in Blissfield, MI. Serving Lenawee County, Adrian, Tecumseh.',
+    'Professional car detailing, window tinting & paint protection in Blissfield, MI. Hand-detailed packages from $35. Serving Adrian, Tecumseh & Lenawee County.',
   keywords:
     'car wash near me, car detailing near me, best car wash near me, best car detailing near me, auto wash, car cleaning services, window tinting near me, auto detailing near me, detailing near me, mobile car wash, car wash Blissfield MI, car detailing Blissfield MI, window tinting Blissfield MI, ceramic window tint, automotive window tinting, car window film, tint installation, UV protection tinting, car tinting, Clean King autodetail, Clean King carwash, detailer for car, paint correction, headlight restoration, leather cleaning, carpet cleaning, steam cleaning, pressure washing, car detailing Adrian MI, car wash Adrian MI, window tinting Adrian MI, car detailing Tecumseh MI, car wash Tecumseh MI, window tinting Tecumseh MI, Lenawee County car detailing, auto detailing, interior detailing, exterior detailing, engine bay cleaning, clay bar service, car waxing, car buffing',
   openGraph: {
-    title: 'Clean King Detailing - Best Car Wash & Window Tinting Near Me',
+    title: 'Car Detailing & Window Tinting in Blissfield, MI | Clean King',
     description:
-      'Best car wash & detailing near me! Expert car wash, auto detailing and ceramic tint services from $35-$160. Serving Blissfield, Adrian, Tecumseh, and Lenawee County.',
+      'Expert car wash, auto detailing and ceramic tint services from $35-$160. Serving Blissfield, Adrian, Tecumseh, and Lenawee County.',
     type: 'website',
     locale: 'en_US',
     images: [
@@ -47,8 +53,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Clean King Detailing - Best Car Wash & Window Tinting Near Me',
-    description: 'Best car wash & detailing near me in Blissfield, MI',
+    title: 'Car Detailing & Window Tinting in Blissfield, MI | Clean King',
+    description: 'Car detailing & window tinting in Blissfield, MI',
     images: ['https://www.cleankingdetail.com/cleanking.jpg'],
   },
   other: {
@@ -66,8 +72,8 @@ const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'AutoWash',
   name: 'Clean King Detailing',
-  image: 'https://cleankingdetail.com/images/cleanking.jpg',
-  url: 'https://cleankingdetail.com',
+  image: 'https://www.cleankingdetail.com/cleanking.jpg',
+  url: 'https://www.cleankingdetail.com',
   telephone: '(517) 682-1919',
   address: {
     '@type': 'PostalAddress',
@@ -82,7 +88,7 @@ const structuredData = {
     latitude: '41.832791',
     longitude: '-83.873159',
   },
-  openingHours: ['Mo-Fr 09:00-17:00', 'Sa 10:00-15:00'],
+  openingHours: ['Mo-Fr 09:00-18:00'],
   priceRange: '$35-$160',
   description:
     'Premier car wash, detailing and window tinting services in Blissfield, MI offering interior, exterior, full-service packages, professional car washing, and ceramic window tinting. Complete auto care and protection services.',
@@ -109,12 +115,6 @@ const structuredData = {
     },
   ],
   sameAs: ['https://www.facebook.com/people/Clean-King/100063915012506/'],
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '5',
-    bestRating: '5',
-    ratingCount: '3',
-  },
   paymentAccepted: ['Cash', 'Credit Card', 'Debit Card'],
   currenciesAccepted: 'USD',
   hasOfferCatalog: {
@@ -210,7 +210,7 @@ const structuredData = {
     '@type': 'ReserveAction',
     target: {
       '@type': 'EntryPoint',
-      urlTemplate: 'https://cleankingdetail.com/appointment',
+      urlTemplate: 'https://www.cleankingdetail.com/appointment',
     },
     result: {
       '@type': 'Reservation',
@@ -231,12 +231,17 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body
-        className={`${poppins.variable} bg-gray-100 font-sans text-black antialiased`}
+        className={`${anton.variable} ${hanken.variable} ${jetbrains.variable} antialiased`}
       >
         <ScrollToTop />
-        <Header />
-        <main>{children}</main>
-        <Footer />
+        <div className="ck-root" data-density="regular">
+          <div className="ck-dir garage is-page" data-theme="dark">
+            <Strip />
+            <Header />
+            {children}
+            <Footer />
+          </div>
+        </div>
         <SpeedInsights />
         <Analytics />
       </body>

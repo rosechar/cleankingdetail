@@ -79,7 +79,7 @@ export async function sendCustomerEmail({ to, subject, html, replyTo }) {
  * Adds an opted-in contact to the Resend segment (RESEND_SEGMENT_ID) for
  * future promos. Best-effort: failures are logged, never surfaced.
  */
-export async function addToSegment({ email, name }) {
+export async function addToSegment({ email, name, phone }) {
   const apiKey = process.env.RESEND_API_KEY;
   const segmentId = process.env.RESEND_SEGMENT_ID;
   const address = String(email || '').trim();
@@ -90,6 +90,7 @@ export async function addToSegment({ email, name }) {
     const [firstName, ...rest] = String(name || '')
       .trim()
       .split(/\s+/);
+    const phoneNumber = String(phone || '').trim();
     const resend = new Resend(apiKey);
     const { error } = await resend.contacts.create({
       email: address,
@@ -97,6 +98,8 @@ export async function addToSegment({ email, name }) {
       lastName: rest.join(' ') || undefined,
       unsubscribed: false,
       segments: [{ id: segmentId }],
+      // `phone` is a custom contact property defined in Resend.
+      ...(phoneNumber ? { properties: { phone: phoneNumber } } : {}),
     });
     if (error) console.error('Segment add failed:', error);
   } catch (err) {

@@ -1079,12 +1079,6 @@
   width: 3px;
   background: var(--accent);
 }
-.svc-pkg .idx {
-  font-family: var(--font-mono), monospace;
-  font-size: 13px;
-  letter-spacing: 0.14em;
-  color: var(--accent);
-}
 .svc-pkg h3 {
   font-family: var(--font-display), sans-serif;
   text-transform: uppercase;
@@ -1481,10 +1475,6 @@ textarea.bk-input {
 .bk-done {
   text-align: center;
   padding: clamp(30px, 5vw, 60px) 0;
-}
-.bk-done .bk-logo {
-  display: block;
-  margin: 0 auto 22px;
 }
 .bk-done .mark {
   width: 66px;

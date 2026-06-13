@@ -49,7 +49,11 @@ export async function POST(req) {
 
   // Opted-in contacts join the Resend segment for future promos.
   if (data.optIn) {
-    await addToSegment({ email: data.email, name: data.name });
+    await addToSegment({
+      email: data.email,
+      name: data.name,
+      phone: data.phone,
+    });
   }
 
   return Response.json({ ok: true });

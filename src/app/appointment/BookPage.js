@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { site, packages } from '@/data/site';
 import { GCheck } from '@/components/garage/Icons';
 import HoneypotField from '@/components/forms/HoneypotField';
@@ -25,6 +24,10 @@ export default function BookPage() {
   const { minDate, maxDate } = useMemo(() => {
     const min = new Date();
     min.setDate(min.getDate() + 1);
+    // Skip to the next bookable weekday — the shop is closed weekends.
+    while (min.getDay() === 0 || min.getDay() === 6) {
+      min.setDate(min.getDate() + 1);
+    }
     const max = new Date();
     max.setDate(max.getDate() + 30);
     return { minDate: toISO(min), maxDate: toISO(max) };
@@ -70,6 +73,12 @@ export default function BookPage() {
     );
     if (match) setForm((prev) => ({ ...prev, pkg: match.name }));
   }, []);
+
+  // Default to the first bookable weekday. Set client-side (not in initial
+  // state) so the prerendered HTML stays empty and hydration always matches.
+  useEffect(() => {
+    setForm((prev) => (prev.date ? prev : { ...prev, date: minDate }));
+  }, [minDate]);
 
   const selectedPkg = packages.find((o) => o.name === form.pkg);
   const dateLabel = form.date
@@ -126,14 +135,6 @@ export default function BookPage() {
       <section className="bk">
         <div className="bk-wrap">
           <div className="bk-card bk-done">
-            <Image
-              className="bk-logo"
-              src="/cleanking.svg"
-              alt="Clean King Detailing"
-              width={60}
-              height={60}
-              priority
-            />
             <div className="mark">
               <GCheck />
             </div>

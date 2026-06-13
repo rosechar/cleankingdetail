@@ -43,10 +43,9 @@ export default function Services() {
 
       <section className="svc" id="packages">
         <div className="svc-inner">
-          {packages.map((s, i) => (
+          {packages.map((s) => (
             <div className={'svc-pkg' + (s.popular ? ' pop' : '')} key={s.name}>
               <div className="left">
-                <div className="idx">{String(i + 1).padStart(2, '0')}</div>
                 <h3>
                   {s.name}
                   {s.popular && <span className="pop-badge">Most popular</span>}

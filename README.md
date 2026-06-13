@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Clean King Detailing
 
-## Getting Started
+Marketing and booking site for [Clean King Detailing](https://www.cleankingdetail.com), a car detailing shop in Blissfield, MI. Built with Next.js (App Router) and deployed on Vercel.
 
-First, run the development server:
+## Getting started
+
+Requires **Node 20** (`next build` is known to break on Node 23).
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). `npm run dev` uses webpack on purpose — the turbopack dev runtime breaks older Safari (use `npm run dev:turbo` only if that doesn't matter to you).
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The booking and contact forms email leads via [Resend](https://resend.com). Without these set, form submissions return a 500.
 
-## Learn More
+| Variable             | Purpose                                                         |
+| -------------------- | --------------------------------------------------------------- |
+| `RESEND_API_KEY`     | Resend API key                                                  |
+| `RESEND_FROM`        | Verified sender address (e.g. `Clean King <hello@domain.com>`)  |
+| `OWNER_ALERT_EMAILS` | Comma-separated list of shop owner addresses that receive leads |
+| `RESEND_AUDIENCE_ID` | Optional — Resend audience for promo opt-ins                    |
 
-To learn more about Next.js, take a look at the following resources:
+## Project layout
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+  app/                 Routes (App Router) + garage.css design system
+    api/book           Booking form endpoint → owner alert + customer confirmation
+    api/contact        Contact form endpoint → owner alert
+  components/
+    forms/             Shared form pieces (honeypot)
+    garage/            Design-system components (icons, reviews carousel)
+    layout/            Header, footer, top strip
+  data/                Site content: contact info, packages, FAQs
+  services/            Email (Resend) + spam heuristics
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Design notes: the site is dark-only by choice. Styling lives in `src/app/garage.css` (a scoped, hand-written design system) rather than Tailwind utilities; Tailwind is loaded mainly for preflight and the odd utility class.
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run dev` — dev server (webpack)
+- `npm run build` / `npm run start` — production build & serve
+- `npm run lint` / `npm run lint:fix` — ESLint
+- `npm run format` / `npm run format:check` — Prettier

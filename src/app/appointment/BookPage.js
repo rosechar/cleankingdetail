@@ -4,19 +4,23 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { site, packages } from '@/data/site';
 import { GCheck } from '@/components/garage/Icons';
+import HoneypotField from '@/components/forms/HoneypotField';
 
 const VEHICLES = ['Car', 'SUV', 'Truck', 'Van'];
 
-// Next `n` bookable days, skipping Sundays, starting tomorrow.
+// Next `n` bookable days, starting tomorrow. Weekdays only — the shop is
+// closed on weekends (keep in sync with site.hoursNote).
 function useDates(n) {
   return useMemo(() => {
+    const pad = (v) => String(v).padStart(2, '0');
     const out = [];
     const d = new Date();
     d.setDate(d.getDate() + 1);
     while (out.length < n) {
-      if (d.getDay() !== 0) {
+      const day = d.getDay();
+      if (day !== 0 && day !== 6) {
         out.push({
-          key: d.toISOString().slice(0, 10),
+          key: `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`,
           dow: d.toLocaleDateString('en-US', { weekday: 'short' }),
           md: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
         });
@@ -33,7 +37,7 @@ export default function BookPage() {
   const [done, setDone] = useState(false);
   const [err, setErr] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [f, setF] = useState({
+  const [form, setForm] = useState({
     pkg: '',
     vehicle: '',
     date: '',
@@ -42,32 +46,38 @@ export default function BookPage() {
     email: '',
     makeModel: '',
     notes: '',
-    optIn: false,
-    company: '', // honeypot — hidden from humans, bots auto-fill it
+    optIn: true,
+    company: '', // honeypot
   });
-  const set = (k, v) => setF((p) => ({ ...p, [k]: v }));
+  const set = (key, value) => {
+    setForm((prev) => ({ ...prev, [key]: value }));
+    setErr('');
+  };
   const openedAt = useRef(Date.now());
 
-  // Optional ?pkg= preselect (matches package by name, case-insensitive).
+  // Optional ?pkg= preselect (matches package by id or name, case-insensitive).
   useEffect(() => {
     const p = new URLSearchParams(window.location.search).get('pkg');
     if (!p) return;
     const match = packages.find(
       (o) => o.name.toLowerCase() === p.toLowerCase() || o.id === p
     );
-    if (match) setF((prev) => ({ ...prev, pkg: match.name }));
+    if (match) setForm((prev) => ({ ...prev, pkg: match.name }));
   }, []);
 
-  const sel = packages.find((o) => o.name === f.pkg);
-  const dateLabel = dates.find((d) => d.key === f.date);
+  const selectedPkg = packages.find((o) => o.name === form.pkg);
+  const selectedDate = dates.find((d) => d.key === form.date);
+  const dateLabel = selectedDate
+    ? `${selectedDate.dow}, ${selectedDate.md}`
+    : '';
 
   const submit = async (e) => {
     e.preventDefault();
-    if (!f.pkg) return setErr('Please choose a package.');
-    if (!f.vehicle) return setErr('Select your vehicle type.');
-    if (!f.date) return setErr('Pick a date.');
-    if (!f.name.trim()) return setErr('Please enter your name.');
-    if (!/[0-9]{7,}/.test(f.phone.replace(/\D/g, '')))
+    if (!form.pkg) return setErr('Please choose a package.');
+    if (!form.vehicle) return setErr('Select your vehicle type.');
+    if (!form.date) return setErr('Pick a date.');
+    if (!form.name.trim()) return setErr('Please enter your name.');
+    if (form.phone.replace(/\D/g, '').length < 7)
       return setErr('Enter a valid phone number.');
 
     setErr('');
@@ -77,17 +87,17 @@ export default function BookPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          pkg: f.pkg,
-          price: sel ? sel.price : '',
-          vehicle: f.vehicle,
-          date: dateLabel ? `${dateLabel.dow}, ${dateLabel.md}` : f.date,
-          name: f.name,
-          phone: f.phone,
-          email: f.email,
-          makeModel: f.makeModel,
-          notes: f.notes,
-          optIn: f.optIn,
-          company: f.company,
+          pkg: form.pkg,
+          price: selectedPkg ? selectedPkg.price : '',
+          vehicle: form.vehicle,
+          date: dateLabel || form.date,
+          name: form.name,
+          phone: form.phone,
+          email: form.email,
+          makeModel: form.makeModel,
+          notes: form.notes,
+          optIn: form.optIn,
+          company: form.company,
           elapsedMs: Date.now() - openedAt.current,
         }),
       });
@@ -110,10 +120,9 @@ export default function BookPage() {
             </div>
             <h2>Request received</h2>
             <p>
-              Thanks, {f.name.split(' ')[0] || 'there'}! We&apos;ve got your
-              request for a <b>{f.pkg}</b> on{' '}
-              <b>{dateLabel ? `${dateLabel.dow}, ${dateLabel.md}` : ''}</b>.
-              We&apos;ll call {f.phone} shortly to confirm your spot.
+              Thanks, {form.name.split(' ')[0] || 'there'}! We&apos;ve got your
+              request for a <b>{form.pkg}</b> on <b>{dateLabel}</b>. We&apos;ll
+              call {form.phone} shortly to confirm your spot.
             </p>
             <div className="row">
               <Link className="ck-btn ck-btn-accent" href="/">
@@ -152,28 +161,11 @@ export default function BookPage() {
       <section className="bk">
         <div className="bk-wrap">
           <form className="bk-card" onSubmit={submit} noValidate>
-            {/* honeypot — visually hidden, real visitors never fill this */}
-            <div
-              style={{
-                position: 'absolute',
-                left: '-9999px',
-                width: 1,
-                height: 1,
-                overflow: 'hidden',
-              }}
-              aria-hidden="true"
-            >
-              <label htmlFor="bk-company">Company</label>
-              <input
-                id="bk-company"
-                type="text"
-                name="company"
-                tabIndex={-1}
-                autoComplete="off"
-                value={f.company}
-                onChange={(e) => set('company', e.target.value)}
-              />
-            </div>
+            <HoneypotField
+              id="bk-company"
+              value={form.company}
+              onChange={(e) => set('company', e.target.value)}
+            />
 
             {/* 01 package */}
             <div className="bk-sec">
@@ -184,12 +176,9 @@ export default function BookPage() {
                 {packages.map((o) => (
                   <button
                     type="button"
-                    key={o.name}
-                    className={'bk-ptile' + (f.pkg === o.name ? ' sel' : '')}
-                    onClick={() => {
-                      set('pkg', o.name);
-                      setErr('');
-                    }}
+                    key={o.id}
+                    className={'bk-ptile' + (form.pkg === o.name ? ' sel' : '')}
+                    onClick={() => set('pkg', o.name)}
                   >
                     <span className="nm">{o.name}</span>
                     <span className="pr">{o.price}</span>
@@ -210,7 +199,7 @@ export default function BookPage() {
                     <button
                       type="button"
                       key={v}
-                      className={'bk-chip' + (f.vehicle === v ? ' sel' : '')}
+                      className={'bk-chip' + (form.vehicle === v ? ' sel' : '')}
                       onClick={() => set('vehicle', v)}
                     >
                       {v}
@@ -225,7 +214,9 @@ export default function BookPage() {
                     <button
                       type="button"
                       key={d.key}
-                      className={'bk-chip' + (f.date === d.key ? ' sel' : '')}
+                      className={
+                        'bk-chip' + (form.date === d.key ? ' sel' : '')
+                      }
                       onClick={() => set('date', d.key)}
                     >
                       {d.dow}
@@ -246,7 +237,7 @@ export default function BookPage() {
                   <label>Full name</label>
                   <input
                     className="bk-input"
-                    value={f.name}
+                    value={form.name}
                     onChange={(e) => set('name', e.target.value)}
                     placeholder="Jane Doe"
                   />
@@ -255,7 +246,8 @@ export default function BookPage() {
                   <label>Phone</label>
                   <input
                     className="bk-input"
-                    value={f.phone}
+                    type="tel"
+                    value={form.phone}
                     onChange={(e) => set('phone', e.target.value)}
                     placeholder="(517) 000-0000"
                   />
@@ -264,7 +256,8 @@ export default function BookPage() {
                   <label>Email (optional)</label>
                   <input
                     className="bk-input"
-                    value={f.email}
+                    type="email"
+                    value={form.email}
                     onChange={(e) => set('email', e.target.value)}
                     placeholder="you@email.com"
                   />
@@ -273,7 +266,7 @@ export default function BookPage() {
                   <label>Vehicle make &amp; model</label>
                   <input
                     className="bk-input"
-                    value={f.makeModel}
+                    value={form.makeModel}
                     onChange={(e) => set('makeModel', e.target.value)}
                     placeholder="Ford Explorer"
                   />
@@ -282,7 +275,7 @@ export default function BookPage() {
                   <label>Anything we should know? (optional)</label>
                   <textarea
                     className="bk-input"
-                    value={f.notes}
+                    value={form.notes}
                     onChange={(e) => set('notes', e.target.value)}
                     placeholder="Pet hair, heavy mud, specific stains…"
                   />
@@ -291,7 +284,7 @@ export default function BookPage() {
               <label className="bk-optin">
                 <input
                   type="checkbox"
-                  checked={f.optIn}
+                  checked={form.optIn}
                   onChange={(e) => set('optIn', e.target.checked)}
                 />
                 Send me occasional offers and detailing tips from Clean King. No
@@ -302,7 +295,7 @@ export default function BookPage() {
             {/* footer */}
             <div className="bk-foot">
               <div className="bk-total">
-                Estimated price <b>{sel ? sel.price : '—'}</b>
+                Estimated price <b>{selectedPkg ? selectedPkg.price : '—'}</b>
               </div>
               <button
                 className="ck-btn ck-btn-accent"

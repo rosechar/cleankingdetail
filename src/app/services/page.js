@@ -77,10 +77,7 @@ export default function Services() {
       </section>
 
       <section className="svc-extra" id="addons">
-        <div
-          className="svc-extra-inner inner"
-          style={{ maxWidth: 1120, margin: '0 auto' }}
-        >
+        <div className="inner">
           <div className="garage-sh">
             <div>
               <div className="ck-eyebrow">More options</div>
@@ -114,28 +111,16 @@ export default function Services() {
               </div>
             ))}
           </div>
-          <p
-            style={{
-              marginTop: 26,
-              fontFamily: 'var(--font-mono, monospace)',
-              fontSize: 12.5,
-              letterSpacing: '.06em',
-              color: 'var(--fg-3)',
-            }}
-          >
+          <p className="note">
             Not sure what you need?{' '}
-            <Link href="/contact" style={{ color: 'var(--accent)' }}>
-              Ask us for a recommendation →
-            </Link>
+            <Link href="/contact">Ask us for a recommendation →</Link>
           </p>
         </div>
       </section>
 
       <section className="garage-cta">
-        <div className="ck-eyebrow" style={{ color: 'var(--accent)' }}>
-          Gift certificates available
-        </div>
-        <h2 style={{ marginTop: 16 }}>
+        <div className="ck-eyebrow">Gift certificates available</div>
+        <h2>
           Ready to book
           <br />
           your detail?

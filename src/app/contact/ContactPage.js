@@ -5,27 +5,31 @@ import Link from 'next/link';
 import { site } from '@/data/site';
 import { faqs } from '@/data/faqs';
 import { GPin, GPhone, GCheck } from '@/components/garage/Icons';
+import HoneypotField from '@/components/forms/HoneypotField';
 
-export const ContactPage = () => {
-  const [c, setC] = useState({
+export default function ContactPage() {
+  const [form, setForm] = useState({
     name: '',
     phone: '',
     email: '',
     msg: '',
     optIn: false,
-    company: '', // honeypot — hidden from humans, bots auto-fill it
+    company: '', // honeypot
   });
   const openedAt = useRef(Date.now());
   const [sent, setSent] = useState(false);
   const [err, setErr] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [openFaq, setOpenFaq] = useState(null);
-  const set = (k, v) => setC((p) => ({ ...p, [k]: v }));
+  const set = (key, value) => {
+    setForm((prev) => ({ ...prev, [key]: value }));
+    setErr('');
+  };
 
   const submit = async (e) => {
     e.preventDefault();
-    if (!c.name.trim()) return setErr('Please enter your name.');
-    if (!/[0-9]{7,}/.test(c.phone.replace(/\D/g, '')))
+    if (!form.name.trim()) return setErr('Please enter your name.');
+    if (form.phone.replace(/\D/g, '').length < 7)
       return setErr('Enter a valid phone number.');
 
     setErr('');
@@ -35,12 +39,12 @@ export const ContactPage = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: c.name,
-          phone: c.phone,
-          email: c.email,
-          message: c.msg,
-          optIn: c.optIn,
-          company: c.company,
+          name: form.name,
+          phone: form.phone,
+          email: form.email,
+          message: form.msg,
+          optIn: form.optIn,
+          company: form.company,
           elapsedMs: Date.now() - openedAt.current,
         }),
       });
@@ -142,28 +146,11 @@ export const ContactPage = () => {
           <div className="ct-form">
             {!sent ? (
               <form onSubmit={submit} noValidate>
-                {/* honeypot — visually hidden, real visitors never fill this */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    left: '-9999px',
-                    width: 1,
-                    height: 1,
-                    overflow: 'hidden',
-                  }}
-                  aria-hidden="true"
-                >
-                  <label htmlFor="ct-company">Company</label>
-                  <input
-                    id="ct-company"
-                    type="text"
-                    name="company"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    value={c.company}
-                    onChange={(e) => set('company', e.target.value)}
-                  />
-                </div>
+                <HoneypotField
+                  id="ct-company"
+                  value={form.company}
+                  onChange={(e) => set('company', e.target.value)}
+                />
                 <h3>Send a message</h3>
                 <p className="note">
                   Tell us what your vehicle needs and we&apos;ll follow up with
@@ -174,7 +161,7 @@ export const ContactPage = () => {
                     <label>Name</label>
                     <input
                       className="bk-input"
-                      value={c.name}
+                      value={form.name}
                       onChange={(e) => set('name', e.target.value)}
                       placeholder="Jane Doe"
                     />
@@ -183,7 +170,8 @@ export const ContactPage = () => {
                     <label>Phone</label>
                     <input
                       className="bk-input"
-                      value={c.phone}
+                      type="tel"
+                      value={form.phone}
                       onChange={(e) => set('phone', e.target.value)}
                       placeholder="(517) 000-0000"
                     />
@@ -192,7 +180,8 @@ export const ContactPage = () => {
                     <label>Email (optional)</label>
                     <input
                       className="bk-input"
-                      value={c.email}
+                      type="email"
+                      value={form.email}
                       onChange={(e) => set('email', e.target.value)}
                       placeholder="you@email.com"
                     />
@@ -201,7 +190,7 @@ export const ContactPage = () => {
                     <label>Message</label>
                     <textarea
                       className="bk-input"
-                      value={c.msg}
+                      value={form.msg}
                       onChange={(e) => set('msg', e.target.value)}
                       placeholder="I'd like a quote for a Full Detail on my SUV…"
                     />
@@ -210,7 +199,7 @@ export const ContactPage = () => {
                 <label className="bk-optin">
                   <input
                     type="checkbox"
-                    checked={c.optIn}
+                    checked={form.optIn}
                     onChange={(e) => set('optIn', e.target.checked)}
                   />
                   Send me occasional offers and detailing tips from Clean King.
@@ -239,8 +228,8 @@ export const ContactPage = () => {
                   Message sent
                 </h2>
                 <p>
-                  Thanks, {c.name.split(' ')[0] || 'there'}! We&apos;ll get back
-                  to you at {c.phone} as soon as we can.
+                  Thanks, {form.name.split(' ')[0] || 'there'}! We&apos;ll get
+                  back to you at {form.phone} as soon as we can.
                 </p>
                 <div className="row">
                   <a className="ck-btn ck-btn-ghost" href={site.phoneHref}>
@@ -301,10 +290,8 @@ export const ContactPage = () => {
       </section>
 
       <section className="garage-cta">
-        <div className="ck-eyebrow" style={{ color: 'var(--accent)' }}>
-          Gift certificates available
-        </div>
-        <h2 style={{ marginTop: 16 }}>
+        <div className="ck-eyebrow">Gift certificates available</div>
+        <h2>
           Ready when
           <br />
           you are
@@ -320,6 +307,4 @@ export const ContactPage = () => {
       </section>
     </>
   );
-};
-
-export default ContactPage;
+}

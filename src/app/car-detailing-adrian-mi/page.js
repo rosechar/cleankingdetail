@@ -80,15 +80,7 @@ export default function CarDetailingAdrianMI() {
             Clean King proudly serves Adrian, Tecumseh and the wider Lenawee
             County area — every vehicle detailed by hand.
           </p>
-          <div
-            className="cta"
-            style={{
-              display: 'flex',
-              gap: 13,
-              marginTop: 34,
-              flexWrap: 'wrap',
-            }}
-          >
+          <div className="cta">
             <Link className="ck-btn ck-btn-accent" href="/appointment">
               Book Appointment
             </Link>
@@ -161,9 +153,7 @@ export default function CarDetailingAdrianMI() {
           </div>
           <p>
             Professional auto care tailored for Adrian vehicle owners.{' '}
-            <Link href="/services" style={{ color: 'var(--accent)' }}>
-              See full details →
-            </Link>
+            <Link href="/services">See full details →</Link>
           </p>
         </div>
         <div className="garage-grid">
@@ -257,10 +247,10 @@ export default function CarDetailingAdrianMI() {
       </section>
 
       <section className="garage-cta">
-        <div className="ck-eyebrow" style={{ color: 'var(--accent)' }}>
+        <div className="ck-eyebrow">
           Serving Adrian · Blissfield · Tecumseh · Monroe · Lenawee County
         </div>
-        <h2 style={{ marginTop: 16 }}>
+        <h2>
           Ready to detail
           <br />
           your vehicle in Adrian?

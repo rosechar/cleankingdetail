@@ -86,7 +86,7 @@ const Home = () => {
           </div>
           <p>
             Every package detailed by hand in Blissfield.{' '}
-            <Link href="/services" style={{ color: 'var(--accent)' }}>
+            <Link href="/services">
               See full details &amp; what&apos;s included →
             </Link>
           </p>
@@ -189,10 +189,8 @@ const Home = () => {
 
       {/* cta */}
       <section className="garage-cta">
-        <div className="ck-eyebrow" style={{ color: 'var(--accent)' }}>
-          Gift certificates available
-        </div>
-        <h2 style={{ marginTop: 16 }}>
+        <div className="ck-eyebrow">Gift certificates available</div>
+        <h2>
           Ready to make
           <br />
           your car shine?

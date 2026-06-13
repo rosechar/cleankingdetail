@@ -487,6 +487,9 @@
   max-width: 340px;
   text-align: right;
 }
+.garage-sh p a {
+  color: var(--accent);
+}
 
 /* ---------- services ---------- */
 .garage-services {
@@ -802,10 +805,14 @@
   text-align: center;
   border-top: 1px solid var(--line);
 }
+.garage-cta .ck-eyebrow {
+  color: var(--accent);
+}
 .garage-cta h2 {
   font-family: var(--font-display), sans-serif;
   font-size: clamp(46px, 7vw, 104px);
   line-height: 0.86;
+  margin-top: 16px;
 }
 .garage-cta .row {
   display: flex;
@@ -1033,6 +1040,12 @@
   margin-top: 22px;
   line-height: 1.55;
 }
+.gp-hero .cta {
+  display: flex;
+  gap: 13px;
+  flex-wrap: wrap;
+  margin-top: 34px;
+}
 
 /* ============ SERVICES ============ */
 .svc {
@@ -1154,6 +1167,16 @@
 .svc-extra .inner {
   max-width: 1120px;
   margin: 0 auto;
+}
+.svc-extra .note {
+  margin-top: 26px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  color: var(--fg-3);
+}
+.svc-extra .note a {
+  color: var(--accent);
 }
 .xgrid {
   display: grid;

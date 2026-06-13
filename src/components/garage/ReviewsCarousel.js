@@ -6,14 +6,17 @@ import { GArrow, GStar } from './Icons';
 
 export default function ReviewsCarousel() {
   const reviews = site.reviews;
-  const [i, setI] = useState(0);
+  const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     if (reviews.length < 2 || paused) return;
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (mq.matches) return;
-    const id = setInterval(() => setI((p) => (p + 1) % reviews.length), 6000);
+    const id = setInterval(
+      () => setIndex((prev) => (prev + 1) % reviews.length),
+      6000
+    );
     return () => clearInterval(id);
   }, [paused, reviews.length]);
 
@@ -23,6 +26,8 @@ export default function ReviewsCarousel() {
       id="reviews"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
     >
       <div className="inner">
         <div className="big" aria-hidden="true">
@@ -32,9 +37,9 @@ export default function ReviewsCarousel() {
           <div className="rv">
             {reviews.map((rev, idx) => (
               <div
-                className={'rv-item' + (idx === i ? ' on' : '')}
+                className={'rv-item' + (idx === index ? ' on' : '')}
                 key={idx}
-                aria-hidden={idx !== i}
+                aria-hidden={idx !== index}
               >
                 <blockquote>{rev.quote}</blockquote>
                 <div className="by">
@@ -65,10 +70,10 @@ export default function ReviewsCarousel() {
                 <button
                   key={idx}
                   type="button"
-                  className={idx === i ? 'on' : ''}
+                  className={idx === index ? 'on' : ''}
                   aria-label={`Show review ${idx + 1}`}
-                  aria-current={idx === i}
-                  onClick={() => setI(idx)}
+                  aria-current={idx === index}
+                  onClick={() => setIndex(idx)}
                 />
               ))}
             </div>

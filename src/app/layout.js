@@ -222,17 +222,15 @@ const structuredData = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <head>
+      <body
+        className={`${anton.variable} ${hanken.variable} ${jetbrains.variable} antialiased`}
+      >
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(structuredData),
           }}
         />
-      </head>
-      <body
-        className={`${anton.variable} ${hanken.variable} ${jetbrains.variable} antialiased`}
-      >
         <ScrollToTop />
         <div className="ck-root" data-density="regular">
           <div className="ck-dir garage is-page" data-theme="dark">

@@ -5,7 +5,8 @@ export const site = {
   address1: '610 W Adrian St',
   address2: 'Blissfield, MI 49228',
   facebook: 'https://www.facebook.com/people/Clean-King/100063915012506/',
-  google: 'https://goo.gl/maps/sUBufwUwrzyeocwJ9',
+  google:
+    'https://www.google.com/maps/search/?api=1&query=Clean+King+Detailing+Blissfield+MI',
   // Google Maps embed for the shop (no API key required).
   mapEmbed:
     'https://www.google.com/maps?q=610+W+Adrian+St,+Blissfield,+MI+49228&output=embed',

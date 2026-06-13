@@ -2,41 +2,38 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { site, packages } from '@/data/site';
 import { GCheck } from '@/components/garage/Icons';
 import HoneypotField from '@/components/forms/HoneypotField';
+import DateField from '@/components/forms/DateField';
 
 const VEHICLES = ['Car', 'SUV', 'Truck', 'Van'];
 
-// Next `n` bookable days, starting tomorrow. Weekdays only — the shop is
-// closed on weekends (keep in sync with site.hoursNote).
-function useDates(n) {
-  return useMemo(() => {
-    const pad = (v) => String(v).padStart(2, '0');
-    const out = [];
-    const d = new Date();
-    d.setDate(d.getDate() + 1);
-    while (out.length < n) {
-      const day = d.getDay();
-      if (day !== 0 && day !== 6) {
-        out.push({
-          key: `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`,
-          dow: d.toLocaleDateString('en-US', { weekday: 'short' }),
-          md: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-        });
-      }
-      d.setDate(d.getDate() + 1);
-    }
-    return out;
-  }, [n]);
-}
+const pad = (v) => String(v).padStart(2, '0');
+const toISO = (d) =>
+  `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const isWeekend = (iso) => {
+  const day = new Date(`${iso}T00:00:00`).getDay();
+  return day === 0 || day === 6;
+};
 
 export default function BookPage() {
-  const dates = useDates(10);
+  // Bookable window: tomorrow through one month out. Weekdays only — the shop
+  // is closed weekends, enforced on selection because native date inputs can't
+  // disable specific weekdays.
+  const { minDate, maxDate } = useMemo(() => {
+    const min = new Date();
+    min.setDate(min.getDate() + 1);
+    const max = new Date();
+    max.setDate(max.getDate() + 30);
+    return { minDate: toISO(min), maxDate: toISO(max) };
+  }, []);
 
   const [done, setDone] = useState(false);
   const [err, setErr] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [dateWarn, setDateWarn] = useState(false);
   const [form, setForm] = useState({
     pkg: '',
     vehicle: '',
@@ -53,6 +50,15 @@ export default function BookPage() {
     setForm((prev) => ({ ...prev, [key]: value }));
     setErr('');
   };
+  const onDateChange = (value) => {
+    if (value && isWeekend(value)) {
+      setForm((prev) => ({ ...prev, date: '' }));
+      setDateWarn(true);
+      return;
+    }
+    setDateWarn(false);
+    set('date', value);
+  };
   const openedAt = useRef(Date.now());
 
   // Optional ?pkg= preselect (matches package by id or name, case-insensitive).
@@ -66,9 +72,12 @@ export default function BookPage() {
   }, []);
 
   const selectedPkg = packages.find((o) => o.name === form.pkg);
-  const selectedDate = dates.find((d) => d.key === form.date);
-  const dateLabel = selectedDate
-    ? `${selectedDate.dow}, ${selectedDate.md}`
+  const dateLabel = form.date
+    ? new Date(`${form.date}T00:00:00`).toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+      })
     : '';
 
   const submit = async (e) => {
@@ -76,6 +85,8 @@ export default function BookPage() {
     if (!form.pkg) return setErr('Please choose a package.');
     if (!form.vehicle) return setErr('Select your vehicle type.');
     if (!form.date) return setErr('Pick a date.');
+    if (isWeekend(form.date))
+      return setErr("We're closed weekends — please choose a weekday.");
     if (!form.name.trim()) return setErr('Please enter your name.');
     if (form.phone.replace(/\D/g, '').length < 7)
       return setErr('Enter a valid phone number.');
@@ -115,6 +126,14 @@ export default function BookPage() {
       <section className="bk">
         <div className="bk-wrap">
           <div className="bk-card bk-done">
+            <Image
+              className="bk-logo"
+              src="/cleanking.svg"
+              alt="Clean King Detailing"
+              width={60}
+              height={60}
+              priority
+            />
             <div className="mark">
               <GCheck />
             </div>
@@ -125,10 +144,7 @@ export default function BookPage() {
               call {form.phone} shortly to confirm your spot.
             </p>
             <div className="row">
-              <Link className="ck-btn ck-btn-accent" href="/">
-                Back to home
-              </Link>
-              <a className="ck-btn ck-btn-ghost" href={site.phoneHref}>
+              <a className="ck-btn ck-btn-accent" href={site.phoneHref}>
                 Call {site.phone}
               </a>
             </div>
@@ -169,9 +185,7 @@ export default function BookPage() {
 
             {/* 01 package */}
             <div className="bk-sec">
-              <div className="bk-sech">
-                <span className="bk-secn">01</span> Choose your package
-              </div>
+              <div className="bk-sech">Choose your package</div>
               <div className="bk-pgrid">
                 {packages.map((o) => (
                   <button
@@ -189,9 +203,7 @@ export default function BookPage() {
 
             {/* 02 schedule */}
             <div className="bk-sec">
-              <div className="bk-sech">
-                <span className="bk-secn">02</span> Pick a day
-              </div>
+              <div className="bk-sech">Pick a day</div>
               <div className="bk-grp">
                 <div className="gl">Vehicle type</div>
                 <div className="bk-chiprow">
@@ -209,29 +221,23 @@ export default function BookPage() {
               </div>
               <div className="bk-grp">
                 <div className="gl">Date</div>
-                <div className="bk-chiprow">
-                  {dates.map((d) => (
-                    <button
-                      type="button"
-                      key={d.key}
-                      className={
-                        'bk-chip' + (form.date === d.key ? ' sel' : '')
-                      }
-                      onClick={() => set('date', d.key)}
-                    >
-                      {d.dow}
-                      <span className="sub">{d.md}</span>
-                    </button>
-                  ))}
-                </div>
+                <DateField
+                  value={form.date}
+                  min={minDate}
+                  max={maxDate}
+                  onChange={onDateChange}
+                />
+                {dateWarn && (
+                  <p className="bk-hint">
+                    Weekdays only — we&apos;re closed weekends.
+                  </p>
+                )}
               </div>
             </div>
 
             {/* 03 details */}
             <div className="bk-sec">
-              <div className="bk-sech">
-                <span className="bk-secn">03</span> Your details
-              </div>
+              <div className="bk-sech">Your details</div>
               <div className="bk-fields">
                 <div className="bk-field">
                   <label>Full name</label>
@@ -287,8 +293,7 @@ export default function BookPage() {
                   checked={form.optIn}
                   onChange={(e) => set('optIn', e.target.checked)}
                 />
-                Send me occasional offers and detailing tips from Clean King. No
-                spam — unsubscribe anytime.
+                Send me occasional offers and detailing tips from Clean King.
               </label>
             </div>
 

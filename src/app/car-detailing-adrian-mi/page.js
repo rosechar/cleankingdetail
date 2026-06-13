@@ -173,7 +173,7 @@ export default function CarDetailingAdrianMI() {
                   <li key={it}>{it}</li>
                 ))}
               </ul>
-              <Link className="cbook" href="/appointment">
+              <Link className="cbook" href={`/appointment?pkg=${s.id}`}>
                 Book this <GArrow />
               </Link>
             </div>

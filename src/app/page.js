@@ -10,15 +10,16 @@ const Home = () => {
       {/* hero */}
       <section className="garage-hero" id="top">
         <div className="htext">
-          <div className="ck-eyebrow">The King of Clean</div>
+          <div className="ck-eyebrow">
+            Showroom-grade auto detailing in Blissfield, Michigan
+          </div>
           <h1>
             The King
             <br />
             <span className="o">of</span> Clean
           </h1>
           <p className="sub">
-            Showroom-grade auto detailing in Blissfield, Michigan. Booked
-            online, detailed by hand, finished like new.
+            Book online, detailed by hand, finished like new.
           </p>
           <div className="cta">
             <Link className="ck-btn ck-btn-accent" href="/appointment">
@@ -93,9 +94,10 @@ const Home = () => {
         </div>
         <div className="garage-grid">
           {packages.map((s) => (
-            <div
+            <Link
               className={'garage-card' + (s.popular ? ' pop' : '')}
               key={s.name}
+              href={`/appointment?pkg=${s.id}`}
             >
               {s.popular && <span className="poptag">Most popular</span>}
               <div className="ci">
@@ -108,14 +110,15 @@ const Home = () => {
                   <li key={it}>{it}</li>
                 ))}
               </ul>
-              <Link className="cbook" href="/appointment">
+              <span className="cbook">
                 Book this <GArrow />
-              </Link>
-            </div>
+              </span>
+            </Link>
           ))}
-          <div
+          <Link
             className="garage-card"
             style={{ justifyContent: 'center', background: 'var(--surface-2)' }}
+            href="/contact"
           >
             <div className="ck-eyebrow" style={{ color: 'var(--accent)' }}>
               Add-ons
@@ -127,10 +130,10 @@ const Home = () => {
               Ceramic window tint and paint protection available with any
               detail. Ask for a quote.
             </p>
-            <Link className="cbook" href="/contact">
+            <span className="cbook">
               Get a quote <GArrow />
-            </Link>
-          </div>
+            </span>
+          </Link>
         </div>
       </section>
 

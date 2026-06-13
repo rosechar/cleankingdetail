@@ -1,4 +1,4 @@
-import { renderRows, sendOwnerEmail, addToAudience } from '@/services/email';
+import { renderRows, sendOwnerEmail, addToSegment } from '@/services/email';
 import { isLikelySpam } from '@/services/spam';
 
 export const runtime = 'nodejs';
@@ -47,9 +47,9 @@ export async function POST(req) {
     return Response.json({ error: result.message }, { status: result.status });
   }
 
-  // Opted-in contacts join the Resend audience for future promos.
+  // Opted-in contacts join the Resend segment for future promos.
   if (data.optIn) {
-    await addToAudience({ email: data.email, name: data.name });
+    await addToSegment({ email: data.email, name: data.name });
   }
 
   return Response.json({ ok: true });

@@ -67,7 +67,10 @@ export default function Services() {
                     {s.price.includes('–') ? 'Per service' : 'Flat rate'}
                   </div>
                 </div>
-                <Link className="ck-btn ck-btn-accent" href="/appointment">
+                <Link
+                  className="ck-btn ck-btn-accent"
+                  href={`/appointment?pkg=${s.id}`}
+                >
                   Book this
                 </Link>
               </div>

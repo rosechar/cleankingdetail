@@ -4,7 +4,7 @@ import {
   sendOwnerEmail,
   sendCustomerEmail,
   getOwnerEmails,
-  addToAudience,
+  addToSegment,
 } from '@/services/email';
 import { site } from '@/data/site';
 import { isLikelySpam } from '@/services/spam';
@@ -66,9 +66,9 @@ export async function POST(req) {
     return Response.json({ error: owner.message }, { status: owner.status });
   }
 
-  // Opted-in contacts join the Resend audience for future promos.
+  // Opted-in contacts join the Resend segment for future promos.
   if (data.optIn) {
-    await addToAudience({ email: data.email, name: data.name });
+    await addToSegment({ email: data.email, name: data.name });
   }
 
   // 2) Customer confirmation (best-effort; only if they gave a valid email).
@@ -77,6 +77,9 @@ export async function POST(req) {
     const first = String(name).trim().split(' ')[0] || 'there';
     const customerHtml = `
       <div style="max-width:560px;margin:0 auto;font-family:system-ui,sans-serif;color:#16140f;">
+        <div style="text-align:center;margin:0 0 24px;">
+          <img src="https://www.cleankingdetail.com/cleanking.png" alt="Clean King Detailing" width="56" height="56" style="display:inline-block;border:0;" />
+        </div>
         <h2 style="font:600 22px/1.2 system-ui,sans-serif;margin:0 0 10px;">Thanks, ${escapeHtml(first)} — we've got your request</h2>
         <p style="font-size:15px;line-height:1.55;margin:0 0 18px;">
           We've received your request for a <b>${escapeHtml(pkg)}</b> on <b>${escapeHtml(date)}</b>.

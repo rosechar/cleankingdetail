@@ -262,15 +262,16 @@
   flex: 0 0 auto;
 }
 .garage-brand img {
-  width: 46px;
-  height: 46px;
+  width: 54px;
+  height: 54px;
 }
 .garage-brand .wm {
   font-family: var(--font-display), sans-serif;
   text-transform: uppercase;
   font-size: 25px;
   letter-spacing: 0.02em;
-  line-height: 0.86;
+  line-height: 0.92;
+  white-space: nowrap;
 }
 .garage-nav {
   display: flex;
@@ -512,6 +513,8 @@
   min-height: 326px;
   transition: background 0.2s;
   position: relative;
+  color: inherit;
+  text-decoration: none;
 }
 .garage-card:hover {
   background: var(--surface-2);
@@ -588,7 +591,7 @@
   stroke-width: 2;
   transition: transform 0.2s;
 }
-.garage-card .cbook:hover svg {
+.garage-card:hover .cbook svg {
   transform: translateX(4px);
 }
 .garage-card .poptag {
@@ -1049,7 +1052,7 @@
 
 /* ============ SERVICES ============ */
 .svc {
-  padding: clamp(40px, 5vw, 72px) var(--px) var(--sp);
+  padding: clamp(28px, 3.5vw, 48px) var(--px) var(--sp);
 }
 .svc-inner {
   max-width: 1120px;
@@ -1058,13 +1061,14 @@
 .svc-pkg {
   display: grid;
   grid-template-columns: 1fr 282px;
-  gap: 48px;
-  padding: clamp(34px, 4vw, 52px) 0;
+  gap: 40px;
+  padding: clamp(22px, 2.6vw, 32px) 0;
   border-top: 1px solid var(--line);
   position: relative;
 }
-.svc-inner .svc-pkg:last-of-type {
-  border-bottom: 1px solid var(--line);
+.svc-inner .svc-pkg:first-of-type {
+  border-top: none;
+  padding-top: 0;
 }
 .svc-pkg.pop::before {
   content: '';
@@ -1085,9 +1089,9 @@
   font-family: var(--font-display), sans-serif;
   text-transform: uppercase;
   font-weight: 400;
-  font-size: clamp(30px, 3.8vw, 48px);
+  font-size: clamp(26px, 3vw, 36px);
   line-height: 0.94;
-  margin-top: 8px;
+  margin-top: 6px;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -1106,17 +1110,17 @@
 }
 .svc-pkg .d {
   color: var(--fg-2);
-  font-size: 15.5px;
-  margin-top: 14px;
+  font-size: 15px;
+  margin-top: 10px;
   max-width: 540px;
-  line-height: 1.55;
+  line-height: 1.5;
 }
 .svc-pkg ul {
   list-style: none;
-  margin-top: 22px;
+  margin-top: 16px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 11px 28px;
+  gap: 9px 26px;
   max-width: 540px;
 }
 .svc-pkg li {
@@ -1144,7 +1148,7 @@
 }
 .svc-pkg .price {
   font-family: var(--font-display), sans-serif;
-  font-size: clamp(40px, 4.6vw, 56px);
+  font-size: clamp(34px, 3.6vw, 44px);
   line-height: 0.9;
   white-space: nowrap;
 }
@@ -1157,7 +1161,7 @@
   margin-top: 8px;
 }
 .svc-pkg .right .ck-btn {
-  margin-top: 22px;
+  margin-top: 16px;
 }
 
 .svc-extra {
@@ -1284,6 +1288,93 @@
   transition: border-color 0.18s;
   width: 100%;
 }
+.bk-date {
+  color-scheme: dark;
+  width: auto;
+  min-width: 200px;
+}
+.bk-hint {
+  margin-top: 10px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+
+/* desktop date popover (react-day-picker) */
+.dp {
+  position: relative;
+  display: inline-block;
+}
+.dp-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-width: 240px;
+  cursor: pointer;
+  text-align: left;
+}
+.dp-trigger.empty {
+  color: var(--fg-3);
+}
+.dp-trigger svg {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.8;
+  flex: 0 0 auto;
+}
+.dp-pop {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 8px);
+  left: 0;
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  padding: 12px 14px;
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.55);
+}
+.dp-pop .rdp-root {
+  --rdp-accent-color: var(--accent);
+  --rdp-accent-background-color: var(--accent);
+  --rdp-today-color: var(--accent);
+  --rdp-disabled-opacity: 0.22;
+  --rdp-outside-opacity: 0.3;
+  --rdp-day_button-border-radius: 4px;
+  margin: 0;
+  color: var(--fg);
+  font-family: var(--font-body), sans-serif;
+}
+.dp-pop .rdp-month_caption,
+.dp-pop .rdp-caption_label {
+  color: var(--fg);
+  font-family: var(--font-display), sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.dp-pop .rdp-weekday {
+  color: var(--fg-3);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+.dp-pop .rdp-day_button {
+  color: var(--fg);
+}
+.dp-pop .rdp-day_button:hover:not([disabled]) {
+  background: var(--surface-2);
+}
+.dp-pop .rdp-selected .rdp-day_button {
+  background: var(--accent);
+  color: var(--on-accent);
+  border: none;
+}
+.dp-pop .rdp-chevron {
+  fill: var(--fg-2);
+}
+.dp-pop .rdp-button_next:hover .rdp-chevron,
+.dp-pop .rdp-button_previous:hover .rdp-chevron {
+  fill: var(--accent);
+}
 .bk-input:focus {
   outline: none;
   border-color: var(--accent);
@@ -1345,13 +1436,59 @@ textarea.bk-input {
   font-weight: 500;
 }
 
+/* ============ 404 / not found ============ */
+.nf {
+  min-height: 62vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: clamp(60px, 10vw, 120px) var(--px);
+}
+.nf-inner {
+  max-width: 540px;
+}
+.nf-logo {
+  display: block;
+  margin: 0 auto 28px;
+}
+.nf .ck-eyebrow {
+  color: var(--accent);
+}
+.nf h1 {
+  font-family: var(--font-display), sans-serif;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: clamp(44px, 7vw, 84px);
+  line-height: 0.9;
+  margin-top: 14px;
+}
+.nf p {
+  color: var(--fg-2);
+  font-size: 16px;
+  line-height: 1.55;
+  margin: 18px auto 0;
+  max-width: 420px;
+}
+.nf-cta {
+  display: flex;
+  gap: 13px;
+  justify-content: center;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
 .bk-done {
   text-align: center;
   padding: clamp(30px, 5vw, 60px) 0;
 }
+.bk-done .bk-logo {
+  display: block;
+  margin: 0 auto 22px;
+}
 .bk-done .mark {
-  width: 84px;
-  height: 84px;
+  width: 66px;
+  height: 66px;
   border-radius: 50%;
   background: var(--accent);
   display: inline-flex;
@@ -1359,8 +1496,8 @@ textarea.bk-input {
   justify-content: center;
 }
 .bk-done .mark svg {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   stroke: var(--on-accent);
   fill: none;
   stroke-width: 2.6;
@@ -1397,21 +1534,12 @@ textarea.bk-input {
   border-top: none;
 }
 .bk-sech {
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  font-family: var(--font-display), sans-serif;
-  text-transform: uppercase;
-  font-weight: 400;
-  font-size: clamp(22px, 2.7vw, 32px);
-  line-height: 1;
-}
-.bk-secn {
   font-family: var(--font-mono), monospace;
-  font-size: 13.5px;
-  letter-spacing: 0.14em;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
   color: var(--accent);
-  flex: 0 0 auto;
 }
 .bk-sec .bk-fields {
   margin-top: 22px;

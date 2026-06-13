@@ -203,7 +203,6 @@ export default function ContactPage() {
                     onChange={(e) => set('optIn', e.target.checked)}
                   />
                   Send me occasional offers and detailing tips from Clean King.
-                  No spam — unsubscribe anytime.
                 </label>
                 {err && <div className="bk-err">{err}</div>}
                 <div className="ct-nav">

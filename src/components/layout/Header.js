@@ -20,15 +20,11 @@ export default function Header() {
         <Image
           src="/cleanking.svg"
           alt="Clean King Detailing"
-          width={46}
-          height={46}
+          width={54}
+          height={54}
           priority
         />
-        <span className="wm">
-          Clean
-          <br />
-          King
-        </span>
+        <span className="wm">Clean King</span>
       </Link>
 
       <nav className="garage-nav">

@@ -76,14 +76,14 @@ export async function sendCustomerEmail({ to, subject, html, replyTo }) {
 }
 
 /**
- * Adds an opted-in contact to the Resend audience (RESEND_AUDIENCE_ID) for
+ * Adds an opted-in contact to the Resend segment (RESEND_SEGMENT_ID) for
  * future promos. Best-effort: failures are logged, never surfaced.
  */
-export async function addToAudience({ email, name }) {
+export async function addToSegment({ email, name }) {
   const apiKey = process.env.RESEND_API_KEY;
-  const audienceId = process.env.RESEND_AUDIENCE_ID;
+  const segmentId = process.env.RESEND_SEGMENT_ID;
   const address = String(email || '').trim();
-  if (!apiKey || !audienceId) return;
+  if (!apiKey || !segmentId) return;
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(address)) return;
 
   try {
@@ -92,14 +92,14 @@ export async function addToAudience({ email, name }) {
       .split(/\s+/);
     const resend = new Resend(apiKey);
     const { error } = await resend.contacts.create({
-      audienceId,
       email: address,
       firstName: firstName || undefined,
       lastName: rest.join(' ') || undefined,
       unsubscribed: false,
+      segments: [{ id: segmentId }],
     });
-    if (error) console.error('Audience add failed:', error);
+    if (error) console.error('Segment add failed:', error);
   } catch (err) {
-    console.error('Audience add failed:', err);
+    console.error('Segment add failed:', err);
   }
 }

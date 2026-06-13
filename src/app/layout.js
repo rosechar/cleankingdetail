@@ -64,6 +64,7 @@ export const metadata = {
   icons: {
     icon: [{ rel: 'icon', url: '/favicon.ico' }],
     shortcut: ['/favicon.ico'],
+    apple: [{ url: '/cleanking.png' }],
   },
   manifest: '/manifest.json',
 };

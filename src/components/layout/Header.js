@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { site } from '@/data/site';
 
 const NAV = [
@@ -13,10 +14,16 @@ const NAV = [
 
 export default function Header() {
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+
+  // Close the mobile menu whenever the route changes.
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   return (
-    <header className="garage-head">
-      <Link className="garage-brand" href="/">
+    <header className={'garage-head' + (open ? ' is-open' : '')}>
+      <Link className="garage-brand" href="/" onClick={() => setOpen(false)}>
         <Image
           src="/cleanking.svg"
           alt="Clean King Detailing"
@@ -33,6 +40,7 @@ export default function Header() {
             key={n.href}
             href={n.href}
             className={pathname === n.href ? 'is-active' : ''}
+            onClick={() => setOpen(false)}
           >
             {n.label}
           </Link>
@@ -47,6 +55,18 @@ export default function Header() {
           Book Now
         </Link>
       </div>
+
+      <button
+        type="button"
+        className="garage-burger"
+        aria-label={open ? 'Close menu' : 'Open menu'}
+        aria-expanded={open}
+        onClick={() => setOpen((o) => !o)}
+      >
+        <span />
+        <span />
+        <span />
+      </button>
     </header>
   );
 }

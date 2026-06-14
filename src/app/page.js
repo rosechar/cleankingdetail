@@ -55,7 +55,6 @@ const Home = () => {
             fill
             sizes="(max-width: 1024px) 100vw, 45vw"
             priority
-            className="object-cover"
           />
           <span className="badge">Deluxe Detail · Wheels &amp; Tires</span>
         </div>
@@ -86,7 +85,8 @@ const Home = () => {
             </h2>
           </div>
           <p>
-            Every package detailed by hand in Blissfield.{' '}
+            Every package detailed by hand in Blissfield.
+            <br />
             <Link href="/services">
               See full details &amp; what&apos;s included →
             </Link>

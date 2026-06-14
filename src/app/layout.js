@@ -224,7 +224,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${anton.variable} ${hanken.variable} ${jetbrains.variable} antialiased`}
+        className={`${anton.variable} ${hanken.variable} ${jetbrains.variable}`}
       >
         <script
           type="application/ld+json"

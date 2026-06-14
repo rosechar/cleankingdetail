@@ -1,15 +1,38 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Minimal base reset (replaces Tailwind's Preflight). The design system's own
+   reset lives in garage.css, scoped under .ck-dir. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
 html {
   scroll-behavior: smooth;
   background: #0d0d0f;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
+  margin: 0;
   background: #0d0d0f;
   color: #f4f3ef;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Form controls inherit typography + color instead of UA defaults
+   (replaces the relevant part of Tailwind's Preflight). */
+button,
+input,
+optgroup,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+button {
+  background-color: transparent;
+  background-image: none;
 }
 
 /* Keep autofilled inputs on-theme inside the dark design */

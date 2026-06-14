@@ -180,7 +180,7 @@
    ============================================================ */
 .garage {
   --px: clamp(20px, 5.2vw, 80px);
-  --sp: calc(clamp(68px, 9vw, 124px) * var(--d));
+  --sp: calc(clamp(44px, 6vw, 84px) * var(--d));
   --font-display: var(--font-anton), 'Anton', sans-serif;
   --font-body: var(--font-hanken), 'Hanken Grotesk', system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), 'JetBrains Mono', ui-monospace, monospace;
@@ -321,6 +321,38 @@
   color: var(--fg);
   white-space: nowrap;
 }
+.garage-burger {
+  display: none; /* shown on mobile only */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 42px;
+  height: 42px;
+  margin: -8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.garage-burger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--fg);
+  transition:
+    transform 0.22s ease,
+    opacity 0.18s ease;
+}
+.garage-head.is-open .garage-burger span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.garage-head.is-open .garage-burger span:nth-child(2) {
+  opacity: 0;
+}
+.garage-head.is-open .garage-burger span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
 
 /* ---------- hero ---------- */
 .garage-hero {
@@ -397,6 +429,9 @@
   min-height: 460px;
   background-size: cover;
   background-position: center;
+}
+.garage-hero .himg img {
+  object-fit: cover;
 }
 .garage-hero .himg::after {
   content: '';
@@ -514,7 +549,7 @@
   padding: 34px 30px 30px;
   display: flex;
   flex-direction: column;
-  min-height: 326px;
+  min-height: 240px;
   transition: background 0.2s;
   position: relative;
   color: inherit;
@@ -542,13 +577,13 @@
 }
 .garage-card .cprice {
   font-family: var(--font-display), sans-serif;
-  font-size: 39px;
-  line-height: 0.9;
+  font-size: 26px;
+  line-height: 0.95;
   white-space: nowrap;
 }
 .garage-card .cdesc {
   color: var(--fg-2);
-  font-size: 14.5px;
+  font-size: 15.5px;
   margin-top: 16px;
   line-height: 1.5;
 }
@@ -808,7 +843,7 @@
 
 /* ---------- cta ---------- */
 .garage-cta {
-  padding: calc(clamp(76px, 9vw, 120px) * var(--d)) var(--px);
+  padding: calc(clamp(52px, 6.5vw, 90px) * var(--d)) var(--px);
   text-align: center;
   border-top: 1px solid var(--line);
 }
@@ -910,6 +945,12 @@
   .garage-hero h1 {
     font-size: clamp(56px, 11vw, 104px);
   }
+  /* Even thirds across the full width instead of left-clumped + wrapping. */
+  .garage-hero .hstats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
   .garage-sh {
     flex-direction: column;
     align-items: stretch;
@@ -927,7 +968,34 @@
   }
 }
 @media (max-width: 760px) {
+  .garage-burger {
+    display: inline-flex;
+  }
+  .garage-head .hc {
+    display: none;
+  }
   .garage-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    margin: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding: 4px var(--px) 14px;
+  }
+  .garage-head.is-open .garage-nav {
+    display: flex;
+  }
+  .garage-nav a {
+    padding: 16px 2px;
+    font-size: 15px;
+    border-top: 1px solid var(--line);
+  }
+  .garage-nav a::after {
     display: none;
   }
   .garage-strip span:last-child {
@@ -1074,8 +1142,8 @@
 .svc-pkg {
   display: grid;
   grid-template-columns: 1fr 282px;
-  gap: 40px;
-  padding: clamp(22px, 2.6vw, 32px) 0;
+  gap: 32px;
+  padding: clamp(14px, 1.8vw, 22px) 0;
   border-top: 1px solid var(--line);
   position: relative;
 }
@@ -1117,7 +1185,7 @@
 }
 .svc-pkg .d {
   color: var(--fg-2);
-  font-size: 15px;
+  font-size: 16px;
   margin-top: 10px;
   max-width: 540px;
   line-height: 1.5;
@@ -1155,17 +1223,9 @@
 }
 .svc-pkg .price {
   font-family: var(--font-display), sans-serif;
-  font-size: clamp(34px, 3.6vw, 44px);
-  line-height: 0.9;
+  font-size: clamp(26px, 3vw, 36px);
+  line-height: 0.94;
   white-space: nowrap;
-}
-.svc-pkg .per {
-  font-family: var(--font-mono), monospace;
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--fg-3);
-  margin-top: 8px;
 }
 .svc-pkg .right .ck-btn {
   margin-top: 16px;
@@ -1900,10 +1960,10 @@ textarea.bk-input {
     gap: 24px;
   }
   .svc-pkg .right {
-    align-items: flex-start;
     text-align: left;
     flex-direction: row;
     align-items: baseline;
+    justify-content: space-between;
     gap: 20px;
   }
   .svc-pkg .right .ck-btn {

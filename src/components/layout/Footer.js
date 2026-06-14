@@ -1,29 +1,43 @@
-'use client';
-
-import React from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
-import { AreasServedFooter } from '@/components/home/AreasServedFooter';
+import { site } from '@/data/site';
 
 export default function Footer() {
   return (
-    <header className="bg-gradient-to-r from-slate-900 to-slate-800 py-6 text-white shadow-lg">
-      <div className="flex items-center justify-evenly md:justify-center md:gap-16">
-        <div className="relative size-[80px]">
-          <Image
-            src="/cleanking.svg"
-            alt="Clean King Auto Detailing"
-            fill
-            priority
-            className="object-contain"
-          />
-        </div>
-        <div className="text-right">
-          <p>610 W Adrian St</p>
-          <p>Blissfield, MI 49228</p>
-          <p className="font-semibold text-blue-400">(517) 682-1919</p>
+    <footer className="garage-foot">
+      <div className="l">
+        <Image
+          src="/cleanking.svg"
+          alt=""
+          width={40}
+          height={40}
+          aria-hidden="true"
+        />
+        <div>
+          <div className="wm">Clean King Detailing</div>
+          <div className="meta">
+            {site.address1} · {site.address2}
+          </div>
         </div>
       </div>
-      <AreasServedFooter />
-    </header>
+
+      <nav className="foot-nav">
+        <Link href="/">Home</Link>
+        <Link href="/services">Services</Link>
+        <Link href="/appointment">Book</Link>
+        <Link href="/contact">Contact</Link>
+        <Link href="/car-detailing-adrian-mi">Adrian, MI</Link>
+      </nav>
+
+      <div className="soc">
+        <a href={site.facebook} target="_blank" rel="noopener noreferrer">
+          Facebook
+        </a>
+        <a href={site.google} target="_blank" rel="noopener noreferrer">
+          Google
+        </a>
+        <a href={site.phoneHref}>{site.phone}</a>
+      </div>
+    </footer>
   );
 }

@@ -4,8 +4,8 @@
   "description": "Professional auto detailing services in Blissfield, MI",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ba000d",
-  "theme_color": "#ba000d",
+  "background_color": "#0d0d0f",
+  "theme_color": "#d8352e",
   "icons": [
     {
       "src": "/cleanking.png",

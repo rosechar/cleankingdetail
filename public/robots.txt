@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://cleankingdetail.com/sitemap.xml
+Sitemap: https://www.cleankingdetail.com/sitemap.xml

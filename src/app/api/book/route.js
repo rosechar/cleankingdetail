@@ -82,12 +82,12 @@ export async function POST(req) {
     const customerHtml = `
       <div style="max-width:560px;margin:0 auto;font-family:system-ui,sans-serif;color:#16140f;">
         <div style="text-align:center;margin:0 0 24px;">
-          <img src="https://www.cleankingdetail.com/cleanking.png" alt="Clean King Detailing" width="56" height="56" style="display:inline-block;border:0;" />
+          <img src="https://www.cleankingdetail.com/cleanking.png" alt="Clean King Detailing" width="96" height="96" style="display:inline-block;border:0;" />
         </div>
         <h2 style="font:600 22px/1.2 system-ui,sans-serif;margin:0 0 10px;">Thanks, ${escapeHtml(first)} — we've got your request</h2>
         <p style="font-size:15px;line-height:1.55;margin:0 0 18px;">
           We've received your request for a <b>${escapeHtml(pkg)}</b> on <b>${escapeHtml(date)}</b>.
-          No payment now — we'll call <b>${escapeHtml(phone)}</b> shortly to confirm your spot.
+          We'll call <b>${escapeHtml(phone)}</b> shortly to confirm your spot.
         </p>
         <table style="border-collapse:collapse;width:100%;margin-bottom:18px;">${renderRows(
           {

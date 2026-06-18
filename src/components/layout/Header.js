@@ -25,7 +25,7 @@ export default function Header() {
     <header className={'garage-head' + (open ? ' is-open' : '')}>
       <Link className="garage-brand" href="/" onClick={() => setOpen(false)}>
         <Image
-          src="/cleanking.svg"
+          src="/cleanking-mark.png"
           alt="Clean King Detailing"
           width={54}
           height={54}

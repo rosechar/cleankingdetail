@@ -11,7 +11,7 @@ export default function NotFound() {
       <div className="nf-inner">
         <Image
           className="nf-logo"
-          src="/cleanking.svg"
+          src="/cleanking-mark.png"
           alt="Clean King Detailing"
           width={84}
           height={84}

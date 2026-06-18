@@ -6,6 +6,7 @@ import { site } from '@/data/site';
 import { faqs } from '@/data/faqs';
 import { GPin, GPhone, GCheck } from '@/components/garage/Icons';
 import HoneypotField from '@/components/forms/HoneypotField';
+import MapEmbed from '@/components/garage/MapEmbed';
 
 export default function ContactPage() {
   const [form, setForm] = useState({
@@ -241,13 +242,7 @@ export default function ContactPage() {
         </div>
 
         <div className="ct-map">
-          <iframe
-            src={site.mapEmbed}
-            title="Map to Clean King Detailing, 610 W Adrian St, Blissfield MI"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            allowFullScreen
-          />
+          <MapEmbed />
         </div>
       </section>
 

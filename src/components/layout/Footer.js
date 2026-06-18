@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="garage-foot">
       <div className="l">
         <Image
-          src="/cleanking.svg"
+          src="/cleanking-mark.png"
           alt=""
           width={40}
           height={40}
@@ -22,11 +22,17 @@ export default function Footer() {
       </div>
 
       <nav className="foot-nav">
-        <Link href="/">Home</Link>
-        <Link href="/services">Services</Link>
-        <Link href="/appointment">Book</Link>
-        <Link href="/contact">Contact</Link>
-        <Link href="/car-detailing-adrian-mi">Adrian, MI</Link>
+        <div className="fn-row">
+          <Link href="/">Home</Link>
+          <Link href="/services">Services</Link>
+          <Link href="/appointment">Book</Link>
+          <Link href="/contact">Contact</Link>
+        </div>
+        <div className="fn-row">
+          <Link href="/car-detailing-adrian-mi">Adrian</Link>
+          <Link href="/car-detailing-tecumseh-mi">Tecumseh</Link>
+          <Link href="/car-detailing-lenawee-county">Lenawee County</Link>
+        </div>
       </nav>
 
       <div className="soc">

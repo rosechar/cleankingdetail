@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { site, packages } from '@/data/site';
 import { GArrow } from '@/components/garage/Icons';
 import ReviewsCarousel from '@/components/garage/ReviewsCarousel';
+import MapEmbed from '@/components/garage/MapEmbed';
 
 const Home = () => {
   return (
@@ -179,13 +180,7 @@ const Home = () => {
             </Link>
           </div>
           <div className="pane map">
-            <iframe
-              src={site.mapEmbed}
-              title="Map to Clean King Detailing, 610 W Adrian St, Blissfield MI"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
-            />
+            <MapEmbed />
           </div>
         </div>
       </section>

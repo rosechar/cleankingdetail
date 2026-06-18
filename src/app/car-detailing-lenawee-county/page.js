@@ -4,82 +4,83 @@ import { GArrow } from '@/components/garage/Icons';
 import MapEmbed from '@/components/garage/MapEmbed';
 
 export const metadata = {
-  title: 'Car Detailing in Adrian, MI | Clean King Detailing',
+  title: 'Car Detailing in Lenawee County, MI | Clean King Detailing',
   description:
-    'Professional car detailing in Adrian, MI from $35-$160. Interior/exterior detailing, clay bar, wax, buff, window tinting. Serving Adrian, Lenawee County. Call (517) 682-1919.',
+    'Auto detailing, hand car wash & window tinting across Lenawee County, MI from $35–$160. Serving Adrian, Tecumseh, Blissfield, Hudson, Morenci, Clinton and beyond — detailed by hand. Call (517) 682-1919.',
   keywords:
-    'car detailing Adrian MI, car wash Adrian Michigan, auto detailing Adrian, window tinting Adrian MI, clay bar Adrian, car wax Adrian, car buff Adrian, mobile car wash Adrian, best car detailing Adrian',
+    'car detailing Lenawee County, auto detailing Lenawee County MI, car wash Lenawee County, window tinting Lenawee County, mobile detailing Lenawee, detailing Hudson MI, detailing Morenci MI, detailing Clinton MI, detailing Onsted MI',
   openGraph: {
-    title: 'Car Detailing in Adrian, MI | Clean King Detailing',
+    title: 'Car Detailing in Lenawee County, MI | Clean King Detailing',
     description:
-      'Professional car wash, detailing & window tinting in Adrian, MI. Clay bar, wax, buff services from $35-$160.',
-    url: 'https://www.cleankingdetail.com/car-detailing-adrian-mi',
+      'Hand car wash, full detailing and ceramic window tinting across Lenawee County, MI. Flat pricing from $35–$160.',
+    url: 'https://www.cleankingdetail.com/car-detailing-lenawee-county',
   },
   alternates: {
-    canonical: 'https://www.cleankingdetail.com/car-detailing-adrian-mi',
+    canonical: 'https://www.cleankingdetail.com/car-detailing-lenawee-county',
   },
 };
 
 const detailedServices = [
   {
-    name: 'Professional Car Wash',
-    desc: "Hand wash and foam treatment to safely clean your vehicle's exterior, removing dirt, grime, and road salt common on Adrian area roads.",
+    name: 'Exterior Hand Wash',
+    desc: 'Hand wash and foam bath that strips the gravel dust, farm-road grime and winter salt that coat vehicles all over rural Lenawee.',
   },
   {
-    name: 'Clay Bar Treatment',
-    desc: "Remove embedded contaminants from your paint surface that regular washing can't eliminate, leaving your car's paint smooth and ready for wax protection.",
+    name: 'Full Interior Detail',
+    desc: 'Deep vacuum, shampoo and conditioning for work trucks and family cars alike — built for boots, kids and county-road mud.',
   },
   {
-    name: 'Wax & Buff Services',
-    desc: "Professional waxing and buffing to protect your paint from Michigan's harsh weather conditions while restoring that showroom shine.",
+    name: 'Paint Clay & Polish',
+    desc: 'Clay decontamination and light polishing to pull embedded grit out of the finish and bring back depth a basic wash never can.',
   },
   {
-    name: 'Interior Detailing',
-    desc: 'Deep cleaning of seats, carpets, dashboard, and all interior surfaces. Perfect for removing winter salt stains and keeping your Adrian vehicle fresh.',
+    name: 'Wax & Paint Protection',
+    desc: "Hand wax, sealant or ceramic protection to shield your paint through Lenawee's full range of weather — August sun to February brine.",
   },
   {
-    name: 'Window Tinting',
-    desc: "Professional ceramic window tint installation to reduce heat, glare, and UV rays. Especially beneficial for Adrian's sunny summer days and winter glare.",
+    name: 'Ceramic Window Tinting',
+    desc: 'Heat- and UV-rejecting ceramic tint, professionally installed for comfort on long county and US-223 drives.',
   },
   {
-    name: 'Engine Bay Cleaning',
-    desc: "Thorough cleaning and degreasing of your engine bay, helping maintain your vehicle's performance and resale value.",
+    name: 'Engine Bay & Wheels',
+    desc: 'Degrease the engine bay and deep-clean wheels, tires and barrels — the finishing details that protect resale value.',
   },
 ];
 
 const whyUs = [
   {
-    name: 'Local Expertise',
-    desc: 'Family-owned in Blissfield, just minutes from Adrian. We know what Michigan roads and winters do to your vehicle.',
+    name: 'Central to the County',
+    desc: "Based in Blissfield, we're an easy drive from Adrian, Tecumseh, Hudson, Morenci, Clinton, Onsted and everywhere between.",
   },
   {
-    name: 'Transparent Pricing',
-    desc: 'Flat, honest pricing from $35 to $160 — no surprises, no upsells. You know the cost before we start.',
+    name: 'Honest, Flat Pricing',
+    desc: '$35 to $160, the same for everyone and posted before we start. Small-town pricing without the runaround.',
   },
   {
-    name: '5-Star Service',
-    desc: 'Every vehicle detailed by hand with the care that earns repeat customers across Lenawee County.',
+    name: 'Hand-Detailed, Every Time',
+    desc: 'No conveyor tunnels. Every vehicle is washed and detailed by hand — the standard that has earned us repeat customers countywide.',
   },
 ];
 
-export default function CarDetailingAdrianMI() {
+export default function CarDetailingLenaweeCounty() {
   return (
     <>
       <section className="gp-hero">
         <div className="inner">
           <div className="crumbs">
-            <Link href="/">Home</Link> / Car Detailing Adrian, MI
+            <Link href="/">Home</Link> / Car Detailing Lenawee County
           </div>
-          <div className="ck-eyebrow">Adrian, Michigan</div>
+          <div className="ck-eyebrow">Lenawee County, Michigan</div>
           <h1>
             Car detailing
             <br />
-            in Adrian, MI
+            across Lenawee County
           </h1>
           <p className="lead">
-            Expert auto wash, detailing & window tinting services from $35–$160.
-            Clean King proudly serves Adrian, Tecumseh and the wider Lenawee
-            County area — every vehicle detailed by hand.
+            Professional auto detailing, hand washing and window tinting from
+            $35–$160, serving every corner of Lenawee County. Family-owned in
+            Blissfield and detailed by hand — from Adrian and Tecumseh to
+            Hudson, Morenci and Clinton.
           </p>
           <div className="cta">
             <Link className="ck-btn ck-btn-accent" href="/appointment">
@@ -96,14 +97,15 @@ export default function CarDetailingAdrianMI() {
       <section className="garage-loc">
         <div className="inner">
           <div className="pane">
-            <div className="ck-eyebrow">Serving Adrian & Lenawee</div>
-            <h2>Adrian, Tecumseh, Lenawee &amp; surrounding areas</h2>
+            <div className="ck-eyebrow">Serving all of Lenawee</div>
+            <h2>One shop for the whole county</h2>
             <p>
-              Clean King Detailing proudly serves Adrian, Michigan and the
-              entire Lenawee County area. Located just minutes away in
-              Blissfield, we bring professional car wash, auto detailing, and
-              window tinting services to Adrian, Tecumseh, and Lenawee County
-              residents and businesses.
+              Clean King Detailing is rooted in Blissfield, near the heart of
+              Lenawee County. We detail cars, trucks and work vehicles for
+              residents and businesses across the county — Adrian, Tecumseh,
+              Hudson, Morenci, Clinton, Onsted, Britton, Deerfield and Sand
+              Creek included. Rural roads, farm dust and Michigan winters are
+              hard on a finish; we&apos;re the shop that does it by hand.
             </p>
             <div className="info">
               <div>
@@ -117,8 +119,8 @@ export default function CarDetailingAdrianMI() {
                 <div className="v">{site.phone}</div>
               </div>
               <div>
-                <div className="k">From Adrian</div>
-                <div className="v">Just 15 minutes via US-223</div>
+                <div className="k">Coverage</div>
+                <div className="v">All of Lenawee County</div>
               </div>
             </div>
             <Link
@@ -147,7 +149,7 @@ export default function CarDetailingAdrianMI() {
             </h2>
           </div>
           <p>
-            Professional auto care tailored for Adrian vehicle owners.{' '}
+            The same flat pricing countywide.{' '}
             <Link href="/services">See full details →</Link>
           </p>
         </div>
@@ -200,11 +202,11 @@ export default function CarDetailingAdrianMI() {
           <div className="garage-sh">
             <div>
               <div className="ck-eyebrow">Full service list</div>
-              <h2>Comprehensive auto care in Adrian</h2>
+              <h2>Built for Lenawee County roads</h2>
             </div>
             <p>
-              From hand washes to ceramic tint — everything your Adrian vehicle
-              needs in one shop.
+              From gravel-road dust to winter salt — everything your vehicle
+              needs to look right and last longer.
             </p>
           </div>
           <div className="xgrid">
@@ -225,7 +227,7 @@ export default function CarDetailingAdrianMI() {
           <div className="garage-sh">
             <div>
               <div className="ck-eyebrow">Why Clean King</div>
-              <h2>Why Adrian drivers choose us</h2>
+              <h2>Why the county trusts us</h2>
             </div>
             <p>Local, honest, and detailed by hand — the way it should be.</p>
           </div>
@@ -243,12 +245,12 @@ export default function CarDetailingAdrianMI() {
 
       <section className="garage-cta">
         <div className="ck-eyebrow">
-          Serving Adrian · Blissfield · Tecumseh · Monroe · Lenawee County
+          Adrian · Tecumseh · Blissfield · Hudson · Morenci · Clinton · Onsted
         </div>
         <h2>
           Ready to detail
           <br />
-          your vehicle in Adrian?
+          your vehicle?
         </h2>
         <div className="row">
           <Link className="ck-btn ck-btn-accent" href="/appointment">

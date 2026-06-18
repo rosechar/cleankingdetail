@@ -13,6 +13,18 @@ export default function sitemap() {
       priority: 1,
     },
     {
+      url: 'https://www.cleankingdetail.com/car-detailing-tecumseh-mi',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://www.cleankingdetail.com/car-detailing-lenawee-county',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
       url: 'https://www.cleankingdetail.com/services',
       lastModified: new Date(),
       changeFrequency: 'weekly',

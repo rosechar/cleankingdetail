@@ -43,6 +43,7 @@ export default function DateField({ value, min, max, onChange }) {
     <input
       className="bk-input bk-date"
       type="date"
+      aria-label="Appointment date"
       value={value}
       min={min}
       max={max}

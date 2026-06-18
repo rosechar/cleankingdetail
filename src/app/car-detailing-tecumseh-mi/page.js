@@ -4,82 +4,82 @@ import { GArrow } from '@/components/garage/Icons';
 import MapEmbed from '@/components/garage/MapEmbed';
 
 export const metadata = {
-  title: 'Car Detailing in Adrian, MI | Clean King Detailing',
+  title: 'Car Detailing in Tecumseh, MI | Clean King Detailing',
   description:
-    'Professional car detailing in Adrian, MI from $35-$160. Interior/exterior detailing, clay bar, wax, buff, window tinting. Serving Adrian, Lenawee County. Call (517) 682-1919.',
+    'Professional car detailing & window tinting near Tecumseh, MI from $35–$160. Hand wash, interior deep clean, clay bar, ceramic tint — detailed by hand. A short drive south. Call (517) 682-1919.',
   keywords:
-    'car detailing Adrian MI, car wash Adrian Michigan, auto detailing Adrian, window tinting Adrian MI, clay bar Adrian, car wax Adrian, car buff Adrian, mobile car wash Adrian, best car detailing Adrian',
+    'car detailing Tecumseh MI, car wash Tecumseh Michigan, auto detailing Tecumseh, window tinting Tecumseh MI, interior detailing Tecumseh, ceramic tint Tecumseh, headlight restoration Tecumseh, best car detailing near Tecumseh',
   openGraph: {
-    title: 'Car Detailing in Adrian, MI | Clean King Detailing',
+    title: 'Car Detailing in Tecumseh, MI | Clean King Detailing',
     description:
-      'Professional car wash, detailing & window tinting in Adrian, MI. Clay bar, wax, buff services from $35-$160.',
-    url: 'https://www.cleankingdetail.com/car-detailing-adrian-mi',
+      'Hand car wash, auto detailing & ceramic window tinting for Tecumseh, MI drivers. Flat pricing from $35–$160.',
+    url: 'https://www.cleankingdetail.com/car-detailing-tecumseh-mi',
   },
   alternates: {
-    canonical: 'https://www.cleankingdetail.com/car-detailing-adrian-mi',
+    canonical: 'https://www.cleankingdetail.com/car-detailing-tecumseh-mi',
   },
 };
 
 const detailedServices = [
   {
-    name: 'Professional Car Wash',
-    desc: "Hand wash and foam treatment to safely clean your vehicle's exterior, removing dirt, grime, and road salt common on Adrian area roads.",
+    name: 'Hand Car Wash',
+    desc: 'A careful two-bucket hand wash and foam bath that lifts road film and salt without swirling your paint — gentler than the automatic tunnels around town.',
   },
   {
-    name: 'Clay Bar Treatment',
-    desc: "Remove embedded contaminants from your paint surface that regular washing can't eliminate, leaving your car's paint smooth and ready for wax protection.",
+    name: 'Interior Deep Clean',
+    desc: 'Vacuum, shampoo and steam for seats, carpets and mats, clearing out the mud and salt that pile up over a Lenawee County winter.',
   },
   {
-    name: 'Wax & Buff Services',
-    desc: "Professional waxing and buffing to protect your paint from Michigan's harsh weather conditions while restoring that showroom shine.",
+    name: 'Clay Bar & Decontamination',
+    desc: 'Pulls bonded contaminants and rail dust out of the clear coat so wax and sealant actually grip — the step most quick washes skip.',
   },
   {
-    name: 'Interior Detailing',
-    desc: 'Deep cleaning of seats, carpets, dashboard, and all interior surfaces. Perfect for removing winter salt stains and keeping your Adrian vehicle fresh.',
+    name: 'Hand Wax & Paint Sealant',
+    desc: 'A hand-applied wax or sealant that stands up to Michigan sun, rain and winter road brine, locking in a deep gloss for months.',
   },
   {
-    name: 'Window Tinting',
-    desc: "Professional ceramic window tint installation to reduce heat, glare, and UV rays. Especially beneficial for Adrian's sunny summer days and winter glare.",
+    name: 'Ceramic Window Tint',
+    desc: 'Professional ceramic film that cuts heat, glare and 99% of UV — a real difference on open M-50 drives and bright winter mornings.',
   },
   {
-    name: 'Engine Bay Cleaning',
-    desc: "Thorough cleaning and degreasing of your engine bay, helping maintain your vehicle's performance and resale value.",
+    name: 'Headlight Restoration',
+    desc: 'Sand, polish and seal foggy, yellowed headlights back to clear for safer night driving and a fresher-looking front end.',
   },
 ];
 
 const whyUs = [
   {
-    name: 'Local Expertise',
-    desc: 'Family-owned in Blissfield, just minutes from Adrian. We know what Michigan roads and winters do to your vehicle.',
+    name: 'Minutes Down US-223',
+    desc: 'Family-owned in Blissfield, a short drive south of Tecumseh. Drop the car off, run your errands, pick it up looking new.',
   },
   {
-    name: 'Transparent Pricing',
-    desc: 'Flat, honest pricing from $35 to $160 — no surprises, no upsells. You know the cost before we start.',
+    name: 'One Flat Price',
+    desc: '$35 to $160, posted up front. No upsells and no "while we had it open" surprises when you come back.',
   },
   {
-    name: '5-Star Service',
-    desc: 'Every vehicle detailed by hand with the care that earns repeat customers across Lenawee County.',
+    name: 'Detailed By Hand',
+    desc: "Every car is finished by hand, never run through a tunnel. It's the difference our Tecumseh repeat customers keep coming back for.",
   },
 ];
 
-export default function CarDetailingAdrianMI() {
+export default function CarDetailingTecumsehMI() {
   return (
     <>
       <section className="gp-hero">
         <div className="inner">
           <div className="crumbs">
-            <Link href="/">Home</Link> / Car Detailing Adrian, MI
+            <Link href="/">Home</Link> / Car Detailing Tecumseh, MI
           </div>
-          <div className="ck-eyebrow">Adrian, Michigan</div>
+          <div className="ck-eyebrow">Tecumseh, Michigan</div>
           <h1>
             Car detailing
             <br />
-            in Adrian, MI
+            in Tecumseh, MI
           </h1>
           <p className="lead">
-            Expert auto wash, detailing & window tinting services from $35–$160.
-            Clean King proudly serves Adrian, Tecumseh and the wider Lenawee
-            County area — every vehicle detailed by hand.
+            Hand car wash, full auto detailing and ceramic window tinting from
+            $35–$160. Clean King is family-owned in Blissfield — a short drive
+            south of Tecumseh — and every vehicle is detailed by hand.
           </p>
           <div className="cta">
             <Link className="ck-btn ck-btn-accent" href="/appointment">
@@ -96,14 +96,14 @@ export default function CarDetailingAdrianMI() {
       <section className="garage-loc">
         <div className="inner">
           <div className="pane">
-            <div className="ck-eyebrow">Serving Adrian & Lenawee</div>
-            <h2>Adrian, Tecumseh, Lenawee &amp; surrounding areas</h2>
+            <div className="ck-eyebrow">Serving Tecumseh & Lenawee</div>
+            <h2>An easy drive from Tecumseh</h2>
             <p>
-              Clean King Detailing proudly serves Adrian, Michigan and the
-              entire Lenawee County area. Located just minutes away in
-              Blissfield, we bring professional car wash, auto detailing, and
-              window tinting services to Adrian, Tecumseh, and Lenawee County
-              residents and businesses.
+              We&apos;re based in Blissfield, just south of Tecumseh down US-223
+              — close enough to be your regular detailer, far enough from the
+              automatic washes to do the job right. Tecumseh drivers come to
+              Clean King for hand washing, interior detailing and ceramic tint
+              that&apos;s built for Michigan roads and weather.
             </p>
             <div className="info">
               <div>
@@ -117,8 +117,8 @@ export default function CarDetailingAdrianMI() {
                 <div className="v">{site.phone}</div>
               </div>
               <div>
-                <div className="k">From Adrian</div>
-                <div className="v">Just 15 minutes via US-223</div>
+                <div className="k">From Tecumseh</div>
+                <div className="v">About 30 minutes via US-223</div>
               </div>
             </div>
             <Link
@@ -147,7 +147,7 @@ export default function CarDetailingAdrianMI() {
             </h2>
           </div>
           <p>
-            Professional auto care tailored for Adrian vehicle owners.{' '}
+            Flat, honest packages for Tecumseh vehicle owners.{' '}
             <Link href="/services">See full details →</Link>
           </p>
         </div>
@@ -200,11 +200,11 @@ export default function CarDetailingAdrianMI() {
           <div className="garage-sh">
             <div>
               <div className="ck-eyebrow">Full service list</div>
-              <h2>Comprehensive auto care in Adrian</h2>
+              <h2>What we do for Tecumseh drivers</h2>
             </div>
             <p>
-              From hand washes to ceramic tint — everything your Adrian vehicle
-              needs in one shop.
+              From a careful hand wash to ceramic tint — the work that keeps a
+              vehicle looking and lasting better.
             </p>
           </div>
           <div className="xgrid">
@@ -225,7 +225,7 @@ export default function CarDetailingAdrianMI() {
           <div className="garage-sh">
             <div>
               <div className="ck-eyebrow">Why Clean King</div>
-              <h2>Why Adrian drivers choose us</h2>
+              <h2>Why Tecumseh drivers make the trip</h2>
             </div>
             <p>Local, honest, and detailed by hand — the way it should be.</p>
           </div>
@@ -243,12 +243,12 @@ export default function CarDetailingAdrianMI() {
 
       <section className="garage-cta">
         <div className="ck-eyebrow">
-          Serving Adrian · Blissfield · Tecumseh · Monroe · Lenawee County
+          Serving Tecumseh · Adrian · Blissfield · Lenawee County
         </div>
         <h2>
           Ready to detail
           <br />
-          your vehicle in Adrian?
+          your vehicle?
         </h2>
         <div className="row">
           <Link className="ck-btn ck-btn-accent" href="/appointment">

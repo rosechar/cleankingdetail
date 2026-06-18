@@ -1,4 +1,4 @@
-import { Anton, Hanken_Grotesk, JetBrains_Mono } from 'next/font/google';
+import { Anton, Hanken_Grotesk } from 'next/font/google';
 import './globals.css';
 import './garage.css';
 import Strip from '@/components/layout/Strip';
@@ -6,7 +6,6 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/react';
-import { ScrollToTop } from '@/components/layout/ScrollToTop';
 
 const anton = Anton({
   subsets: ['latin'],
@@ -20,13 +19,6 @@ const hanken = Hanken_Grotesk({
   variable: '--font-hanken',
   display: 'swap',
   fallback: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
-});
-
-const jetbrains = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-jetbrains',
-  display: 'swap',
-  fallback: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
 });
 
 export const metadata = {
@@ -86,8 +78,8 @@ const structuredData = {
   },
   geo: {
     '@type': 'GeoCoordinates',
-    latitude: '41.832791',
-    longitude: '-83.873159',
+    latitude: '41.836244',
+    longitude: '-83.876009',
   },
   openingHours: ['Mo-Fr 09:00-18:00'],
   priceRange: '$35-$160',
@@ -223,21 +215,18 @@ const structuredData = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${anton.variable} ${hanken.variable} ${jetbrains.variable}`}
-      >
+      <body className={`${anton.variable} ${hanken.variable}`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(structuredData),
           }}
         />
-        <ScrollToTop />
         <div className="ck-root" data-density="regular">
           <div className="ck-dir garage is-page" data-theme="dark">
             <Strip />
             <Header />
-            {children}
+            <main>{children}</main>
             <Footer />
           </div>
         </div>

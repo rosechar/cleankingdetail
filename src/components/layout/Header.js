@@ -29,7 +29,6 @@ export default function Header() {
           alt="Clean King Detailing"
           width={54}
           height={54}
-          priority
         />
         <span className="wm">Clean King</span>
       </Link>

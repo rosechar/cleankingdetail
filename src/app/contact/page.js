@@ -1,4 +1,5 @@
 import ContactPage from './ContactPage';
+import { faqs } from '@/data/faqs';
 
 export const metadata = {
   title: 'Contact Clean King Detailing | Blissfield, MI',
@@ -17,6 +18,27 @@ export const metadata = {
   },
 };
 
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: f.answer,
+    },
+  })),
+};
+
 export default function Contact() {
-  return <ContactPage />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <ContactPage />
+    </>
+  );
 }

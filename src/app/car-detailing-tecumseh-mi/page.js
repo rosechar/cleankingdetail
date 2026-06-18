@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { site, packages } from '@/data/site';
 import { GArrow } from '@/components/garage/Icons';
 import MapEmbed from '@/components/garage/MapEmbed';
+import { locationSchema } from '@/data/locationSchema';
 
 export const metadata = {
   title: 'Car Detailing in Tecumseh, MI | Clean King Detailing',
@@ -62,9 +63,20 @@ const whyUs = [
   },
 ];
 
+const locationLd = locationSchema({
+  areaType: 'City',
+  areaName: 'Tecumseh',
+  slug: 'car-detailing-tecumseh-mi',
+  description: metadata.description,
+});
+
 export default function CarDetailingTecumsehMI() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(locationLd) }}
+      />
       <section className="gp-hero">
         <div className="inner">
           <div className="crumbs">

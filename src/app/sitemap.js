@@ -25,6 +25,12 @@ export default function sitemap() {
       priority: 0.8,
     },
     {
+      url: 'https://www.cleankingdetail.com/car-detailing-ann-arbor-mi',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
       url: 'https://www.cleankingdetail.com/services',
       lastModified: new Date(),
       changeFrequency: 'weekly',

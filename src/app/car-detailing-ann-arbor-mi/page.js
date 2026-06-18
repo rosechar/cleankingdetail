@@ -5,72 +5,72 @@ import MapEmbed from '@/components/garage/MapEmbed';
 import { locationSchema } from '@/data/locationSchema';
 
 export const metadata = {
-  title: 'Car Detailing in Adrian, MI | Clean King Detailing',
+  title: 'Car Detailing near Ann Arbor, MI | Clean King Detailing',
   description:
-    'Professional car detailing in Adrian, MI from $35-$160. Interior/exterior detailing, clay bar, wax, buff, window tinting. Serving Adrian, Lenawee County. Call (517) 682-1919.',
+    'Professional car detailing & window tinting for Ann Arbor, MI drivers from $35–$160. Hand wash, interior deep clean, clay bar, ceramic tint — detailed by hand. A straight shot down US-23. Call (517) 682-1919.',
   keywords:
-    'car detailing Adrian MI, car wash Adrian Michigan, auto detailing Adrian, window tinting Adrian MI, clay bar Adrian, car wax Adrian, car buff Adrian, mobile car wash Adrian, best car detailing Adrian',
+    'car detailing Ann Arbor MI, car wash Ann Arbor Michigan, auto detailing Ann Arbor, window tinting Ann Arbor MI, interior detailing Ann Arbor, ceramic tint Ann Arbor, headlight restoration Ann Arbor, best car detailing near Ann Arbor, car detailing near University of Michigan, U-M student car detailing, car detailing Washtenaw County',
   openGraph: {
-    title: 'Car Detailing in Adrian, MI | Clean King Detailing',
+    title: 'Car Detailing near Ann Arbor, MI | Clean King Detailing',
     description:
-      'Professional car wash, detailing & window tinting in Adrian, MI. Clay bar, wax, buff services from $35-$160.',
-    url: 'https://www.cleankingdetail.com/car-detailing-adrian-mi',
+      'Hand car wash, auto detailing & ceramic window tinting for Ann Arbor, MI drivers. Flat pricing from $35–$160.',
+    url: 'https://www.cleankingdetail.com/car-detailing-ann-arbor-mi',
   },
   alternates: {
-    canonical: 'https://www.cleankingdetail.com/car-detailing-adrian-mi',
+    canonical: 'https://www.cleankingdetail.com/car-detailing-ann-arbor-mi',
   },
 };
 
 const detailedServices = [
   {
-    name: 'Professional Car Wash',
-    desc: "Hand wash and foam treatment to safely clean your vehicle's exterior, removing dirt, grime, and road salt common on Adrian area roads.",
+    name: 'Hand Car Wash',
+    desc: 'A careful two-bucket hand wash and foam bath that lifts road film and salt without swirling your paint — gentler than the automatic tunnels around town.',
   },
   {
-    name: 'Clay Bar Treatment',
-    desc: "Remove embedded contaminants from your paint surface that regular washing can't eliminate, leaving your car's paint smooth and ready for wax protection.",
+    name: 'Interior Deep Clean',
+    desc: 'Vacuum, shampoo and steam for seats, carpets and mats, clearing out the mud and salt that pile up over a Michigan winter.',
   },
   {
-    name: 'Wax & Buff Services',
-    desc: "Professional waxing and buffing to protect your paint from Michigan's harsh weather conditions while restoring that showroom shine.",
+    name: 'Clay Bar & Decontamination',
+    desc: 'Pulls bonded contaminants and rail dust out of the clear coat so wax and sealant actually grip — the step most quick washes skip.',
   },
   {
-    name: 'Interior Detailing',
-    desc: 'Deep cleaning of seats, carpets, dashboard, and all interior surfaces. Perfect for removing winter salt stains and keeping your Adrian vehicle fresh.',
+    name: 'Hand Wax & Paint Sealant',
+    desc: 'A hand-applied wax or sealant that stands up to Michigan sun, rain and winter road brine, locking in a deep gloss for months.',
   },
   {
-    name: 'Window Tinting',
-    desc: "Professional ceramic window tint installation to reduce heat, glare, and UV rays. Especially beneficial for Adrian's sunny summer days and winter glare.",
+    name: 'Ceramic Window Tint',
+    desc: 'Professional ceramic film that cuts heat, glare and 99% of UV — a real difference on open US-23 drives and bright winter mornings.',
   },
   {
-    name: 'Engine Bay Cleaning',
-    desc: "Thorough cleaning and degreasing of your engine bay, helping maintain your vehicle's performance and resale value.",
+    name: 'Headlight Restoration',
+    desc: 'Sand, polish and seal foggy, yellowed headlights back to clear for safer night driving and a fresher-looking front end.',
   },
 ];
 
 const whyUs = [
   {
-    name: 'Local Expertise',
-    desc: 'Family-owned in Blissfield, just minutes from Adrian. We know what Michigan roads and winters do to your vehicle.',
+    name: 'A Straight Shot Down US-23',
+    desc: 'Family-owned in Blissfield, an easy drive south of Ann Arbor. Drop the car off, run your errands, pick it up looking new.',
   },
   {
-    name: 'Transparent Pricing',
-    desc: 'Flat, honest pricing from $35 to $160 — no surprises, no upsells. You know the cost before we start.',
+    name: 'One Flat Price',
+    desc: '$35 to $160, posted up front. No upsells and no "while we had it open" surprises when you come back.',
   },
   {
-    name: '5-Star Service',
-    desc: 'Every vehicle detailed by hand with the care that earns repeat customers across Lenawee County.',
+    name: 'Detailed By Hand',
+    desc: "Every car is finished by hand, never run through a tunnel. It's the difference that makes the drive from Ann Arbor worth it.",
   },
 ];
 
 const locationLd = locationSchema({
   areaType: 'City',
-  areaName: 'Adrian',
-  slug: 'car-detailing-adrian-mi',
+  areaName: 'Ann Arbor',
+  slug: 'car-detailing-ann-arbor-mi',
   description: metadata.description,
 });
 
-export default function CarDetailingAdrianMI() {
+export default function CarDetailingAnnArborMI() {
   return (
     <>
       <script
@@ -80,18 +80,19 @@ export default function CarDetailingAdrianMI() {
       <section className="gp-hero">
         <div className="inner">
           <div className="crumbs">
-            <Link href="/">Home</Link> / Car Detailing Adrian, MI
+            <Link href="/">Home</Link> / Car Detailing Ann Arbor, MI
           </div>
-          <div className="ck-eyebrow">Adrian, Michigan</div>
+          <div className="ck-eyebrow">Ann Arbor, Michigan</div>
           <h1>
             Car detailing
             <br />
-            in Adrian, MI
+            near Ann Arbor, MI
           </h1>
           <p className="lead">
-            Expert auto wash, detailing & window tinting services from $35–$160.
-            Clean King proudly serves Adrian, Tecumseh and the wider Lenawee
-            County area — every vehicle detailed by hand.
+            Hand car wash, full auto detailing and ceramic window tinting from
+            $35–$160. Clean King is family-owned in Blissfield — a straight shot
+            south of Ann Arbor down US-23 — and every vehicle is detailed by
+            hand.
           </p>
           <div className="cta">
             <Link className="ck-btn ck-btn-accent" href="/appointment">
@@ -108,16 +109,16 @@ export default function CarDetailingAdrianMI() {
       <section className="garage-loc">
         <div className="inner">
           <div className="pane">
-            <div className="ck-eyebrow">Serving Adrian & Lenawee</div>
-            <h2>Adrian, Tecumseh, Lenawee &amp; surrounding areas</h2>
+            <div className="ck-eyebrow">Serving Ann Arbor & Washtenaw</div>
+            <h2>An easy drive from Ann Arbor</h2>
             <p>
-              Clean King Detailing is just 15 minutes from Adrian down US-223,
-              so dropping the car off is easy — whether you&apos;re an Adrian
-              College or Siena Heights student cleaning up before break, a
-              downtown Adrian business keeping a work vehicle sharp, or a family
-              shaking off a Michigan winter. We hand wash, detail and ceramic
-              tint for Adrian drivers who want the job done right, not rushed
-              through a tunnel.
+              We&apos;re based in Blissfield, a straight shot south of Ann Arbor
+              down US-23 — close enough to be your regular detailer, far enough
+              from the automatic washes to do the job right. Ann Arbor drivers —
+              from University of Michigan students prepping a car for an
+              end-of-lease return or move-out to families across Washtenaw
+              County — come to Clean King for hand washing, interior detailing
+              and ceramic tint that&apos;s built for Michigan roads and weather.
             </p>
             <div className="info">
               <div>
@@ -131,8 +132,8 @@ export default function CarDetailingAdrianMI() {
                 <div className="v">{site.phone}</div>
               </div>
               <div>
-                <div className="k">From Adrian</div>
-                <div className="v">Just 15 minutes via US-223</div>
+                <div className="k">From Ann Arbor</div>
+                <div className="v">About 45 minutes via US-23</div>
               </div>
             </div>
             <Link
@@ -161,7 +162,7 @@ export default function CarDetailingAdrianMI() {
             </h2>
           </div>
           <p>
-            Professional auto care tailored for Adrian vehicle owners.{' '}
+            Flat, honest packages for Ann Arbor vehicle owners.{' '}
             <Link href="/services">See full details →</Link>
           </p>
         </div>
@@ -214,11 +215,11 @@ export default function CarDetailingAdrianMI() {
           <div className="garage-sh">
             <div>
               <div className="ck-eyebrow">Full service list</div>
-              <h2>Comprehensive auto care in Adrian</h2>
+              <h2>What we do for Ann Arbor drivers</h2>
             </div>
             <p>
-              From hand washes to ceramic tint — everything your Adrian vehicle
-              needs in one shop.
+              From a careful hand wash to ceramic tint — the work that keeps a
+              vehicle looking and lasting better.
             </p>
           </div>
           <div className="xgrid">
@@ -239,7 +240,7 @@ export default function CarDetailingAdrianMI() {
           <div className="garage-sh">
             <div>
               <div className="ck-eyebrow">Why Clean King</div>
-              <h2>Why Adrian drivers choose us</h2>
+              <h2>Why Ann Arbor drivers make the trip</h2>
             </div>
             <p>Local, honest, and detailed by hand — the way it should be.</p>
           </div>
@@ -257,12 +258,12 @@ export default function CarDetailingAdrianMI() {
 
       <section className="garage-cta">
         <div className="ck-eyebrow">
-          Serving Adrian · Blissfield · Tecumseh · Monroe · Lenawee County
+          Serving Ann Arbor · Saline · Tecumseh · Blissfield
         </div>
         <h2>
           Ready to detail
           <br />
-          your vehicle in Adrian?
+          your vehicle?
         </h2>
         <div className="row">
           <Link className="ck-btn ck-btn-accent" href="/appointment">

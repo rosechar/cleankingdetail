@@ -54,9 +54,12 @@ export const metadata = {
     'geo.placename': 'Blissfield',
   },
   icons: {
-    icon: [{ rel: 'icon', url: '/favicon.ico' }],
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon-96.png', type: 'image/png', sizes: '96x96' },
+    ],
     shortcut: ['/favicon.ico'],
-    apple: [{ url: '/cleanking.png' }],
+    apple: [{ url: '/apple-icon.png', sizes: '180x180' }],
   },
   manifest: '/manifest.json',
 };
@@ -64,6 +67,7 @@ export const metadata = {
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'AutoWash',
+  '@id': 'https://www.cleankingdetail.com/#business',
   name: 'Clean King Detailing',
   image: 'https://www.cleankingdetail.com/cleanking.jpg',
   url: 'https://www.cleankingdetail.com',
@@ -103,11 +107,22 @@ const structuredData = {
       name: 'Monroe',
     },
     {
+      '@type': 'City',
+      name: 'Ann Arbor',
+    },
+    {
       '@type': 'County',
       name: 'Lenawee County',
     },
+    {
+      '@type': 'County',
+      name: 'Washtenaw County',
+    },
   ],
-  sameAs: ['https://www.facebook.com/people/Clean-King/100063915012506/'],
+  sameAs: [
+    'https://www.facebook.com/people/Clean-King/100063915012506/',
+    'https://www.google.com/maps?cid=11223607935664648783',
+  ],
   paymentAccepted: ['Cash', 'Credit Card', 'Debit Card'],
   currenciesAccepted: 'USD',
   hasOfferCatalog: {

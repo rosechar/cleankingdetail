@@ -5,8 +5,7 @@ export const site = {
   address1: '610 W Adrian St',
   address2: 'Blissfield, MI 49228',
   facebook: 'https://www.facebook.com/people/Clean-King/100063915012506/',
-  google:
-    'https://www.google.com/maps/search/?api=1&query=Clean+King+Detailing+Blissfield+MI',
+  google: 'https://www.google.com/maps?cid=11223607935664648783',
   tagline: 'The King of Clean',
   hoursNote: 'Mon–Fri · 9 AM – 6 PM',
   areas: ['Blissfield', 'Adrian', 'Tecumseh', 'Monroe', 'Lenawee County'],

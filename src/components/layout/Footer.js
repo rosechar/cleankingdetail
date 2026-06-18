@@ -31,6 +31,7 @@ export default function Footer() {
         <div className="fn-row">
           <Link href="/car-detailing-adrian-mi">Adrian</Link>
           <Link href="/car-detailing-tecumseh-mi">Tecumseh</Link>
+          <Link href="/car-detailing-ann-arbor-mi">Ann Arbor</Link>
           <Link href="/car-detailing-lenawee-county">Lenawee County</Link>
         </div>
       </nav>

@@ -252,9 +252,19 @@
   justify-content: space-between;
   gap: 24px;
   padding: 16px var(--px);
+  border-bottom: 1px solid var(--line);
+}
+/* Tint + blur live on a pseudo-element so the header is NOT a backdrop root.
+   A nested backdrop-filter (the mobile nav dropdown) under a filtered ancestor
+   has nothing to blur, which is why the nav looked clear while the header
+   didn't. With the filter off the header itself, the nav's own blur works. */
+.garage-head::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background: color-mix(in oklch, var(--bg) 82%, transparent);
   backdrop-filter: blur(14px) saturate(1.2);
-  border-bottom: 1px solid var(--line);
 }
 .garage-brand {
   display: flex;
@@ -355,6 +365,51 @@
   transform: translateY(-7px) rotate(-45deg);
 }
 
+/* ---------- mobile sticky CTA bar ---------- */
+.ck-mcta {
+  display: none; /* shown on mobile only — see media query below */
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  gap: 10px;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+  background: color-mix(in oklch, var(--bg) 86%, transparent);
+  backdrop-filter: blur(14px) saturate(1.2);
+  border-top: 1px solid var(--line);
+  /* Hidden until scrolled past the hero CTAs (toggled by .show). */
+  transform: translateY(120%);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.32s cubic-bezier(0.2, 0.7, 0.3, 1),
+    opacity 0.32s ease;
+}
+.ck-mcta.show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ck-mcta {
+    transition: opacity 0.2s ease;
+    transform: none;
+  }
+}
+.ck-mcta .ck-btn {
+  flex: 1 1 0;
+  padding: 14px 18px;
+}
+.ck-mcta .ck-btn svg {
+  width: 17px;
+  height: 17px;
+  fill: currentColor;
+}
+.ck-mcta .ck-btn-ghost {
+  background: color-mix(in oklch, var(--surface) 55%, transparent);
+}
+
 /* ---------- hero ---------- */
 .garage-hero {
   display: grid;
@@ -399,6 +454,30 @@
 }
 .garage-hero .cta .ck-btn {
   flex: 1 1 0;
+}
+.garage-hero .hrating {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  align-self: flex-start;
+  margin-top: 18px;
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  transition: color 0.18s;
+}
+.garage-hero .hrating:hover {
+  color: var(--fg);
+}
+.garage-hero .hrating .ck-stars svg {
+  width: 15px;
+  height: 15px;
+}
+.garage-hero .hrating .ht b {
+  color: var(--fg);
+  font-weight: 600;
 }
 .garage-hero .hstats {
   display: flex;
@@ -447,6 +526,10 @@
 .garage-hero .himg .ph {
   position: absolute;
   inset: 0;
+}
+/* CTA overlay on the image is a mobile-only treatment (see media query). */
+.garage-hero .himg-cta {
+  display: none;
 }
 .garage-hero .himg .badge {
   position: absolute;
@@ -550,7 +633,6 @@
   padding: 34px 30px 30px;
   display: flex;
   flex-direction: column;
-  min-height: 240px;
   transition: background 0.2s;
   position: relative;
   color: inherit;
@@ -588,31 +670,14 @@
   margin-top: 16px;
   line-height: 1.5;
 }
-.garage-card ul {
-  list-style: none;
-  margin-top: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-}
-.garage-card li {
-  display: flex;
-  gap: 10px;
-  align-items: baseline;
-  font-size: 14px;
-  color: var(--fg-2);
-}
-.garage-card li::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  background: var(--accent);
-  flex: 0 0 auto;
-  transform: translateY(1px) rotate(45deg);
-}
-.garage-card .cbook {
+.garage-card .cactions {
   margin-top: auto;
   padding-top: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 22px;
+}
+.garage-card .cbook {
   font-family: var(--font-mono), monospace;
   font-size: 12.5px;
   letter-spacing: 0.14em;
@@ -622,6 +687,10 @@
   align-items: center;
   gap: 8px;
   align-self: flex-start;
+  transition: color 0.15s;
+}
+.garage-card .cbook:hover {
+  color: var(--accent);
 }
 .garage-card .cbook svg {
   width: 13px;
@@ -631,7 +700,7 @@
   stroke-width: 2;
   transition: transform 0.2s;
 }
-.garage-card:hover .cbook svg {
+.garage-card .cbook:hover svg {
   transform: translateX(4px);
 }
 .garage-card .poptag {
@@ -649,11 +718,84 @@
   padding: 5px 12px;
 }
 
+/* ---------- our work (gallery) ---------- */
+.garage-work {
+  padding: var(--sp) var(--px);
+  border-top: 1px solid var(--line);
+}
+.garage-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  max-width: 1240px;
+  margin: 0 auto;
+}
+.gwork {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--surface);
+}
+.gwork img {
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.gwork:hover img.after,
+.gwork:focus-visible img.after {
+  transform: scale(1.05);
+}
+.gwork .before {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.gwork.pair:hover .before,
+.gwork.pair:focus-visible .before {
+  opacity: 1;
+}
+.gwork:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.gwork .ck-ph {
+  position: absolute;
+  inset: 0;
+}
+.gwork .gtag {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  padding: 32px 16px 14px;
+  background: linear-gradient(to top, rgba(8, 8, 10, 0.78), transparent);
+}
+.gwork .gtag .ba {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  background: var(--accent);
+  transform: rotate(45deg);
+}
+
 /* ---------- review ---------- */
 .garage-review {
   padding: var(--sp) var(--px);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
+}
+/* No double divider when the carousel sits directly under the marquee. */
+.garage-marq + .garage-review {
+  border-top: none;
 }
 .garage-review .inner {
   max-width: 1040px;
@@ -688,25 +830,28 @@
   text-transform: uppercase;
   color: var(--fg-2);
 }
-.garage-review .links {
-  margin-top: 22px;
-  display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-}
-.garage-review .links a {
-  font-family: var(--font-mono), monospace;
-  font-size: 12.5px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--fg-3);
+/* the whole review links out to Google reviews */
+.garage-review .by .nm {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   transition: color 0.15s;
 }
-.garage-review .links a:hover {
+.garage-review .by .ext {
+  width: 13px;
+  height: 13px;
+  stroke-width: 2;
+  color: var(--fg-3);
+  transition:
+    color 0.18s,
+    transform 0.18s;
+}
+.garage-review .rv-item:hover .nm {
+  color: var(--fg);
+}
+.garage-review .rv-item:hover .ext {
   color: var(--accent);
+  transform: translate(1px, -1px);
 }
 /* rotating reviews — all stacked in one grid cell so the block stays as
    tall as the longest review (no layout shift), only the active one shows */
@@ -1044,10 +1189,21 @@
   .garage-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .garage-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 @media (max-width: 760px) {
   .garage-burger {
     display: inline-flex;
+  }
+  /* Sticky CTA bar takes over for the hidden header buttons on mobile. */
+  .ck-mcta {
+    display: flex;
+  }
+  /* Keep footer content clear of the fixed bar. */
+  .garage-foot {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
   }
   .garage-head {
     padding: 10px var(--px);
@@ -1069,7 +1225,9 @@
     flex-direction: column;
     gap: 0;
     margin: 0;
-    background: var(--bg);
+    /* Match the header's translucent, blurred backdrop. */
+    background: color-mix(in oklch, var(--bg) 82%, transparent);
+    backdrop-filter: blur(14px) saturate(1.2);
     border-bottom: 1px solid var(--line);
     padding: 4px var(--px) 14px;
   }
@@ -1084,9 +1242,82 @@
   .garage-nav a::after {
     display: none;
   }
-  .garage-strip span:last-child {
+  /* Hide the top strip entirely on mobile. */
+  .garage-strip {
     display: none;
   }
+
+  /* Hero fills the viewport with the marquee visible at the bottom. The
+     headline overlays the top-left of the (taller) image and the CTA its
+     centre; the eyebrow + supporting text sit below the image. The 146px is
+     the header (~84) + marquee (~62) so they bracket one full screen. */
+  .garage-hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-width: none;
+    min-height: calc(100vh - 146px);
+    min-height: calc(100svh - 146px);
+  }
+  .garage-hero .himg {
+    order: -1;
+    flex: 1 1 auto; /* grows to fill the remaining viewport height */
+    min-height: 300px;
+  }
+  .garage-hero .htext {
+    flex: 0 0 auto;
+    padding: 22px var(--px) 26px;
+  }
+  /* Headline overlaid top-left of the image as a badge. */
+  .garage-hero h1 {
+    position: absolute;
+    top: 16px;
+    left: var(--px);
+    z-index: 3;
+    margin: 0;
+    max-width: calc(100% - var(--px) * 2);
+    padding: 12px 16px 14px;
+    font-size: clamp(38px, 11.5vw, 58px);
+    background: rgba(10, 10, 12, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    backdrop-filter: blur(4px);
+  }
+  /* CTA overlaid on the centre of the image, in place of the in-flow one. */
+  .garage-hero .htext .cta {
+    display: none;
+  }
+  .garage-hero .himg-cta {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: var(--px);
+    right: var(--px);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    gap: 12px;
+  }
+  .garage-hero .himg-cta .ck-btn {
+    width: 100%;
+    padding: 17px 24px;
+    font-size: 16px;
+  }
+  .garage-hero .himg-cta .ck-btn-ghost {
+    background: rgba(13, 13, 16, 0.55);
+    backdrop-filter: blur(3px);
+  }
+  /* Supporting text below the image. */
+  .garage-hero .sub {
+    margin-top: 10px;
+  }
+  .garage-hero .hrating {
+    margin-top: 14px;
+  }
+  .garage-hero .hstats {
+    margin-top: 20px;
+    padding-top: 18px;
+  }
+
   .garage-review .inner {
     grid-template-columns: 1fr;
   }
@@ -1109,18 +1340,6 @@
   }
   .garage-brand .wm {
     font-size: 21px;
-  }
-  .garage-hero h1 {
-    font-size: clamp(46px, 13vw, 72px);
-  }
-  .garage-hero .cta {
-    flex-wrap: nowrap;
-    gap: 10px;
-    max-width: none;
-  }
-  .garage-hero .cta .ck-btn {
-    padding: 12px 14px;
-    font-size: 13.5px;
   }
 }
 
@@ -1145,6 +1364,9 @@
   }
   .garage-hero .htext > *:nth-child(5) {
     animation-delay: 0.37s;
+  }
+  .garage-hero .htext > *:nth-child(6) {
+    animation-delay: 0.45s;
   }
   .garage-hero .himg {
     opacity: 0;
@@ -1232,6 +1454,7 @@
   padding: clamp(14px, 1.8vw, 22px) 0;
   border-top: 1px solid var(--line);
   position: relative;
+  scroll-margin-top: 100px; /* clear the sticky header on #anchor jumps */
 }
 .svc-inner .svc-pkg:first-of-type {
   border-top: none;
@@ -1292,6 +1515,94 @@
   color: var(--fg-2);
 }
 .svc-pkg li svg {
+  width: 15px;
+  height: 15px;
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 2.6;
+  flex: 0 0 auto;
+  transform: translateY(2px);
+}
+/* collapsible "Includes <tier> services" */
+.svc-inc {
+  margin-top: 18px;
+  max-width: 540px;
+}
+.svc-inc-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-mono), monospace;
+  font-size: 12.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  transition: color 0.15s;
+}
+.svc-inc-toggle:hover {
+  color: var(--fg);
+}
+.svc-inc-toggle .ico {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+}
+.svc-inc-toggle .ico::before,
+.svc-inc-toggle .ico::after {
+  content: '';
+  position: absolute;
+  background: var(--accent);
+}
+.svc-inc-toggle .ico::before {
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  transform: translateY(-50%);
+}
+.svc-inc-toggle .ico::after {
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  transition: transform 0.25s ease;
+}
+.svc-inc.open .svc-inc-toggle .ico::after {
+  transform: translateX(-50%) scaleY(0);
+}
+.svc-inc-list {
+  list-style: none;
+  overflow: hidden;
+  max-height: 0;
+  margin-top: 0;
+  opacity: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px 26px;
+  transition:
+    max-height 0.32s ease,
+    opacity 0.25s ease,
+    margin-top 0.32s ease;
+}
+.svc-inc.open .svc-inc-list {
+  max-height: 900px; /* generous so the 16-item list never clips on mobile */
+  margin-top: 14px;
+  opacity: 1;
+}
+.svc-inc-list li {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  font-size: 14px;
+  color: var(--fg-2);
+}
+.svc-inc-list li svg {
   width: 15px;
   height: 15px;
   stroke: var(--accent);
@@ -2063,7 +2374,8 @@ textarea.bk-input {
   }
 }
 @media (max-width: 620px) {
-  .svc-pkg ul {
+  .svc-pkg ul,
+  .svc-inc-list {
     grid-template-columns: 1fr;
   }
   .bk-fields,

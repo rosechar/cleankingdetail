@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { site, packages } from '@/data/site';
-import { GArrow } from '@/components/garage/Icons';
+import { GArrow, GStar } from '@/components/garage/Icons';
 import ReviewsCarousel from '@/components/garage/ReviewsCarousel';
+import Gallery from '@/components/garage/Gallery';
 import MapEmbed from '@/components/garage/MapEmbed';
 
 const Home = () => {
@@ -11,9 +12,7 @@ const Home = () => {
       {/* hero */}
       <section className="garage-hero" id="top">
         <div className="htext">
-          <div className="ck-eyebrow">
-            Showroom-grade auto detailing in Blissfield, Michigan
-          </div>
+          <div className="ck-eyebrow">Showroom-grade auto detailing</div>
           <h1>
             The King
             <br />
@@ -30,6 +29,25 @@ const Home = () => {
               {site.phone}
             </a>
           </div>
+          <a
+            className="hrating"
+            href={site.google}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Rated ${site.rating.score} out of 5${
+              site.rating.count ? ` from ${site.rating.count} reviews` : ''
+            } on Google — read our reviews`}
+          >
+            <span className="ck-stars" aria-hidden="true">
+              {[0, 1, 2, 3, 4].map((s) => (
+                <GStar key={s} />
+              ))}
+            </span>
+            <span className="ht" aria-hidden="true">
+              <b>{site.rating.score}</b> on Google
+              {site.rating.count ? ` · ${site.rating.count} reviews` : ''}
+            </span>
+          </a>
           <div className="hstats">
             <div>
               <div className="n">
@@ -57,6 +75,15 @@ const Home = () => {
             sizes="(max-width: 1024px) 100vw, 45vw"
             priority
           />
+          {/* mobile-only: CTA overlaid on the center of the image */}
+          <div className="himg-cta">
+            <Link className="ck-btn ck-btn-accent" href="/appointment">
+              Book Appointment
+            </Link>
+            <a className="ck-btn ck-btn-ghost" href={site.phoneHref}>
+              {site.phone}
+            </a>
+          </div>
           <span className="badge">Deluxe Detail · Wheels &amp; Tires</span>
         </div>
       </section>
@@ -73,6 +100,9 @@ const Home = () => {
           ))}
         </div>
       </div>
+
+      {/* review — social proof before pricing */}
+      <ReviewsCarousel />
 
       {/* services preview */}
       <section className="garage-services" id="services">
@@ -95,10 +125,9 @@ const Home = () => {
         </div>
         <div className="garage-grid">
           {packages.map((s) => (
-            <Link
+            <article
               className={'garage-card' + (s.popular ? ' pop' : '')}
               key={s.name}
-              href={`/appointment?pkg=${s.id}`}
             >
               {s.popular && <span className="poptag">Most popular</span>}
               <div className="ci">
@@ -106,15 +135,15 @@ const Home = () => {
                 <span className="cprice">{s.price}</span>
               </div>
               <p className="cdesc">{s.blurb}</p>
-              <ul>
-                {s.items.map((it) => (
-                  <li key={it}>{it}</li>
-                ))}
-              </ul>
-              <span className="cbook">
-                Book this <GArrow />
-              </span>
-            </Link>
+              <div className="cactions">
+                <Link className="cbook" href={`/appointment?pkg=${s.id}`}>
+                  Book this <GArrow />
+                </Link>
+                <Link className="cbook" href={`/services#${s.id}`}>
+                  View details <GArrow />
+                </Link>
+              </div>
+            </article>
           ))}
           <Link
             className="garage-card"
@@ -138,8 +167,8 @@ const Home = () => {
         </div>
       </section>
 
-      {/* review */}
-      <ReviewsCarousel />
+      {/* our work */}
+      <Gallery />
 
       {/* location */}
       <section className="garage-loc" id="location">

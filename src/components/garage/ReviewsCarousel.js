@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { site } from '@/data/site';
-import { GArrow, GStar } from './Icons';
+import { GStar, GExternal } from './Icons';
 
 export default function ReviewsCarousel() {
   const reviews = site.reviews;
@@ -36,33 +36,30 @@ export default function ReviewsCarousel() {
         <div>
           <div className="rv">
             {reviews.map((rev, idx) => (
-              <div
+              <a
                 className={'rv-item' + (idx === index ? ' on' : '')}
                 key={idx}
+                href={site.google}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-hidden={idx !== index}
+                tabIndex={idx === index ? 0 : -1}
               >
                 <blockquote>{rev.quote}</blockquote>
                 <div className="by">
-                  <span className="ck-stars">
+                  <span className="ck-stars" aria-hidden="true">
                     {[0, 1, 2, 3, 4].map((s) => (
                       <GStar key={s} />
                     ))}
                   </span>{' '}
-                  {rev.name}
-                  {rev.car ? ` · ${rev.car}` : ''}
+                  <span className="nm">
+                    {rev.name}
+                    {rev.car ? ` · ${rev.car}` : ''}
+                    <GExternal className="ext" aria-hidden="true" />
+                  </span>
                 </div>
-              </div>
+              </a>
             ))}
-          </div>
-          <div className="links">
-            <a href={site.google} target="_blank" rel="noopener noreferrer">
-              Reviews on Google{' '}
-              <GArrow style={{ width: 12, height: 12, strokeWidth: 2 }} />
-            </a>
-            <a href={site.facebook} target="_blank" rel="noopener noreferrer">
-              Facebook{' '}
-              <GArrow style={{ width: 12, height: 12, strokeWidth: 2 }} />
-            </a>
           </div>
           {reviews.length > 1 && (
             <div className="rv-dots">

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { site, packages } from '@/data/site';
 import { GCheck } from '@/components/garage/Icons';
+import IncludesToggle from '@/components/garage/IncludesToggle';
 
 export const metadata = {
   title: 'Car Detailing Services & Pricing | Clean King — Blissfield, MI',
@@ -44,7 +45,11 @@ export default function Services() {
       <section className="svc" id="packages">
         <div className="svc-inner">
           {packages.map((s) => (
-            <div className={'svc-pkg' + (s.popular ? ' pop' : '')} key={s.name}>
+            <div
+              className={'svc-pkg' + (s.popular ? ' pop' : '')}
+              key={s.name}
+              id={s.id}
+            >
               <div className="left">
                 <h3>
                   {s.name}
@@ -52,12 +57,15 @@ export default function Services() {
                 </h3>
                 <p className="d">{s.blurb}</p>
                 <ul>
-                  {s.items.map((it) => (
+                  {(s.details || s.items).map((it) => (
                     <li key={it}>
                       <GCheck /> {it}
                     </li>
                   ))}
                 </ul>
+                {s.includes && (
+                  <IncludesToggle text={s.includesText} items={s.includes} />
+                )}
               </div>
               <div className="right">
                 <div className="price">{s.price}</div>

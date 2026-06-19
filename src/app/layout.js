@@ -4,6 +4,7 @@ import './garage.css';
 import Strip from '@/components/layout/Strip';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import MobileCTA from '@/components/layout/MobileCTA';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/react';
 
@@ -243,6 +244,7 @@ export default function RootLayout({ children }) {
             <Header />
             <main>{children}</main>
             <Footer />
+            <MobileCTA />
           </div>
         </div>
         <SpeedInsights />

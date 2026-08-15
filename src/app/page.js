@@ -170,7 +170,7 @@ const Home = () => {
       </section>
 
       {/* our work */}
-      <Gallery />
+      {/* <Gallery /> */}
 
       {/* location */}
       <section className="garage-loc" id="location">

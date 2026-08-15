@@ -25,9 +25,6 @@ export default function Services() {
     <>
       <section className="gp-hero">
         <div className="inner">
-          <div className="crumbs">
-            <Link href="/">Home</Link> / Services
-          </div>
           <div className="ck-eyebrow">Services &amp; Pricing</div>
           <h1>
             Detailing,
@@ -35,9 +32,8 @@ export default function Services() {
             done by hand
           </h1>
           <p className="lead">
-            Five straightforward packages — plus à la carte work, ceramic tint
-            and paint protection. Every job is done by hand in Blissfield, and
-            prices are flat and honest.
+            Five straightforward packages, plus à la carte work, ceramic tint
+            and paint protection.
           </p>
         </div>
       </section>

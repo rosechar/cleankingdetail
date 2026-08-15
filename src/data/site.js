@@ -72,7 +72,7 @@ export const packages = [
     name: 'Full Detail',
     price: '$140',
     blurb:
-      'The complete package — a spotless interior plus a washed & waxed exterior.',
+      'The complete package: a spotless interior plus a washed & waxed exterior.',
     items: [
       'Complete interior detail',
       'Exterior wash & wax',

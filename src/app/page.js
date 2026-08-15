@@ -12,7 +12,9 @@ const Home = () => {
       {/* hero */}
       <section className="garage-hero" id="top">
         <div className="htext">
-          <div className="ck-eyebrow">Showroom-grade auto detailing</div>
+          <div className="ck-eyebrow">
+            Showroom-grade auto detailing in Blissfield, Michigan
+          </div>
           <h1>
             The King
             <br />

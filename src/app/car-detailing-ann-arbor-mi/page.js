@@ -79,9 +79,6 @@ export default function CarDetailingAnnArborMI() {
       />
       <section className="gp-hero">
         <div className="inner">
-          <div className="crumbs">
-            <Link href="/">Home</Link> / Car Detailing Ann Arbor, MI
-          </div>
           <div className="ck-eyebrow">Ann Arbor, Michigan</div>
           <h1>
             Car detailing

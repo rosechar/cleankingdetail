@@ -79,9 +79,6 @@ export default function CarDetailingAdrianMI() {
       />
       <section className="gp-hero">
         <div className="inner">
-          <div className="crumbs">
-            <Link href="/">Home</Link> / Car Detailing Adrian, MI
-          </div>
           <div className="ck-eyebrow">Adrian, Michigan</div>
           <h1>
             Car detailing

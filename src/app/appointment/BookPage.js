@@ -159,9 +159,6 @@ export default function BookPage() {
     <>
       <section className="gp-hero">
         <div className="inner">
-          <div className="crumbs">
-            <Link href="/">Home</Link> / Book
-          </div>
           <div className="ck-eyebrow">Online Booking</div>
           <h1>
             Book your

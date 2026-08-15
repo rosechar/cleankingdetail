@@ -62,9 +62,6 @@ export default function ContactPage() {
     <>
       <section className="gp-hero">
         <div className="inner">
-          <div className="crumbs">
-            <Link href="/">Home</Link> / Contact
-          </div>
           <div className="ck-eyebrow">Get in touch</div>
           <h1>
             Come see

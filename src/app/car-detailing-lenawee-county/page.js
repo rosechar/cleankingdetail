@@ -79,9 +79,6 @@ export default function CarDetailingLenaweeCounty() {
       />
       <section className="gp-hero">
         <div className="inner">
-          <div className="crumbs">
-            <Link href="/">Home</Link> / Car Detailing Lenawee County
-          </div>
           <div className="ck-eyebrow">Lenawee County, Michigan</div>
           <h1>
             Car detailing

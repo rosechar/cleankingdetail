@@ -1,48 +1,178 @@
-/* Minimal base reset (replaces Tailwind's Preflight). The design system's own
-   reset lives in garage.css, scoped under .ck-dir. */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+@import 'tailwindcss';
+
+/* ===========================================================
+   Clean King — design tokens (dark only, red accent)
+   Everything visual is expressed as Tailwind utilities in JSX;
+   this file only holds the theme, element defaults and a few
+   custom utilities that have no built-in equivalent.
+   =========================================================== */
+@theme {
+  /* palette */
+  --color-canvas: #0d0d0f;
+  --color-surface: #161619;
+  --color-surface-2: #1e1e22;
+  --color-fg: #f4f3ef;
+  --color-fg-2: #c2c2be;
+  --color-fg-3: #9d9da2;
+  --color-line: rgb(255 255 255 / 0.13);
+  --color-line-2: rgb(255 255 255 / 0.26);
+  --color-accent: #d8352e;
+  --color-on-accent: #fbfaf6;
+
+  /* type families (next/font variables are set on <html>) */
+  --font-display: var(--font-anton), 'Anton', sans-serif;
+  --font-body: var(--font-hanken), 'Hanken Grotesk', system-ui, -apple-system,
+    'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
+    'Liberation Mono', monospace;
+
+  /* fluid display sizes (line-height travels with the size) */
+  --text-hero: clamp(3.25rem, 6.2vw, 7.375rem);
+  --text-hero--line-height: 0.85;
+  --text-hero-tablet: clamp(3.5rem, 11vw, 6.5rem);
+  --text-hero-tablet--line-height: 0.85;
+  --text-hero-mobile: clamp(2.375rem, 11.5vw, 3.625rem);
+  --text-hero-mobile--line-height: 0.85;
+  --text-display-3xl: clamp(2.875rem, 7vw, 6.5rem);
+  --text-display-3xl--line-height: 0.86;
+  --text-display-2xl: clamp(2.75rem, 7vw, 5.25rem);
+  --text-display-2xl--line-height: 0.9;
+  --text-display-xl: clamp(2.5rem, 5.4vw, 4.875rem);
+  --text-display-xl--line-height: 0.88;
+  --text-display-lg: clamp(2.125rem, 4.4vw, 3.5rem);
+  --text-display-lg--line-height: 0.92;
+  --text-display-md: clamp(1.875rem, 3.6vw, 2.875rem);
+  --text-display-md--line-height: 0.94;
+  --text-display-sm: clamp(1.625rem, 3vw, 2.25rem);
+  --text-display-sm--line-height: 0.94;
+  --text-display-xs: clamp(1.0625rem, 1.9vw, 1.375rem);
+  --text-display-xs--line-height: 1.1;
+  --text-quote: clamp(1.5625rem, 3.3vw, 2.5rem);
+  --text-quote--line-height: 1.12;
+  --text-quote-mark: clamp(6rem, 11vw, 9.375rem);
+  --text-quote-mark--line-height: 0.7;
+  --text-stat: clamp(2.125rem, 3.4vw, 2.625rem);
+  --text-stat--line-height: 1;
+  --text-marquee: clamp(1.25rem, 2.4vw, 1.75rem);
+  --text-marquee--line-height: 1;
+  --text-lead: clamp(1rem, 1.5vw, 1.1875rem);
+  --text-lead--line-height: 1.55;
+
+  /* mono label tracking */
+  --tracking-label: 0.14em;
+  --tracking-eyebrow: 0.22em;
+
+  /* layout rhythm */
+  --spacing-page: clamp(1.25rem, 5.2vw, 5rem); /* horizontal page gutter */
+  --spacing-section: clamp(2.5rem, 5vw, 4.5rem); /* vertical section padding */
+  /* mobile header height (83px); the home hero tucks under it so the frosted
+     header blurs the photo instead of the flat page background */
+  --spacing-header: 5.1875rem;
+
+  /* motion */
+  --ease-snap: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --animate-marquee: marquee 30s linear infinite;
+  --animate-rise: rise 0.8s cubic-bezier(0.2, 0.75, 0.3, 1) both;
+  --animate-fade-in: fade-in 1s ease 0.2s forwards;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 }
 
-html {
-  scroll-behavior: smooth;
-  background: #0d0d0f;
-  -webkit-text-size-adjust: 100%;
+/* ---- element defaults ---- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--color-canvas);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-fg);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'ss01';
+  }
+  ::placeholder {
+    color: var(--color-fg-3);
+    opacity: 1;
+  }
+  /* Keep autofilled inputs on-theme inside the dark design */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  select:-webkit-autofill {
+    -webkit-text-fill-color: var(--color-fg);
+    -webkit-box-shadow: 0 0 0px 1000px var(--color-canvas) inset;
+    caret-color: var(--color-fg);
+    transition: background-color 5000s ease-in-out 0s;
+  }
 }
 
-body {
-  margin: 0;
-  background: #0d0d0f;
-  color: #f4f3ef;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* ---- custom utilities (no built-in equivalent) ---- */
+
+/* faint engineering grid that fades down the page */
+@utility bg-grid {
+  background-image: linear-gradient(
+      to right,
+      var(--color-line) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
+  background-size: 84px 84px;
+  mask-image: radial-gradient(120% 80% at 70% 0%, #000, transparent 75%);
 }
 
-/* Form controls inherit typography + color instead of UA defaults
-   (replaces the relevant part of Tailwind's Preflight). */
-button,
-input,
-optgroup,
-select,
-textarea {
-  font: inherit;
-  color: inherit;
-}
-button {
-  background-color: transparent;
-  background-image: none;
+/* dark-mode treatment for embedded Google Maps */
+@utility filter-map {
+  filter: invert(0.88) hue-rotate(180deg) brightness(1.08) contrast(0.92)
+    grayscale(0.15);
 }
 
-/* Keep autofilled inputs on-theme inside the dark design */
-.ck-dir input:-webkit-autofill,
-.ck-dir input:-webkit-autofill:hover,
-.ck-dir input:-webkit-autofill:focus,
-.ck-dir textarea:-webkit-autofill,
-.ck-dir select:-webkit-autofill {
-  -webkit-text-fill-color: #f4f3ef;
-  -webkit-box-shadow: 0 0 0px 1000px #0d0d0f inset;
-  caret-color: #f4f3ef;
-  transition: background-color 5000s ease-in-out 0s;
+/* striped photo placeholder */
+@utility bg-stripes {
+  background: repeating-linear-gradient(
+      135deg,
+      transparent 0 14px,
+      color-mix(in oklch, var(--color-fg) 6%, transparent) 14px 15px
+    ),
+    var(--color-surface-2);
+}
+
+/* frosted translucent panel (header, mobile nav, mobile CTA bar) */
+@utility backdrop-frost {
+  backdrop-filter: blur(14px) saturate(1.2);
+}
+
+/* keep fixed bottom bars clear of the iOS home indicator */
+@utility pb-safe-* {
+  padding-bottom: calc(
+    --value(number) * var(--spacing) + env(safe-area-inset-bottom, 0px)
+  );
 }

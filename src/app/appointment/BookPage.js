@@ -1,11 +1,23 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import Link from 'next/link';
 import { site, packages } from '@/data/site';
 import { GCheck } from '@/components/garage/Icons';
 import HoneypotField from '@/components/forms/HoneypotField';
 import DateField from '@/components/forms/DateField';
+import Button from '@/components/ui/Button';
+import Eyebrow from '@/components/ui/Eyebrow';
+import PageHero from '@/components/ui/PageHero';
+import { cn } from '@/components/ui/cn';
+
+const SECTION = 'px-page pt-9 pb-section md:pt-12 lg:pt-16';
+const CARD = 'border border-line bg-surface';
+const FIELDSET =
+  'border-t border-line py-6.5 first:border-t-0 first:pt-0 md:py-8 lg:py-10';
+const LABEL = 'font-mono text-xs uppercase tracking-label text-fg-3';
+// 16px font is deliberate: iOS Safari auto-zooms on smaller inputs.
+const INPUT =
+  'w-full border border-line-2 bg-canvas px-3.5 py-3.25 text-base text-fg transition-colors focus:border-accent focus:outline-none';
 
 const VEHICLES = ['Car', 'SUV', 'Truck', 'Van'];
 
@@ -132,22 +144,24 @@ export default function BookPage() {
 
   if (done) {
     return (
-      <section className="bk">
-        <div className="bk-wrap">
-          <div className="bk-card bk-done">
-            <div className="mark">
-              <GCheck />
+      <section className={SECTION}>
+        <div className="mx-auto max-w-4xl">
+          <div className={cn(CARD, 'py-7.5 text-center md:py-11 lg:py-15')}>
+            <div className="inline-flex size-16.5 items-center justify-center rounded-full bg-accent">
+              <GCheck className="size-8 text-on-accent" strokeWidth={2.6} />
             </div>
-            <h2>Request received</h2>
-            <p>
+            <h2 className="mt-6.5 font-display text-display-lg uppercase">
+              Request received
+            </h2>
+            <p className="mx-auto mt-3.5 max-w-115 text-base text-fg-2">
               Thanks, {form.name.split(' ')[0] || 'there'}! We&apos;ve got your
               request for a <b>{form.pkg}</b> on <b>{dateLabel}</b>. We&apos;ll
               call {form.phone} shortly to confirm your spot.
             </p>
-            <div className="row">
-              <a className="ck-btn ck-btn-accent" href={site.phoneHref}>
+            <div className="mt-7.5 flex flex-wrap justify-center gap-3.25">
+              <Button variant="accent" href={site.phoneHref}>
                 Call {site.phone}
-              </a>
+              </Button>
             </div>
           </div>
         </div>
@@ -157,24 +171,25 @@ export default function BookPage() {
 
   return (
     <>
-      <section className="gp-hero">
-        <div className="inner">
-          <div className="ck-eyebrow">Online Booking</div>
-          <h1>
+      <PageHero
+        eyebrow="Online Booking"
+        title={
+          <>
             Book your
             <br />
             appointment
-          </h1>
-          <p className="lead">
-            Fill out the details below and we&apos;ll take care of the rest. No
-            payment now — we&apos;ll call to confirm your spot.
-          </p>
-        </div>
-      </section>
+          </>
+        }
+        lead="Fill out the details below and we'll take care of the rest. No payment now — we'll call to confirm your spot."
+      />
 
-      <section className="bk">
-        <div className="bk-wrap">
-          <form className="bk-card" onSubmit={submit} noValidate>
+      <section className={SECTION}>
+        <div className="mx-auto max-w-4xl">
+          <form
+            className={cn(CARD, 'p-6.5 md:p-9 lg:p-11.5')}
+            onSubmit={submit}
+            noValidate
+          >
             <HoneypotField
               id="bk-company"
               value={form.company}
@@ -182,34 +197,48 @@ export default function BookPage() {
             />
 
             {/* 01 package */}
-            <div className="bk-sec">
-              <div className="bk-sech">Choose your package</div>
-              <div className="bk-pgrid">
+            <div className={FIELDSET}>
+              <Eyebrow>Choose your package</Eyebrow>
+              <div className="mt-5.5 grid grid-cols-2 gap-2.5 sm:grid-cols-3">
                 {packages.map((o) => (
                   <button
                     type="button"
                     key={o.id}
-                    className={'bk-ptile' + (form.pkg === o.name ? ' sel' : '')}
+                    className={cn(
+                      'flex min-h-23 cursor-pointer flex-col justify-between gap-2.5 border bg-canvas px-4.25 py-4 text-left transition-colors duration-150',
+                      form.pkg === o.name
+                        ? 'border-accent inset-ring inset-ring-accent'
+                        : 'border-line-2 hover:border-fg-3'
+                    )}
                     onClick={() => set('pkg', o.name)}
                   >
-                    <span className="nm">{o.name}</span>
-                    <span className="pr">{o.price}</span>
+                    <span className="font-display text-lg leading-none uppercase">
+                      {o.name}
+                    </span>
+                    <span className="font-display text-2xl leading-none text-accent">
+                      {o.price}
+                    </span>
                   </button>
                 ))}
               </div>
             </div>
 
             {/* 02 schedule */}
-            <div className="bk-sec">
-              <div className="bk-sech">Pick a day</div>
-              <div className="bk-grp">
-                <div className="gl">Vehicle type</div>
-                <div className="bk-chiprow">
+            <div className={FIELDSET}>
+              <Eyebrow>Pick a day</Eyebrow>
+              <div className="mt-5.5">
+                <div className={cn(LABEL, 'mb-3')}>Vehicle type</div>
+                <div className="flex flex-wrap gap-2.5">
                   {VEHICLES.map((v) => (
                     <button
                       type="button"
                       key={v}
-                      className={'bk-chip' + (form.vehicle === v ? ' sel' : '')}
+                      className={cn(
+                        'cursor-pointer border px-4.25 py-2.75 text-sm transition-all duration-150',
+                        form.vehicle === v
+                          ? 'border-accent bg-accent font-semibold text-on-accent'
+                          : 'border-line-2 bg-canvas text-fg-2 hover:border-fg-3 hover:text-fg'
+                      )}
                       onClick={() => set('vehicle', v)}
                     >
                       {v}
@@ -217,8 +246,8 @@ export default function BookPage() {
                   ))}
                 </div>
               </div>
-              <div className="bk-grp">
-                <div className="gl">Date</div>
+              <div className="mt-5.5">
+                <div className={cn(LABEL, 'mb-3')}>Date</div>
                 <DateField
                   value={form.date}
                   min={minDate}
@@ -226,7 +255,7 @@ export default function BookPage() {
                   onChange={onDateChange}
                 />
                 {dateWarn && (
-                  <p className="bk-hint">
+                  <p className="mt-2.5 font-mono text-xs tracking-wider text-accent">
                     Weekdays only — we&apos;re closed weekends.
                   </p>
                 )}
@@ -234,59 +263,62 @@ export default function BookPage() {
             </div>
 
             {/* 03 details */}
-            <div className="bk-sec">
-              <div className="bk-sech">Your details</div>
-              <div className="bk-fields">
-                <div className="bk-field">
-                  <label>Full name</label>
+            <div className={FIELDSET}>
+              <Eyebrow>Your details</Eyebrow>
+              <div className="mt-5.5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="flex flex-col gap-1.75">
+                  <label className={LABEL}>Full name</label>
                   <input
-                    className="bk-input"
+                    className={INPUT}
                     value={form.name}
                     onChange={(e) => set('name', e.target.value)}
                     placeholder="Jane Doe"
                   />
                 </div>
-                <div className="bk-field">
-                  <label>Phone</label>
+                <div className="flex flex-col gap-1.75">
+                  <label className={LABEL}>Phone</label>
                   <input
-                    className="bk-input"
+                    className={INPUT}
                     type="tel"
                     value={form.phone}
                     onChange={(e) => set('phone', e.target.value)}
                     placeholder="(517) 000-0000"
                   />
                 </div>
-                <div className="bk-field">
-                  <label>Email (optional)</label>
+                <div className="flex flex-col gap-1.75">
+                  <label className={LABEL}>Email (optional)</label>
                   <input
-                    className="bk-input"
+                    className={INPUT}
                     type="email"
                     value={form.email}
                     onChange={(e) => set('email', e.target.value)}
                     placeholder="you@email.com"
                   />
                 </div>
-                <div className="bk-field">
-                  <label>Vehicle make &amp; model</label>
+                <div className="flex flex-col gap-1.75">
+                  <label className={LABEL}>Vehicle make &amp; model</label>
                   <input
-                    className="bk-input"
+                    className={INPUT}
                     value={form.makeModel}
                     onChange={(e) => set('makeModel', e.target.value)}
                     placeholder="Ford Explorer"
                   />
                 </div>
-                <div className="bk-field full">
-                  <label>Anything we should know? (optional)</label>
+                <div className="flex flex-col gap-1.75 sm:col-span-2">
+                  <label className={LABEL}>
+                    Anything we should know? (optional)
+                  </label>
                   <textarea
-                    className="bk-input"
+                    className={cn(INPUT, 'min-h-23 resize-y')}
                     value={form.notes}
                     onChange={(e) => set('notes', e.target.value)}
                     placeholder="Pet hair, heavy mud, specific stains…"
                   />
                 </div>
               </div>
-              <label className="bk-optin">
+              <label className="mt-5 flex cursor-pointer items-start gap-2.5 text-sm leading-normal text-fg-3">
                 <input
+                  className="mt-0.5 size-4 shrink-0 cursor-pointer accent-accent"
                   type="checkbox"
                   checked={form.optIn}
                   onChange={(e) => set('optIn', e.target.checked)}
@@ -296,20 +328,24 @@ export default function BookPage() {
             </div>
 
             {/* footer */}
-            <div className="bk-foot">
-              <div className="bk-total">
-                Estimated price <b>{selectedPkg ? selectedPkg.price : '—'}</b>
+            <div className="mt-7.5 flex flex-wrap items-center justify-between gap-4.5 border-t border-line pt-6.5">
+              <div className="font-mono text-sm tracking-widest text-fg-3 uppercase">
+                Estimated price{' '}
+                <b className="relative top-1 ml-3.5 font-display text-3xl tracking-normal text-fg">
+                  {selectedPkg ? selectedPkg.price : '—'}
+                </b>
               </div>
-              <button
-                className="ck-btn ck-btn-accent"
+              <Button
+                variant="accent"
                 type="submit"
+                className="shrink-0"
                 disabled={submitting}
               >
                 {submitting ? 'Sending…' : 'Send request'}
-              </button>
+              </Button>
             </div>
             {err && (
-              <div className="bk-err" style={{ marginTop: 14 }}>
+              <div className="mt-3.5 text-sm font-medium text-accent">
                 {err}
               </div>
             )}

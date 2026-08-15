@@ -1,8 +1,6 @@
-import Link from 'next/link';
-import { site, packages } from '@/data/site';
-import { GArrow } from '@/components/garage/Icons';
-import MapEmbed from '@/components/garage/MapEmbed';
+import { site } from '@/data/site';
 import { locationSchema } from '@/data/locationSchema';
+import LocationPage from '@/components/location/LocationPage';
 
 export const metadata = {
   title: 'Car Detailing in Lenawee County, MI | Clean King Detailing',
@@ -63,6 +61,55 @@ const whyUs = [
   },
 ];
 
+const content = {
+  hero: {
+    eyebrow: 'Lenawee County, Michigan',
+    title: (
+      <>
+        Car detailing
+        <br />
+        across Lenawee County
+      </>
+    ),
+    lead: 'Professional auto detailing, hand washing and window tinting from $35–$160, serving every corner of Lenawee County. Family-owned in Blissfield and detailed by hand — from Adrian and Tecumseh to Hudson, Morenci and Clinton.',
+  },
+  location: {
+    eyebrow: 'Serving all of Lenawee',
+    title: 'One shop for the whole county',
+    description:
+      "Clean King Detailing is rooted in Blissfield, near the heart of Lenawee County. We detail cars, trucks and work vehicles for residents and businesses across the county — Adrian, Tecumseh, Hudson, Morenci, Clinton, Onsted, Britton, Deerfield and Sand Creek included. Rural roads, farm dust and Michigan winters are hard on a finish; we're the shop that does it by hand.",
+    info: [
+      { label: 'Shop', value: `${site.address1}, ${site.address2}` },
+      { label: 'Phone', value: site.phone },
+      { label: 'Coverage', value: 'All of Lenawee County' },
+    ],
+  },
+  packages: {
+    note: 'The same flat pricing countywide.',
+  },
+  services: {
+    title: 'Built for Lenawee County roads',
+    note: 'From gravel-road dust to winter salt — everything your vehicle needs to look right and last longer.',
+    items: detailedServices,
+  },
+  whyUs: {
+    title: 'Why the county trusts us',
+    note: 'Local, honest, and detailed by hand — the way it should be.',
+    items: whyUs,
+  },
+  cta: {
+    eyebrow:
+      'Adrian · Tecumseh · Blissfield · Hudson · Morenci · Clinton · Onsted',
+    title: (
+      <>
+        Ready to detail
+        <br />
+        your vehicle?
+      </>
+    ),
+  },
+};
+
 const locationLd = locationSchema({
   areaType: 'AdministrativeArea',
   areaName: 'Lenawee County',
@@ -77,199 +124,7 @@ export default function CarDetailingLenaweeCounty() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(locationLd) }}
       />
-      <section className="gp-hero">
-        <div className="inner">
-          <div className="ck-eyebrow">Lenawee County, Michigan</div>
-          <h1>
-            Car detailing
-            <br />
-            across Lenawee County
-          </h1>
-          <p className="lead">
-            Professional auto detailing, hand washing and window tinting from
-            $35–$160, serving every corner of Lenawee County. Family-owned in
-            Blissfield and detailed by hand — from Adrian and Tecumseh to
-            Hudson, Morenci and Clinton.
-          </p>
-          <div className="cta">
-            <Link className="ck-btn ck-btn-accent" href="/appointment">
-              Book Appointment
-            </Link>
-            <a className="ck-btn ck-btn-ghost" href={site.phoneHref}>
-              Call {site.phone}
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* location */}
-      <section className="garage-loc">
-        <div className="inner">
-          <div className="pane">
-            <div className="ck-eyebrow">Serving all of Lenawee</div>
-            <h2>One shop for the whole county</h2>
-            <p>
-              Clean King Detailing is rooted in Blissfield, near the heart of
-              Lenawee County. We detail cars, trucks and work vehicles for
-              residents and businesses across the county — Adrian, Tecumseh,
-              Hudson, Morenci, Clinton, Onsted, Britton, Deerfield and Sand
-              Creek included. Rural roads, farm dust and Michigan winters are
-              hard on a finish; we&apos;re the shop that does it by hand.
-            </p>
-            <div className="info">
-              <div>
-                <div className="k">Shop</div>
-                <div className="v">
-                  {site.address1}, {site.address2}
-                </div>
-              </div>
-              <div>
-                <div className="k">Phone</div>
-                <div className="v">{site.phone}</div>
-              </div>
-              <div>
-                <div className="k">Coverage</div>
-                <div className="v">All of Lenawee County</div>
-              </div>
-            </div>
-            <Link
-              className="ck-btn ck-btn-ghost"
-              href="/contact"
-              style={{ marginTop: 28 }}
-            >
-              Contact &amp; directions
-            </Link>
-          </div>
-          <div className="pane map">
-            <MapEmbed />
-          </div>
-        </div>
-      </section>
-
-      {/* packages */}
-      <section className="garage-services">
-        <div className="garage-sh">
-          <div>
-            <div className="ck-eyebrow">Services &amp; Pricing</div>
-            <h2>
-              Detailing
-              <br />
-              packages
-            </h2>
-          </div>
-          <p>
-            The same flat pricing countywide.{' '}
-            <Link href="/services">See full details →</Link>
-          </p>
-        </div>
-        <div className="garage-grid">
-          {packages.map((s) => (
-            <div
-              className={'garage-card' + (s.popular ? ' pop' : '')}
-              key={s.name}
-            >
-              {s.popular && <span className="poptag">Most popular</span>}
-              <div className="ci">
-                <span className="cname">{s.name}</span>
-                <span className="cprice">{s.price}</span>
-              </div>
-              <p className="cdesc">{s.blurb}</p>
-              <ul>
-                {s.items.map((it) => (
-                  <li key={it}>{it}</li>
-                ))}
-              </ul>
-              <Link className="cbook" href={`/appointment?pkg=${s.id}`}>
-                Book this <GArrow />
-              </Link>
-            </div>
-          ))}
-          <div
-            className="garage-card"
-            style={{ justifyContent: 'center', background: 'var(--surface-2)' }}
-          >
-            <div className="ck-eyebrow" style={{ color: 'var(--accent)' }}>
-              Add-ons
-            </div>
-            <div className="cname" style={{ marginTop: 14 }}>
-              Tint &amp; Protect
-            </div>
-            <p className="cdesc">
-              Ceramic window tint and paint protection available with any
-              detail. Ask for a quote.
-            </p>
-            <Link className="cbook" href="/contact">
-              Get a quote <GArrow />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* comprehensive services */}
-      <section className="svc-extra">
-        <div className="inner">
-          <div className="garage-sh">
-            <div>
-              <div className="ck-eyebrow">Full service list</div>
-              <h2>Built for Lenawee County roads</h2>
-            </div>
-            <p>
-              From gravel-road dust to winter salt — everything your vehicle
-              needs to look right and last longer.
-            </p>
-          </div>
-          <div className="xgrid">
-            {detailedServices.map((s) => (
-              <div className="xcard" key={s.name}>
-                <div className="tag">Service</div>
-                <h4>{s.name}</h4>
-                <p>{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* why us */}
-      <section className="svc-extra" style={{ borderTop: 'none' }}>
-        <div className="inner">
-          <div className="garage-sh">
-            <div>
-              <div className="ck-eyebrow">Why Clean King</div>
-              <h2>Why the county trusts us</h2>
-            </div>
-            <p>Local, honest, and detailed by hand — the way it should be.</p>
-          </div>
-          <div className="xgrid">
-            {whyUs.map((s) => (
-              <div className="xcard" key={s.name}>
-                <div className="tag">Clean King</div>
-                <h4>{s.name}</h4>
-                <p>{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="garage-cta">
-        <div className="ck-eyebrow">
-          Adrian · Tecumseh · Blissfield · Hudson · Morenci · Clinton · Onsted
-        </div>
-        <h2>
-          Ready to detail
-          <br />
-          your vehicle?
-        </h2>
-        <div className="row">
-          <Link className="ck-btn ck-btn-accent" href="/appointment">
-            Schedule Online
-          </Link>
-          <a className="ck-btn ck-btn-ghost" href={site.phoneHref}>
-            {site.phone}
-          </a>
-        </div>
-      </section>
+      <LocationPage {...content} />
     </>
   );
 }

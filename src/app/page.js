@@ -1,103 +1,164 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { site, packages } from '@/data/site';
-import { GArrow, GStar } from '@/components/garage/Icons';
 import ReviewsCarousel from '@/components/garage/ReviewsCarousel';
-import Gallery from '@/components/garage/Gallery';
-import MapEmbed from '@/components/garage/MapEmbed';
+import Button from '@/components/ui/Button';
+import CtaBand from '@/components/ui/CtaBand';
+import Eyebrow from '@/components/ui/Eyebrow';
+import LocationSection from '@/components/ui/LocationSection';
+import SectionHead from '@/components/ui/SectionHead';
+import { GStar } from '@/components/garage/Icons';
+import {
+  AddOnCard,
+  PackageActions,
+  PackageCard,
+  PackageGrid,
+  PackageLink,
+} from '@/components/ui/PackageCard';
+
+// Staggered entrance for the hero copy (only when motion is allowed).
+const rise = (i) => ({ animationDelay: `${50 + i * 80}ms` });
+
+const MARQUEE = [
+  'Spiffy Detail',
+  'Interior Detail',
+  'Full Detail',
+  'Deluxe Detail',
+  'Ceramic Tint',
+  'Paint Protection',
+];
 
 const Home = () => {
   return (
     <>
       {/* hero */}
-      <section className="garage-hero" id="top">
-        <div className="htext">
-          <div className="ck-eyebrow">
+      <section
+        className="relative mx-auto -mt-header flex min-h-[calc(100svh-62px)] flex-col border-b border-line md:mt-0 md:grid md:min-h-0 md:max-w-2xl md:grid-cols-1 lg:max-w-410 lg:grid-cols-[1.12fr_0.88fr]"
+        id="top"
+        data-hero
+      >
+        <div className="flex shrink-0 flex-col justify-center border-b border-line px-page pt-5.5 pb-6.5 md:pt-16 md:pb-13.5 lg:border-r lg:border-b-0 lg:pt-24 lg:pb-20">
+          <Eyebrow className="motion-safe:animate-rise" style={rise(0)}>
             Showroom-grade auto detailing in Blissfield, Michigan
-          </div>
-          <h1>
+          </Eyebrow>
+          <h1
+            className="absolute top-header right-page left-page z-3 mt-4 max-w-fit border border-white/22 bg-canvas/62 px-4 pt-3 pb-3.5 font-display text-hero-mobile uppercase backdrop-blur-xs motion-safe:animate-rise md:static md:mt-5 md:max-w-none md:border-0 md:bg-transparent md:p-0 md:text-hero-tablet md:backdrop-blur-none lg:text-hero"
+            style={rise(1)}
+          >
             The King
             <br />
-            <span className="o">of</span> Clean
+            <span className="text-accent">of</span> Clean
           </h1>
-          <p className="sub">
+          <p
+            className="mt-2.5 max-w-115 text-lead text-fg-2 motion-safe:animate-rise md:mt-6"
+            style={rise(2)}
+          >
             Book online, detailed by hand, finished like new.
           </p>
-          <div className="cta">
-            <Link className="ck-btn ck-btn-accent" href="/appointment">
-              Book Appointment
-            </Link>
-            <a className="ck-btn ck-btn-ghost" href={site.phoneHref}>
-              {site.phone}
-            </a>
-          </div>
-          <a
-            className="hrating"
-            href={site.google}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Rated ${site.rating.score} out of 5${
-              site.rating.count ? ` from ${site.rating.count} reviews` : ''
-            } on Google — read our reviews`}
+          <div
+            className="mt-8.5 hidden max-w-110 flex-wrap gap-3.25 motion-safe:animate-rise md:flex"
+            style={rise(3)}
           >
-            <span className="ck-stars" aria-hidden="true">
-              {[0, 1, 2, 3, 4].map((s) => (
-                <GStar key={s} />
-              ))}
-            </span>
-            <span className="ht" aria-hidden="true">
-              <b>{site.rating.score}</b> on Google
-              {site.rating.count ? ` · ${site.rating.count} reviews` : ''}
-            </span>
-          </a>
-          <div className="hstats">
+            <Button variant="accent" href="/appointment" className="flex-1">
+              Book Appointment
+            </Button>
+            <Button variant="ghost" href={site.phoneHref} className="flex-1">
+              {site.phone}
+            </Button>
+          </div>
+          <div
+            className="mt-5 grid grid-cols-3 gap-4 border-t border-line pt-4.5 text-center motion-safe:animate-rise md:mt-11 md:pt-7 lg:mt-13"
+            style={rise(4)}
+          >
             <div>
-              <div className="n">
-                <span className="u">$</span>35
+              <div className="font-display text-stat">
+                <span className="text-accent">$</span>35
               </div>
-              <div className="l">Starting price</div>
-            </div>
-            <div>
-              <div className="n">5</div>
-              <div className="l">Detail packages</div>
-            </div>
-            <div>
-              <div className="n">
-                100<span className="u">%</span>
+              <div className="mt-2 font-mono text-xs tracking-label text-fg-3 uppercase">
+                And up
               </div>
-              <div className="l">Hand detailed</div>
+            </div>
+            <a
+              className="group"
+              href={site.google}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Rated ${site.rating.score} out of 5${
+                site.rating.count ? ` from ${site.rating.count} reviews` : ''
+              } on Google — read our reviews`}
+            >
+              <div className="font-display text-stat">
+                5
+                <GStar
+                  aria-hidden="true"
+                  className="ml-1 inline-block size-7 -translate-y-0.5 fill-accent lg:size-8"
+                />
+              </div>
+              <div className="mt-2 font-mono text-xs tracking-label text-fg-3 uppercase transition-colors group-hover:text-fg">
+                On Google
+              </div>
+            </a>
+            <div>
+              <div className="font-display text-stat">
+                100<span className="text-accent">%</span>
+              </div>
+              <div className="mt-2 font-mono text-xs tracking-label text-fg-3 uppercase">
+                By hand
+              </div>
             </div>
           </div>
         </div>
-        <div className="himg">
+        <div className="relative order-first flex min-h-75 flex-1 items-center justify-center overflow-hidden pt-header after:absolute after:inset-0 after:bg-linear-120 after:from-canvas/55 after:to-transparent after:to-42% after:content-[''] motion-safe:animate-fade-in motion-safe:opacity-0 md:min-h-80 md:pt-0 lg:order-none lg:min-h-115">
           <Image
             src="/tire.webp"
             alt="Freshly detailed wheel and tire"
             fill
             sizes="(max-width: 1024px) 100vw, 45vw"
             priority
+            className="object-cover"
           />
           {/* mobile-only: CTA overlaid on the center of the image */}
-          <div className="himg-cta">
-            <Link className="ck-btn ck-btn-accent" href="/appointment">
+          <div className="relative z-3 mx-page flex flex-1 translate-y-5.5 flex-col gap-3 md:hidden">
+            <Button
+              variant="accent"
+              size="lg"
+              href="/appointment"
+              className="w-full"
+            >
               Book Appointment
-            </Link>
-            <a className="ck-btn ck-btn-ghost" href={site.phoneHref}>
+            </Button>
+            <Button
+              variant="ghost"
+              size="lg"
+              href={site.phoneHref}
+              className="w-full bg-canvas/55 backdrop-blur-xs"
+            >
               {site.phone}
-            </a>
+            </Button>
           </div>
-          <span className="badge">Deluxe Detail · Wheels &amp; Tires</span>
+          <span className="absolute right-6 bottom-6 z-2 border border-white/22 bg-canvas/62 px-3.25 py-2 font-mono text-xs tracking-label text-white uppercase backdrop-blur-xs">
+            Deluxe Detail · Wheels &amp; Tires
+          </span>
         </div>
       </section>
 
       {/* marquee */}
-      <div className="garage-marq" aria-hidden="true">
-        <div className="track">
+      <div
+        className="overflow-hidden border-b border-line py-4.5"
+        aria-hidden="true"
+      >
+        <div className="flex w-max animate-marquee gap-11 whitespace-nowrap motion-reduce:animate-none">
           {[0, 1].map((k) => (
-            <span key={k}>
-              Spiffy Detail <i></i> Interior Detail <i></i> Full Detail <i></i>{' '}
-              Deluxe Detail <i></i> Ceramic Tint <i></i> Paint Protection{' '}
-              <i></i>
+            <span
+              key={k}
+              className="inline-flex items-center gap-11 font-display text-marquee leading-normal text-fg-2 uppercase"
+            >
+              {MARQUEE.map((m) => (
+                <span key={m} className="contents">
+                  {m}
+                  <i className="inline-block size-2.25 rotate-45 bg-accent" />
+                </span>
+              ))}
             </span>
           ))}
         </div>
@@ -107,132 +168,79 @@ const Home = () => {
       <ReviewsCarousel />
 
       {/* services preview */}
-      <section className="garage-services" id="services">
-        <div className="garage-sh">
-          <div>
-            <div className="ck-eyebrow">Services &amp; Pricing</div>
-            <h2>
+      <section className="px-page py-section" id="services">
+        <SectionHead
+          eyebrow={<>Services &amp; Pricing</>}
+          title={
+            <>
               Pick your
               <br />
               package
-            </h2>
-          </div>
-          <p>
-            Every package detailed by hand in Blissfield.
-            <br />
-            <Link href="/services">
-              See full details &amp; what&apos;s included →
-            </Link>
-          </p>
-        </div>
-        <div className="garage-grid">
-          {packages.map((s) => (
-            <article
-              className={'garage-card' + (s.popular ? ' pop' : '')}
-              key={s.name}
-            >
-              {s.popular && <span className="poptag">Most popular</span>}
-              <div className="ci">
-                <span className="cname">{s.name}</span>
-                <span className="cprice">{s.price}</span>
-              </div>
-              <p className="cdesc">{s.blurb}</p>
-              <div className="cactions">
-                <Link className="cbook" href={`/appointment?pkg=${s.id}`}>
-                  Book this <GArrow />
-                </Link>
-                <Link className="cbook" href={`/services#${s.id}`}>
-                  View details <GArrow />
-                </Link>
-              </div>
-            </article>
-          ))}
-          <Link
-            className="garage-card"
-            style={{ justifyContent: 'center', background: 'var(--surface-2)' }}
-            href="/contact"
-          >
-            <div className="ck-eyebrow" style={{ color: 'var(--accent)' }}>
-              Add-ons
-            </div>
-            <div className="cname" style={{ marginTop: 14 }}>
-              Tint &amp; Protect
-            </div>
-            <p className="cdesc">
-              Ceramic window tint and paint protection available with any
-              detail. Ask for a quote.
-            </p>
-            <span className="cbook">
-              Get a quote <GArrow />
-            </span>
+            </>
+          }
+        >
+          Every package detailed by hand in Blissfield.
+          <br />
+          <Link href="/services" className="text-accent">
+            See full details &amp; what&apos;s included →
           </Link>
-        </div>
+        </SectionHead>
+        <PackageGrid>
+          {packages.map((s) => (
+            <PackageCard
+              as="article"
+              key={s.name}
+              name={s.name}
+              price={s.price}
+              blurb={s.blurb}
+              popular={s.popular}
+            >
+              <PackageActions>
+                <PackageLink href={`/appointment?pkg=${s.id}`}>
+                  Book
+                </PackageLink>
+                <PackageLink href={`/services#${s.id}`}>Details</PackageLink>
+              </PackageActions>
+            </PackageCard>
+          ))}
+          <AddOnCard as={Link} href="/contact" />
+        </PackageGrid>
       </section>
 
       {/* our work */}
       {/* <Gallery /> */}
 
       {/* location */}
-      <section className="garage-loc" id="location">
-        <div className="inner">
-          <div className="pane">
-            <div className="ck-eyebrow">Find us</div>
-            <h2>Blissfield &amp; Lenawee County</h2>
-            <p>
-              Family-owned and rooted in Blissfield — bringing expert detailing
-              to Adrian, Tecumseh, Monroe and the wider Lenawee County area.
-            </p>
-            <div className="info">
-              <div>
-                <div className="k">Shop</div>
-                <div className="v">
-                  {site.address1}, {site.address2}
-                </div>
-              </div>
-              <div>
-                <div className="k">Phone</div>
-                <div className="v">{site.phone}</div>
-              </div>
-              <div>
-                <div className="k">Proudly serving</div>
-                <div className="chips">
-                  {site.areas.map((a) => (
-                    <span key={a}>{a}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <Link
-              className="ck-btn ck-btn-ghost"
-              href="/contact"
-              style={{ marginTop: 28 }}
-            >
-              Contact &amp; directions
-            </Link>
-          </div>
-          <div className="pane map">
-            <MapEmbed />
-          </div>
-        </div>
-      </section>
+      <LocationSection
+        id="location"
+        eyebrow="Find us"
+        title={<>Family-owned in Blissfield</>}
+        info={[
+          { label: 'Shop', value: `${site.address1}, ${site.address2}` },
+          { label: 'Phone', value: site.phone },
+        ]}
+        chipsLabel="Proudly serving"
+        chips={site.areas}
+      />
 
       {/* cta */}
-      <section className="garage-cta">
-        <div className="ck-eyebrow">Gift certificates available</div>
-        <h2>
-          Ready to make
-          <br />
-          your car shine?
-        </h2>
-        <div className="row">
-          <Link className="ck-btn ck-btn-accent" href="/appointment">
-            Schedule Appointment
-          </Link>
-          <a className="ck-btn ck-btn-ghost" href={site.phoneHref}>
-            {site.phone}
-          </a>
-        </div>
-      </section>
+      <CtaBand
+        eyebrow="Gift certificates available"
+        title={
+          <>
+            Ready to make
+            <br />
+            your car shine?
+          </>
+        }
+      >
+        <Button variant="accent" href="/appointment">
+          Schedule Appointment
+        </Button>
+        <Button variant="ghost" href={site.phoneHref}>
+          {site.phone}
+        </Button>
+      </CtaBand>
     </>
   );
 };

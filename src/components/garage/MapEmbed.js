@@ -45,7 +45,7 @@ export default function MapEmbed() {
 
   return (
     <a
-      className="map-facade"
+      className="group absolute inset-0 block size-full overflow-hidden bg-surface-2"
       href={site.google}
       target="_blank"
       rel="noopener noreferrer"
@@ -54,7 +54,7 @@ export default function MapEmbed() {
       {showThumb && (
         /* eslint-disable-next-line @next/next/no-img-element */
         <img
-          className="map-thumb"
+          className="absolute inset-0 size-full object-cover filter-map"
           src={thumb}
           alt=""
           aria-hidden="true"
@@ -64,14 +64,22 @@ export default function MapEmbed() {
           onError={() => setImgFailed(true)}
         />
       )}
-      <span className="mf-pill">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
+      <span className="absolute top-3.5 right-3.5 z-2 inline-flex items-center gap-2 border border-white/16 bg-canvas/78 px-3.5 py-2.25 font-mono text-xs tracking-widest text-fg uppercase transition-colors group-hover:bg-canvas/94">
+        <svg
+          className="size-3.5 fill-none stroke-accent stroke-2"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
           <path d="M14 4h6v6M20 4l-9 9M19 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5" />
         </svg>
         Open in Maps
       </span>
-      <span className="mf-caption">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
+      <span className="absolute inset-x-0 bottom-0 z-1 flex items-center gap-2.25 bg-linear-to-b from-transparent to-canvas/92 px-4.5 pt-8 pb-4 text-sm text-fg">
+        <svg
+          className="size-4.25 shrink-0 fill-none stroke-accent stroke-2"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
           <path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" />
           <circle cx="12" cy="10" r="2.5" />
         </svg>

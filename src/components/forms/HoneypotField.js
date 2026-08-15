@@ -3,16 +3,7 @@
 // (see services/spam.js).
 export default function HoneypotField({ id, value, onChange }) {
   return (
-    <div
-      style={{
-        position: 'absolute',
-        left: '-9999px',
-        width: 1,
-        height: 1,
-        overflow: 'hidden',
-      }}
-      aria-hidden="true"
-    >
+    <div className="sr-only" aria-hidden="true">
       <label htmlFor={id}>Company</label>
       <input
         id={id}

@@ -1,8 +1,6 @@
-import Link from 'next/link';
-import { site, packages } from '@/data/site';
-import { GArrow } from '@/components/garage/Icons';
-import MapEmbed from '@/components/garage/MapEmbed';
+import { site } from '@/data/site';
 import { locationSchema } from '@/data/locationSchema';
+import LocationPage from '@/components/location/LocationPage';
 
 export const metadata = {
   title: 'Car Detailing in Adrian, MI | Clean King Detailing',
@@ -63,6 +61,54 @@ const whyUs = [
   },
 ];
 
+const content = {
+  hero: {
+    eyebrow: 'Adrian, Michigan',
+    title: (
+      <>
+        Car detailing
+        <br />
+        in Adrian, MI
+      </>
+    ),
+    lead: 'Expert auto wash, detailing & window tinting services from $35–$160. Clean King proudly serves Adrian, Tecumseh and the wider Lenawee County area — every vehicle detailed by hand.',
+  },
+  location: {
+    eyebrow: 'Serving Adrian & Lenawee',
+    title: 'Adrian, Tecumseh, Lenawee & surrounding areas',
+    description:
+      "Clean King Detailing is just 15 minutes from Adrian down US-223, so dropping the car off is easy — whether you're an Adrian College or Siena Heights student cleaning up before break, a downtown Adrian business keeping a work vehicle sharp, or a family shaking off a Michigan winter. We hand wash, detail and ceramic tint for Adrian drivers who want the job done right, not rushed through a tunnel.",
+    info: [
+      { label: 'Shop', value: `${site.address1}, ${site.address2}` },
+      { label: 'Phone', value: site.phone },
+      { label: 'From Adrian', value: 'Just 15 minutes via US-223' },
+    ],
+  },
+  packages: {
+    note: 'Professional auto care tailored for Adrian vehicle owners.',
+  },
+  services: {
+    title: 'Comprehensive auto care in Adrian',
+    note: 'From hand washes to ceramic tint — everything your Adrian vehicle needs in one shop.',
+    items: detailedServices,
+  },
+  whyUs: {
+    title: 'Why Adrian drivers choose us',
+    note: 'Local, honest, and detailed by hand — the way it should be.',
+    items: whyUs,
+  },
+  cta: {
+    eyebrow: 'Serving Adrian · Blissfield · Tecumseh · Monroe · Lenawee County',
+    title: (
+      <>
+        Ready to detail
+        <br />
+        your vehicle in Adrian?
+      </>
+    ),
+  },
+};
+
 const locationLd = locationSchema({
   areaType: 'City',
   areaName: 'Adrian',
@@ -77,199 +123,7 @@ export default function CarDetailingAdrianMI() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(locationLd) }}
       />
-      <section className="gp-hero">
-        <div className="inner">
-          <div className="ck-eyebrow">Adrian, Michigan</div>
-          <h1>
-            Car detailing
-            <br />
-            in Adrian, MI
-          </h1>
-          <p className="lead">
-            Expert auto wash, detailing & window tinting services from $35–$160.
-            Clean King proudly serves Adrian, Tecumseh and the wider Lenawee
-            County area — every vehicle detailed by hand.
-          </p>
-          <div className="cta">
-            <Link className="ck-btn ck-btn-accent" href="/appointment">
-              Book Appointment
-            </Link>
-            <a className="ck-btn ck-btn-ghost" href={site.phoneHref}>
-              Call {site.phone}
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* location */}
-      <section className="garage-loc">
-        <div className="inner">
-          <div className="pane">
-            <div className="ck-eyebrow">Serving Adrian & Lenawee</div>
-            <h2>Adrian, Tecumseh, Lenawee &amp; surrounding areas</h2>
-            <p>
-              Clean King Detailing is just 15 minutes from Adrian down US-223,
-              so dropping the car off is easy — whether you&apos;re an Adrian
-              College or Siena Heights student cleaning up before break, a
-              downtown Adrian business keeping a work vehicle sharp, or a family
-              shaking off a Michigan winter. We hand wash, detail and ceramic
-              tint for Adrian drivers who want the job done right, not rushed
-              through a tunnel.
-            </p>
-            <div className="info">
-              <div>
-                <div className="k">Shop</div>
-                <div className="v">
-                  {site.address1}, {site.address2}
-                </div>
-              </div>
-              <div>
-                <div className="k">Phone</div>
-                <div className="v">{site.phone}</div>
-              </div>
-              <div>
-                <div className="k">From Adrian</div>
-                <div className="v">Just 15 minutes via US-223</div>
-              </div>
-            </div>
-            <Link
-              className="ck-btn ck-btn-ghost"
-              href="/contact"
-              style={{ marginTop: 28 }}
-            >
-              Contact &amp; directions
-            </Link>
-          </div>
-          <div className="pane map">
-            <MapEmbed />
-          </div>
-        </div>
-      </section>
-
-      {/* packages */}
-      <section className="garage-services">
-        <div className="garage-sh">
-          <div>
-            <div className="ck-eyebrow">Services &amp; Pricing</div>
-            <h2>
-              Detailing
-              <br />
-              packages
-            </h2>
-          </div>
-          <p>
-            Professional auto care tailored for Adrian vehicle owners.{' '}
-            <Link href="/services">See full details →</Link>
-          </p>
-        </div>
-        <div className="garage-grid">
-          {packages.map((s) => (
-            <div
-              className={'garage-card' + (s.popular ? ' pop' : '')}
-              key={s.name}
-            >
-              {s.popular && <span className="poptag">Most popular</span>}
-              <div className="ci">
-                <span className="cname">{s.name}</span>
-                <span className="cprice">{s.price}</span>
-              </div>
-              <p className="cdesc">{s.blurb}</p>
-              <ul>
-                {s.items.map((it) => (
-                  <li key={it}>{it}</li>
-                ))}
-              </ul>
-              <Link className="cbook" href={`/appointment?pkg=${s.id}`}>
-                Book this <GArrow />
-              </Link>
-            </div>
-          ))}
-          <div
-            className="garage-card"
-            style={{ justifyContent: 'center', background: 'var(--surface-2)' }}
-          >
-            <div className="ck-eyebrow" style={{ color: 'var(--accent)' }}>
-              Add-ons
-            </div>
-            <div className="cname" style={{ marginTop: 14 }}>
-              Tint &amp; Protect
-            </div>
-            <p className="cdesc">
-              Ceramic window tint and paint protection available with any
-              detail. Ask for a quote.
-            </p>
-            <Link className="cbook" href="/contact">
-              Get a quote <GArrow />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* comprehensive services */}
-      <section className="svc-extra">
-        <div className="inner">
-          <div className="garage-sh">
-            <div>
-              <div className="ck-eyebrow">Full service list</div>
-              <h2>Comprehensive auto care in Adrian</h2>
-            </div>
-            <p>
-              From hand washes to ceramic tint — everything your Adrian vehicle
-              needs in one shop.
-            </p>
-          </div>
-          <div className="xgrid">
-            {detailedServices.map((s) => (
-              <div className="xcard" key={s.name}>
-                <div className="tag">Service</div>
-                <h4>{s.name}</h4>
-                <p>{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* why us */}
-      <section className="svc-extra" style={{ borderTop: 'none' }}>
-        <div className="inner">
-          <div className="garage-sh">
-            <div>
-              <div className="ck-eyebrow">Why Clean King</div>
-              <h2>Why Adrian drivers choose us</h2>
-            </div>
-            <p>Local, honest, and detailed by hand — the way it should be.</p>
-          </div>
-          <div className="xgrid">
-            {whyUs.map((s) => (
-              <div className="xcard" key={s.name}>
-                <div className="tag">Clean King</div>
-                <h4>{s.name}</h4>
-                <p>{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="garage-cta">
-        <div className="ck-eyebrow">
-          Serving Adrian · Blissfield · Tecumseh · Monroe · Lenawee County
-        </div>
-        <h2>
-          Ready to detail
-          <br />
-          your vehicle in Adrian?
-        </h2>
-        <div className="row">
-          <Link className="ck-btn ck-btn-accent" href="/appointment">
-            Schedule Online
-          </Link>
-          <a className="ck-btn ck-btn-ghost" href={site.phoneHref}>
-            {site.phone}
-          </a>
-        </div>
-      </section>
+      <LocationPage {...content} />
     </>
   );
 }

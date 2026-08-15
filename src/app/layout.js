@@ -1,6 +1,5 @@
 import { Anton, Hanken_Grotesk } from 'next/font/google';
 import './globals.css';
-import './garage.css';
 import Strip from '@/components/layout/Strip';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -230,16 +229,21 @@ const structuredData = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={`${anton.variable} ${hanken.variable}`}>
+    <html lang="en" className={`${anton.variable} ${hanken.variable}`}>
+      <body>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(structuredData),
           }}
         />
-        <div className="ck-root" data-density="regular">
-          <div className="ck-dir garage is-page" data-theme="dark">
+        <div className="relative min-h-screen w-full overflow-x-clip">
+          {/* faint engineering grid that fades down the page */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none fixed inset-0 z-0 bg-grid opacity-28"
+          />
+          <div className="relative z-1">
             <Strip />
             <Header />
             <main>{children}</main>

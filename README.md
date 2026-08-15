@@ -28,18 +28,20 @@ The booking and contact forms email leads via [Resend](https://resend.com). With
 
 ```
 src/
-  app/                 Routes (App Router) + garage.css design system
+  app/                 Routes (App Router) + globals.css (Tailwind theme)
     api/book           Booking form endpoint → owner alert + customer confirmation
     api/contact        Contact form endpoint → owner alert
   components/
-    forms/             Shared form pieces (honeypot)
-    garage/            Design-system components (icons, reviews carousel)
-    layout/            Header, footer, top strip
+    forms/             Shared form pieces (honeypot, date picker)
+    garage/            Page-specific pieces (icons, reviews carousel, map)
+    layout/            Header, footer, top strip, mobile CTA bar
+    location/          Shared template for the city landing pages
+    ui/                Reusable Tailwind building blocks (Button, Eyebrow, cards…)
   data/                Site content: contact info, packages, FAQs
   services/            Email (Resend) + spam heuristics
 ```
 
-Design notes: the site is dark-only by choice. Styling lives in `src/app/garage.css` (a scoped, hand-written design system) rather than Tailwind utilities; Tailwind is loaded mainly for preflight and the odd utility class.
+Design notes: the site is dark-only by choice. Styling is Tailwind v4 utilities in JSX. Design tokens (palette, fonts, fluid display type sizes, `px-page` / `py-section` rhythm, motion) live in the `@theme` block of `src/app/globals.css`, alongside a few `@utility` helpers (`bg-grid`, `filter-map`, `bg-stripes`, `backdrop-frost`, `pb-safe-*`) for things utilities can't express. Repeated patterns are React components in `src/components/ui/` (Button, Eyebrow, SectionHead, PageHero, CtaBand, package/feature cards, LocationSection). Prettier sorts class names via `prettier-plugin-tailwindcss`.
 
 ## Scripts
 

@@ -1,12 +1,40 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import Link from 'next/link';
 import { site } from '@/data/site';
 import { faqs } from '@/data/faqs';
 import { GPin, GPhone, GCheck } from '@/components/garage/Icons';
 import HoneypotField from '@/components/forms/HoneypotField';
 import MapEmbed from '@/components/garage/MapEmbed';
+import Button from '@/components/ui/Button';
+import Chip from '@/components/ui/Chip';
+import CtaBand from '@/components/ui/CtaBand';
+import Eyebrow from '@/components/ui/Eyebrow';
+import PageHero from '@/components/ui/PageHero';
+import SectionHead from '@/components/ui/SectionHead';
+import { cn } from '@/components/ui/cn';
+
+// 16px (not 15) so iOS Safari doesn't auto-zoom on focus.
+const INPUT =
+  'w-full border border-line-2 bg-canvas px-3.5 py-3.25 font-body text-base text-fg transition-colors focus:border-accent focus:outline-none';
+const LABEL = 'font-mono text-xs uppercase tracking-label text-fg-3';
+const FIELD = 'flex flex-col gap-1.75';
+const SOCIAL =
+  'border border-line-2 px-4 py-2.75 text-center font-mono text-xs uppercase tracking-label text-fg-2 transition-colors hover:border-accent hover:text-fg';
+
+function InfoRow({ icon, label, children }) {
+  return (
+    <div className="flex gap-4 border-t border-line py-5 last:border-b">
+      <div className="flex size-10 shrink-0 items-center justify-center border border-line-2">
+        {icon}
+      </div>
+      <div>
+        <div className={LABEL}>{label}</div>
+        {children}
+      </div>
+    </div>
+  );
+}
 
 export default function ContactPage() {
   const [form, setForm] = useState({
@@ -60,88 +88,88 @@ export default function ContactPage() {
 
   return (
     <>
-      <section className="gp-hero">
-        <div className="inner">
-          <div className="ck-eyebrow">Get in touch</div>
-          <h1>
+      <PageHero
+        eyebrow="Get in touch"
+        title={
+          <>
             Come see
             <br />
             the King
-          </h1>
-          <p className="lead">
-            Questions, quotes, or gift certificates — call, message, or stop by
-            the shop in Blissfield. We&apos;re a family-owned crew and
-            we&apos;ll get right back to you.
-          </p>
-        </div>
-      </section>
+          </>
+        }
+      />
 
-      <section className="ct">
-        <div className="ct-grid">
-          <div className="ct-info">
-            <div className="ck-eyebrow">Details</div>
-            <h2>Reach the shop</h2>
-            <div className="ct-rows">
-              <div className="ct-row">
-                <div className="ic">
-                  <GPin />
+      <section className="px-page pt-6 pb-section md:pt-9 lg:pt-12">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 items-start gap-10 md:grid-cols-2 md:gap-11 lg:gap-18">
+          <div>
+            <Eyebrow>Details</Eyebrow>
+            <h2 className="mt-3 font-display text-display-md uppercase">
+              Reach the shop
+            </h2>
+            <div className="mt-7 flex flex-col">
+              <InfoRow
+                icon={<GPin className="size-4.5 fill-accent" />}
+                label="Visit"
+              >
+                <div className="mt-1 text-base">
+                  {site.address1}
+                  <br />
+                  {site.address2}
                 </div>
-                <div>
-                  <div className="k">Visit</div>
-                  <div className="v">
-                    {site.address1}
-                    <br />
-                    {site.address2}
-                  </div>
+              </InfoRow>
+              <InfoRow
+                icon={<GPhone className="size-4.5 fill-accent" />}
+                label="Call or text"
+              >
+                <div className="mt-1 text-base">
+                  <a
+                    className="transition-colors hover:text-accent"
+                    href={site.phoneHref}
+                  >
+                    {site.phone}
+                  </a>
                 </div>
-              </div>
-              <div className="ct-row">
-                <div className="ic">
-                  <GPhone />
+              </InfoRow>
+              <InfoRow
+                icon={
+                  <GCheck className="size-4.5 fill-accent stroke-accent stroke-2" />
+                }
+                label="Hours"
+              >
+                <div className="mt-1 text-base">{site.hoursNote}</div>
+              </InfoRow>
+              <InfoRow
+                icon={<GPin className="size-4.5 fill-accent" />}
+                label="Proudly serving"
+              >
+                <div className="mt-2.5 flex flex-wrap gap-2">
+                  {site.areas.map((a) => (
+                    <Chip key={a}>{a}</Chip>
+                  ))}
                 </div>
-                <div>
-                  <div className="k">Call or text</div>
-                  <div className="v">
-                    <a href={site.phoneHref}>{site.phone}</a>
-                  </div>
-                </div>
-              </div>
-              <div className="ct-row">
-                <div className="ic">
-                  <GCheck
-                    style={{ stroke: 'var(--accent)', strokeWidth: 2.4 }}
-                  />
-                </div>
-                <div>
-                  <div className="k">Hours</div>
-                  <div className="v">{site.hoursNote}</div>
-                </div>
-              </div>
-              <div className="ct-row">
-                <div className="ic">
-                  <GPin />
-                </div>
-                <div>
-                  <div className="k">Proudly serving</div>
-                  <div className="ct-chips">
-                    {site.areas.map((a) => (
-                      <span key={a}>{a}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              </InfoRow>
             </div>
-            <div className="ct-social">
-              <a href={site.facebook} target="_blank" rel="noopener noreferrer">
+            <div className="mt-7 flex gap-3 max-sm:flex-col">
+              <a
+                className={SOCIAL}
+                href={site.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Facebook
               </a>
-              <a href={site.google} target="_blank" rel="noopener noreferrer">
+              <a
+                className={SOCIAL}
+                href={site.google}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Google Reviews
               </a>
             </div>
           </div>
 
-          <div className="ct-form">
+          <div className="border border-line bg-surface p-6.5 md:p-8 lg:p-10.5">
             {!sent ? (
               <form onSubmit={submit} noValidate>
                 <HoneypotField
@@ -149,153 +177,158 @@ export default function ContactPage() {
                   value={form.company}
                   onChange={(e) => set('company', e.target.value)}
                 />
-                <h3>Send a message</h3>
-                <p className="note">
+                <h3 className="font-display text-display-sm uppercase">
+                  Send a message
+                </h3>
+                <p className="mt-2 text-sm text-fg-2">
                   Tell us what your vehicle needs and we&apos;ll follow up with
                   a quote or a time.
                 </p>
-                <div className="ct-fields">
-                  <div className="bk-field">
-                    <label>Name</label>
+                <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className={FIELD}>
+                    <label className={LABEL}>Name</label>
                     <input
-                      className="bk-input"
+                      className={INPUT}
                       value={form.name}
                       onChange={(e) => set('name', e.target.value)}
                       placeholder="Jane Doe"
                     />
                   </div>
-                  <div className="bk-field">
-                    <label>Phone</label>
+                  <div className={FIELD}>
+                    <label className={LABEL}>Phone</label>
                     <input
-                      className="bk-input"
+                      className={INPUT}
                       type="tel"
                       value={form.phone}
                       onChange={(e) => set('phone', e.target.value)}
                       placeholder="(517) 000-0000"
                     />
                   </div>
-                  <div className="bk-field full">
-                    <label>Email (optional)</label>
+                  <div className={cn(FIELD, 'sm:col-span-2')}>
+                    <label className={LABEL}>Email (optional)</label>
                     <input
-                      className="bk-input"
+                      className={INPUT}
                       type="email"
                       value={form.email}
                       onChange={(e) => set('email', e.target.value)}
                       placeholder="you@email.com"
                     />
                   </div>
-                  <div className="bk-field full">
-                    <label>Message</label>
+                  <div className={cn(FIELD, 'sm:col-span-2')}>
+                    <label className={LABEL}>Message</label>
                     <textarea
-                      className="bk-input"
+                      className={cn(INPUT, 'min-h-23 resize-y')}
                       value={form.msg}
                       onChange={(e) => set('msg', e.target.value)}
                       placeholder="I'd like a quote for a Full Detail on my SUV…"
                     />
                   </div>
                 </div>
-                <label className="bk-optin">
+                <label className="mt-5 flex cursor-pointer items-start gap-2.5 text-sm leading-normal text-fg-3">
                   <input
+                    className="mt-0.5 size-4 shrink-0 cursor-pointer accent-accent"
                     type="checkbox"
                     checked={form.optIn}
                     onChange={(e) => set('optIn', e.target.checked)}
                   />
                   Send me occasional offers and detailing tips from Clean King.
                 </label>
-                {err && <div className="bk-err">{err}</div>}
-                <div className="ct-nav">
-                  <Link className="ct-back" href="/appointment">
-                    Or book online →
-                  </Link>
-                  <button
-                    className="ck-btn ck-btn-accent"
-                    type="submit"
-                    disabled={submitting}
-                  >
+                {err && (
+                  <div className="mt-3.5 text-sm font-medium text-accent">
+                    {err}
+                  </div>
+                )}
+                <div className="mt-7 flex flex-wrap items-center justify-between gap-3">
+                  <Button variant="accent" type="submit" disabled={submitting}>
                     {submitting ? 'Sending…' : 'Send message'}
-                  </button>
+                  </Button>
                 </div>
               </form>
             ) : (
-              <div className="bk-done" style={{ padding: '20px 0' }}>
-                <div className="mark">
-                  <GCheck />
+              <div className="py-5 text-center">
+                <div className="inline-flex size-16.5 items-center justify-center rounded-full bg-accent">
+                  <GCheck className="size-8 fill-none stroke-on-accent stroke-3" />
                 </div>
-                <h2 style={{ fontSize: 'clamp(28px,3.4vw,40px)' }}>
+                <h2 className="mt-6.5 font-display text-display-md uppercase">
                   Message sent
                 </h2>
-                <p>
+                <p className="mx-auto mt-3.5 max-w-115 text-base text-fg-2">
                   Thanks, {form.name.split(' ')[0] || 'there'}! We&apos;ll get
                   back to you at {form.phone} as soon as we can.
                 </p>
-                <div className="row">
-                  <a className="ck-btn ck-btn-ghost" href={site.phoneHref}>
+                <div className="mt-7.5 flex flex-wrap justify-center gap-3.25">
+                  <Button variant="ghost" href={site.phoneHref}>
                     Call {site.phone}
-                  </a>
+                  </Button>
                 </div>
               </div>
             )}
           </div>
         </div>
 
-        <div className="ct-map">
+        <div className="relative mx-auto mt-8 h-70 max-w-6xl overflow-hidden border border-line md:mt-11 md:h-85 lg:mt-13 lg:h-105">
           <MapEmbed />
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="ck-faq">
-        <div className="inner">
-          <div className="garage-sh">
-            <div>
-              <div className="ck-eyebrow">Good to know</div>
-              <h2>FAQ</h2>
-            </div>
-            <p>
-              A few common questions. Still unsure? Call {site.phone} and
-              we&apos;ll help.
-            </p>
-          </div>
-          <div className="ck-faq-list">
-            {faqs.map(({ id, question, answer }) => (
-              <div
-                key={id}
-                className={'ck-faq-item' + (openFaq === id ? ' open' : '')}
-              >
-                <button
-                  type="button"
-                  className="ck-faq-q"
-                  aria-expanded={openFaq === id}
-                  onClick={() => setOpenFaq(openFaq === id ? null : id)}
-                >
-                  {question}
-                  <span className="ico" aria-hidden="true" />
-                </button>
-                <div className="ck-faq-a">
-                  <p>{answer}</p>
+      <section className="px-page pb-section">
+        <div className="mx-auto max-w-6xl">
+          <SectionHead eyebrow="Good to know" title="FAQ" tight />
+          <div className="border-t border-line">
+            {faqs.map(({ id, question, answer }) => {
+              const open = openFaq === id;
+              return (
+                <div key={id} className="border-b border-line">
+                  <button
+                    type="button"
+                    className="flex w-full cursor-pointer items-center justify-between gap-5 py-5.5 text-left font-display text-display-xs text-fg uppercase"
+                    aria-expanded={open}
+                    onClick={() => setOpenFaq(open ? null : id)}
+                  >
+                    {question}
+                    <span
+                      className={cn(
+                        'relative size-5.5 shrink-0 before:absolute before:top-1/2 before:left-1/2 before:h-0.5 before:w-3.25 before:-translate-x-1/2 before:-translate-y-1/2 before:bg-accent before:content-[""] after:absolute after:top-1/2 after:left-1/2 after:h-0.5 after:w-3.25 after:-translate-x-1/2 after:-translate-y-1/2 after:bg-accent after:transition-transform after:duration-250 after:content-[""]',
+                        open ? 'after:rotate-0' : 'after:rotate-90'
+                      )}
+                      aria-hidden="true"
+                    />
+                  </button>
+                  <div
+                    className={cn(
+                      'overflow-hidden transition-[max-height] duration-300 ease-in-out',
+                      open ? 'max-h-80' : 'max-h-0'
+                    )}
+                  >
+                    <p className="max-w-190 pr-10 pb-6 text-base leading-relaxed text-fg-2">
+                      {answer}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
-      <section className="garage-cta">
-        <div className="ck-eyebrow">Gift certificates available</div>
-        <h2>
-          Ready when
-          <br />
-          you are
-        </h2>
-        <div className="row">
-          <Link className="ck-btn ck-btn-accent" href="/appointment">
-            Book Appointment
-          </Link>
-          <a className="ck-btn ck-btn-ghost" href={site.phoneHref}>
-            {site.phone}
-          </a>
-        </div>
-      </section>
+      <CtaBand
+        eyebrow="Gift certificates available"
+        title={
+          <>
+            Ready when
+            <br />
+            you are
+          </>
+        }
+      >
+        <Button variant="accent" href="/appointment">
+          Book Appointment
+        </Button>
+        <Button variant="ghost" href={site.phoneHref}>
+          {site.phone}
+        </Button>
+      </CtaBand>
     </>
   );
 }

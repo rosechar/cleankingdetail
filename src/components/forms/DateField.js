@@ -41,7 +41,8 @@ export default function DateField({ value, min, max, onChange }) {
 
   return (
     <input
-      className="bk-input bk-date"
+      // 16px font is deliberate: iOS Safari auto-zooms on smaller inputs.
+      className="w-auto min-w-50 border border-line-2 bg-canvas px-3.5 py-3.25 text-base text-fg scheme-dark transition-colors focus:border-accent focus:outline-none"
       type="date"
       aria-label="Appointment date"
       value={value}

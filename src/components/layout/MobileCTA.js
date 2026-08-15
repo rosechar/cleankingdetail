@@ -10,12 +10,10 @@ import { cn } from '@/components/ui/cn';
 // Sticky bottom action bar — mobile only (hidden from md up), where the
 // header's Call/Book buttons are hidden. It reveals only once the whole hero
 // (marked with [data-hero]) has scrolled out of view, so the two never compete
-// on screen. Pages without a hero (e.g. the booking page) show it straight
-// away. On the booking page the "Book" action is the page itself, so we show
-// Call full-width with the number instead.
+// on screen. Pages without a hero show it straight away. The booking flow has
+// its own sticky footer (estimate + Continue), so it renders nothing there.
 export default function MobileCTA() {
   const pathname = usePathname();
-  const onBooking = pathname === '/appointment';
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -31,6 +29,8 @@ export default function MobileCTA() {
     io.observe(hero);
     return () => io.disconnect();
   }, [pathname]);
+
+  if (pathname === '/appointment') return null;
 
   return (
     <div
@@ -50,18 +50,11 @@ export default function MobileCTA() {
         href={site.phoneHref}
       >
         <GPhone aria-hidden="true" className="size-4.25 fill-current" />
-        {onBooking ? `Call ${site.phone}` : 'Call'}
+        Call
       </Button>
-      {!onBooking && (
-        <Button
-          variant="accent"
-          size="sm"
-          className="flex-1"
-          href="/appointment"
-        >
-          Book Now
-        </Button>
-      )}
+      <Button variant="accent" size="sm" className="flex-1" href="/appointment">
+        Book Now
+      </Button>
     </div>
   );
 }

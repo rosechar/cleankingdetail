@@ -183,9 +183,11 @@ export default function RootLayout({ children }) {
             aria-hidden="true"
             className="pointer-events-none fixed inset-0 z-0 bg-grid opacity-28"
           />
-          <div className="relative z-1">
+          <div className="relative z-1 flex min-h-screen flex-col">
             <Header />
-            <main id="main">{children}</main>
+            <main id="main" className="flex flex-1 flex-col">
+              {children}
+            </main>
             <Footer />
             <MobileCTA />
           </div>

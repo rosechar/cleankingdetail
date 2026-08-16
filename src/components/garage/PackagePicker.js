@@ -10,12 +10,11 @@ import { cn } from '@/components/ui/cn';
 // "Compare all" matrix grouped into accordion sections. Tapping a card or a
 // table column heading goes straight to booking with that package selected.
 
-const CARD_ORDER = [
-  'full-detail',
-  'deluxe-detail',
-  'interior-detail',
-  'spiffy-detail',
-  'a-la-carte',
+// Card columns: Full + Interior on the left, Deluxe, Spiffy and À La Carte on
+// the right (md+). Phones read left column then right, top to bottom.
+const CARD_COLUMNS = [
+  ['full-detail', 'interior-detail'],
+  ['deluxe-detail', 'spiffy-detail', 'a-la-carte'],
 ];
 const TABLE_ORDER = [
   'spiffy-detail',
@@ -26,7 +25,7 @@ const TABLE_ORDER = [
 ];
 
 const byIds = (ids) => ids.map((id) => findPackage(id)).filter(Boolean);
-const cardPkgs = byIds(CARD_ORDER);
+const cardColumns = CARD_COLUMNS.map(byIds);
 const tablePkgs = byIds(TABLE_ORDER);
 
 /** Everything a package delivers: its own line items + inherited ones. */
@@ -89,9 +88,14 @@ function PlusIcon({ open }) {
   );
 }
 
-function ItemList({ items, className }) {
+function ItemList({ items, className, columns = false }) {
   return (
-    <ul className={cn('flex flex-col', className)}>
+    <ul
+      className={cn(
+        columns ? 'grid grid-cols-1 gap-x-6 md:grid-cols-2' : 'flex flex-col',
+        className
+      )}
+    >
       {items.map((it) => (
         <li
           key={it}
@@ -113,7 +117,7 @@ function ItemList({ items, className }) {
 /** Collapsible item list ("What's included", "Includes <tier> services").
  *  `defaultOpen` is honoured on mount and whenever it flips to true (deep
  *  links from the home page open that package's lists). */
-function Includes({ title, items, defaultOpen = false }) {
+function Includes({ title, items, defaultOpen = false, columns = false }) {
   const [open, setOpen] = useState(defaultOpen);
   useEffect(() => {
     if (defaultOpen) setOpen(true);
@@ -138,14 +142,19 @@ function Includes({ title, items, defaultOpen = false }) {
         <PlusIcon open={open} />
       </button>
       {open && (
-        <ItemList items={items} className="px-4 pb-4 sm:px-5.5 sm:pb-5.5" />
+        <ItemList
+          items={items}
+          columns={columns}
+          className="px-4 pb-4 sm:px-5.5 sm:pb-5.5"
+        />
       )}
     </div>
   );
 }
 
-/** One full package card. The whole card links to booking; the item lists
- *  are closed accordions so all five cards fit on one screen. */
+/** One full package card. The whole card links to booking. On phones both
+ *  item lists are closed accordions; from md the package's own line items are
+ *  always shown (two columns) and only the inherited-services list folds. */
 function PackageCard({ pkg, expanded }) {
   return (
     <article
@@ -183,16 +192,23 @@ function PackageCard({ pkg, expanded }) {
         </div>
         <p className="mt-3 text-sm leading-normal text-fg-2">{pkg.blurb}</p>
       </div>
-      <Includes
-        title="What's included"
-        items={pkg.details || pkg.items}
-        defaultOpen={expanded}
-      />
+      {/* phones: line items behind an accordion; md+: always listed, 2 cols */}
+      <div className="md:hidden">
+        <Includes
+          title="What's included"
+          items={pkg.details || pkg.items}
+          defaultOpen={expanded}
+        />
+      </div>
+      <div className="hidden border-t border-line p-4 sm:p-5.5 md:block">
+        <ItemList items={pkg.details || pkg.items} columns />
+      </div>
       {pkg.includes && (
         <Includes
           title={pkg.includesText}
           items={pkg.includes}
           defaultOpen={expanded}
+          columns
         />
       )}
     </article>
@@ -354,9 +370,13 @@ export default function PackagePicker() {
       </div>
 
       {layout === 'packages' ? (
-        <div className="mx-auto grid max-w-6xl grid-cols-1 items-start gap-10 sm:grid-cols-2 lg:grid-cols-3">
-          {cardPkgs.map((p) => (
-            <PackageCard key={p.id} pkg={p} expanded={expanded === p.id} />
+        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 md:grid-cols-2">
+          {cardColumns.map((col, i) => (
+            <div key={i} className="flex flex-col gap-10">
+              {col.map((p) => (
+                <PackageCard key={p.id} pkg={p} expanded={expanded === p.id} />
+              ))}
+            </div>
           ))}
         </div>
       ) : (

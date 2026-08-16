@@ -40,7 +40,7 @@ export default async function OpenGraphImage() {
               fontSize: 22,
               letterSpacing: 4,
               textTransform: 'uppercase',
-              color: '#d8352e',
+              color: '#ed2f38',
               fontWeight: 700,
             }}
           >

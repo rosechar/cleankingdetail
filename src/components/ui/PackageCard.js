@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { GArrow, GCheck } from '@/components/garage/Icons';
-import Eyebrow from './Eyebrow';
 import { cn } from './cn';
 
 /** 1px-gutter grid of package cards (1 / 2 / 3 columns). */
@@ -113,24 +112,30 @@ export function PackageLink({ href, className, children }) {
   );
 }
 
-/** The "Add-ons · Tint & Protect" tile that closes the package grid. */
+/** The "Add-ons · Tint & Protect" tile that closes the package grid. Built on
+ *  PackageCard so it lines up with its siblings; "Quote" sits where the price
+ *  does. As a link (home) it gets the arrow row, otherwise a "Get a quote"
+ *  link (location pages). */
 export function AddOnCard({ as: Tag = 'div', ...rest }) {
+  const isLink = Tag !== 'div';
   return (
-    <Tag className={cn(CARD, 'justify-center bg-surface-2')} {...rest}>
-      <Eyebrow>Add-ons</Eyebrow>
-      <div className="mt-3.5 font-display text-2xl leading-none uppercase">
-        Tint &amp; Protect
-      </div>
-      <p className="mt-4 text-base text-fg-2">
-        Ceramic window tint and paint protection available with any detail. Ask
-        for a quote.
-      </p>
-      <PackageLink
-        className="mt-5.5"
-        href={Tag === 'div' ? '/contact' : undefined}
-      >
-        Quote
-      </PackageLink>
-    </Tag>
+    <PackageCard
+      as={Tag}
+      name={<>Tint &amp; Protect</>}
+      price="Quote"
+      blurb="Ceramic window tint and paint protection available with any detail. Ask for a quote."
+      {...rest}
+    >
+      <PackageActions className={isLink ? 'justify-end' : undefined}>
+        {isLink ? (
+          <GArrow
+            className="size-4 shrink-0 fill-none stroke-accent stroke-2 transition-transform duration-200 group-hover:translate-x-1"
+            aria-hidden="true"
+          />
+        ) : (
+          <PackageLink href="/contact">Get a quote</PackageLink>
+        )}
+      </PackageActions>
+    </PackageCard>
   );
 }

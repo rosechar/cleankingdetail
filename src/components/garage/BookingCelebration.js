@@ -23,7 +23,7 @@ export default function BookingCelebration({ fallback, className }) {
         const { createBookingScene } = await import('./bookingScene');
         if (cancelled) return;
         ctl = createBookingScene(host, {
-          accent: '#d8352e',
+          accent: '#ed2f38',
           reducedMotion:
             window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ??
             false,

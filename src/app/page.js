@@ -77,7 +77,7 @@ const Home = () => {
               <div className="font-display text-stat">
                 <span className="text-accent">$</span>35
               </div>
-              <div className="mt-2 font-mono text-xs tracking-label text-fg-3 uppercase">
+              <div className="mt-2 font-mono text-xs tracking-label text-fg-3 uppercase lg:mt-3 lg:text-sm">
                 And up
               </div>
             </div>
@@ -96,10 +96,10 @@ const Home = () => {
                 5
                 <GStar
                   aria-hidden="true"
-                  className="ml-1 inline-block size-7 -translate-y-0.5 fill-accent lg:size-8"
+                  className="ml-1 inline-block size-7 -translate-y-0.5 fill-accent lg:size-11"
                 />
               </div>
-              <div className="mt-2 font-mono text-xs tracking-label text-fg-3 uppercase transition-colors group-hover:text-fg">
+              <div className="mt-2 font-mono text-xs tracking-label text-fg-3 uppercase transition-colors group-hover:text-fg lg:mt-3 lg:text-sm">
                 On Google
               </div>
             </a>
@@ -107,7 +107,7 @@ const Home = () => {
               <div className="font-display text-stat">
                 100<span className="text-accent">%</span>
               </div>
-              <div className="mt-2 font-mono text-xs tracking-label text-fg-3 uppercase">
+              <div className="mt-2 font-mono text-xs tracking-label text-fg-3 uppercase lg:mt-3 lg:text-sm">
                 By hand
               </div>
             </div>

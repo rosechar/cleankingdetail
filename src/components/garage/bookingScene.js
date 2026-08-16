@@ -17,7 +17,7 @@ const LOOP = 8;
  * @param {boolean} [opts.reducedMotion]  render a single still frame instead of animating
  */
 export function createBookingScene(host, opts = {}) {
-  const accent = new THREE.Color(opts.accent || '#d8352e');
+  const accent = new THREE.Color(opts.accent || '#ed2f38');
   const reduced = !!opts.reducedMotion;
   let dead = false;
   let raf = 0;

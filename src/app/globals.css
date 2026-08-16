@@ -16,7 +16,7 @@
   --color-fg-3: #9d9da2;
   --color-line: rgb(255 255 255 / 0.13);
   --color-line-2: rgb(255 255 255 / 0.26);
-  --color-accent: #d8352e;
+  --color-accent: #ed2f38;
   --color-on-accent: #fbfaf6;
 
   /* type families (next/font variables are set on <html>) */
@@ -51,7 +51,7 @@
   --text-quote--line-height: 1.12;
   --text-quote-mark: clamp(6rem, 11vw, 9.375rem);
   --text-quote-mark--line-height: 0.7;
-  --text-stat: clamp(2.125rem, 3.4vw, 2.625rem);
+  --text-stat: clamp(2.125rem, 4vw, 3.75rem);
   --text-stat--line-height: 1;
   --text-marquee: clamp(1.25rem, 2.4vw, 1.75rem);
   --text-marquee--line-height: 1;

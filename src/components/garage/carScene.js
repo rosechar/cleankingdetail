@@ -37,7 +37,7 @@ export function createCarScene(host, opts = {}) {
   const S = {
     zone: '',
     fxStyle: opts.fx || 'scrub',
-    accent: opts.accent || '#d8352e',
+    accent: opts.accent || '#ed2f38',
     bg: opts.bg || '#0d0d0f',
     reduced: !!opts.reducedMotion,
     az: HOME.az,

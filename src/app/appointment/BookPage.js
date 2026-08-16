@@ -29,13 +29,13 @@ import { RISE, riseDelay } from '@/components/ui/rise';
 /* ------------------------------------------------------------------ */
 
 // Section eyebrow ("Choose your detail", "Pick a day"…) — the site's mono label.
-const LABEL = 'font-mono text-xs tracking-label text-fg-3 uppercase';
+const LABEL = 'font-mono text-xs tracking-label text-fg-3 uppercase lg:text-sm';
 // Inputs are 16px+ so iOS Safari never auto-zooms; border turns accent on focus.
 const INPUT =
-  'w-full border border-line-2 bg-surface px-4.5 text-[17px] text-fg transition-colors focus:border-accent focus:outline-none';
-const FIELD = cn(INPUT, 'h-14 lg:h-15');
+  'w-full border border-line-2 bg-surface px-4.5 text-[17px] text-fg transition-colors focus:border-accent focus:outline-none lg:px-5 lg:text-lg';
+const FIELD = cn(INPUT, 'h-14 lg:h-17');
 // Key/value rows inside the summary panels.
-const ROW = 'flex justify-between gap-4 text-base';
+const ROW = 'flex justify-between gap-4 text-base lg:text-lg';
 const ROW_KEY = 'text-fg-3';
 const ROW_VAL = 'text-right font-semibold text-fg';
 
@@ -76,7 +76,7 @@ function FieldError({ id, children }) {
 /** Desktop-only step heading (the mobile header carries the title instead). */
 function StepHeading({ children }) {
   return (
-    <h2 className="mb-2 hidden font-display text-display-md text-fg uppercase lg:mb-5 lg:block">
+    <h2 className="mb-2 hidden font-display text-display-md text-fg uppercase lg:mb-6 lg:block lg:text-display-lg">
       {children}
     </h2>
   );
@@ -119,7 +119,7 @@ function PackageStep({ value, onChange }) {
       <div
         role="radiogroup"
         aria-label="Package"
-        className="flex flex-col gap-6 lg:grid lg:grid-cols-2"
+        className="flex flex-col gap-6 lg:grid lg:grid-cols-2 lg:gap-8"
       >
         {bookingPackages.map((p) => {
           const sel = p.id === value;
@@ -131,15 +131,15 @@ function PackageStep({ value, onChange }) {
               aria-checked={sel}
               onClick={() => onChange(p.id)}
               className={cn(
-                'relative flex w-full cursor-pointer border bg-surface p-4.5 text-left transition-[border-color,box-shadow] duration-150',
+                'relative flex w-full cursor-pointer border bg-surface p-4.5 text-left transition-[border-color,box-shadow] duration-150 lg:p-6.5',
                 sel
-                  ? 'border-accent shadow-[0_8px_22px_rgba(216,53,46,0.16)] inset-ring inset-ring-accent'
+                  ? 'border-accent shadow-[0_8px_22px_rgba(237,47,56,0.16)] inset-ring inset-ring-accent'
                   : 'border-line hover:border-line-2'
               )}
             >
               <span className="flex w-full items-center justify-between gap-3">
                 <span className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1.5">
-                  <span className="font-display text-xl leading-none text-fg uppercase">
+                  <span className="font-display text-xl leading-none text-fg uppercase lg:text-[28px]">
                     {p.name}
                   </span>
                   {p.popular && (
@@ -149,12 +149,12 @@ function PackageStep({ value, onChange }) {
                   )}
                 </span>
                 <span className="flex items-center gap-3">
-                  <span className="font-display text-2xl leading-none whitespace-nowrap text-fg">
+                  <span className="font-display text-2xl leading-none whitespace-nowrap text-fg lg:text-[32px]">
                     {p.price}
                   </span>
                   <span
                     className={cn(
-                      'flex size-6 shrink-0 items-center justify-center rounded-full',
+                      'flex size-6 shrink-0 items-center justify-center rounded-full lg:size-8',
                       sel
                         ? 'bg-accent text-on-accent'
                         : 'border-[1.5px] border-line-2'
@@ -181,7 +181,7 @@ function VehicleStep({ form, set }) {
       <div
         role="radiogroup"
         aria-label="Vehicle type"
-        className="grid grid-cols-2 gap-3 lg:max-w-150 lg:grid-cols-4 lg:gap-3.5"
+        className="grid grid-cols-2 gap-3 lg:max-w-170 lg:grid-cols-4 lg:gap-3.5"
       >
         {VEHICLES.map((v) => {
           const sel = v === form.vehicle;
@@ -210,7 +210,7 @@ function VehicleStep({ form, set }) {
       </label>
       <input
         id="bk-make"
-        className={cn(FIELD, 'lg:max-w-150')}
+        className={cn(FIELD, 'lg:max-w-170')}
         value={form.makeModel}
         onChange={(e) => set('makeModel', e.target.value)}
         placeholder="e.g. Ford Explorer"
@@ -224,7 +224,7 @@ function VehicleStep({ form, set }) {
         id="bk-notes"
         className={cn(
           INPUT,
-          'min-h-28 resize-none px-4.5 py-3.75 leading-normal lg:max-w-150'
+          'min-h-28 resize-none px-4.5 py-3.75 leading-normal lg:max-w-170'
         )}
         value={form.notes}
         onChange={(e) => set('notes', e.target.value)}
@@ -285,14 +285,14 @@ function DetailsStep({ form, set, days, summary, errors = {} }) {
         ))}
       </div>
       <FieldError id="bk-day-err">{errors.day}</FieldError>
-      <p className="mt-4 text-sm leading-normal text-fg-3 lg:mt-3.5 lg:max-w-160">
+      <p className="mt-4 text-sm leading-normal text-fg-3 lg:mt-3.5 lg:max-w-170">
         {DROP_OFF_NOTE}
       </p>
 
       <SectionLabel className="mt-8.5 mb-4 lg:mb-3.5">
         Your details
       </SectionLabel>
-      <div className="flex flex-col gap-3 lg:max-w-150 lg:gap-3.5">
+      <div className="flex flex-col gap-3 lg:max-w-170 lg:gap-3.5">
         <div>
           <input
             id="bk-name"
@@ -408,7 +408,7 @@ function Steps({ step, goStep }) {
           <li
             key={label}
             className={cn(
-              'flex min-w-0 items-center gap-1.5 lg:gap-3',
+              'flex min-w-0 items-center gap-1.5 lg:gap-3.5',
               i < STEP_TITLES.length - 1 && 'flex-1 lg:flex-none'
             )}
           >
@@ -424,7 +424,7 @@ function Steps({ step, goStep }) {
             >
               <span
                 className={cn(
-                  'flex size-7 shrink-0 items-center justify-center rounded-full text-sm font-bold lg:size-7.5',
+                  'flex size-7 shrink-0 items-center justify-center rounded-full text-sm font-bold lg:size-9 lg:text-base',
                   active || done
                     ? 'bg-accent text-on-accent'
                     : 'bg-surface-2 text-fg-3'
@@ -434,7 +434,7 @@ function Steps({ step, goStep }) {
               </span>
               <span
                 className={cn(
-                  'text-[17px] whitespace-nowrap lg:text-base',
+                  'text-[17px] whitespace-nowrap lg:text-lg',
                   active
                     ? 'font-bold text-fg'
                     : done
@@ -467,7 +467,7 @@ function MobileProgress({ step, goStep }) {
   return (
     <nav
       aria-label="Booking steps"
-      className="sticky top-[var(--header-h,var(--spacing-header))] z-30 bg-canvas/95 px-3.5 py-4 backdrop-frost lg:hidden"
+      className="sticky top-[calc(var(--header-h,var(--spacing-header))-2px)] z-30 -mt-0.5 bg-canvas px-3.5 pt-6 pb-4 lg:hidden"
     >
       <Steps step={step} goStep={goStep} />
     </nav>
@@ -477,7 +477,7 @@ function MobileProgress({ step, goStep }) {
 /** Desktop: the same stepper inline above the form. */
 function DesktopStepper({ step, goStep }) {
   return (
-    <div className="mb-11 hidden lg:block">
+    <div className="mb-12 hidden lg:block">
       <Steps step={step} goStep={goStep} />
     </div>
   );
@@ -501,12 +501,12 @@ function DesktopSummary({
   label,
 }) {
   return (
-    <aside className="sticky top-28 hidden w-95 flex-none lg:block">
-      <div className="border border-line bg-surface p-6">
-        <SectionLabel className="mb-4.5">Your booking</SectionLabel>
-        <SummaryRows summary={summary} rowClassName="py-2" />
+    <aside className="sticky top-28 hidden w-110 flex-none lg:block">
+      <div className="border border-line bg-surface p-8">
+        <SectionLabel className="mb-5.5">Your booking</SectionLabel>
+        <SummaryRows summary={summary} rowClassName="py-2.5" />
         <PrimaryButton
-          className="mt-5 h-15 w-full text-lg"
+          className="mt-7 h-17 w-full text-xl"
           disabled={!canGo || submitting}
           muted={!ready}
           onClick={onNext}
@@ -529,7 +529,7 @@ function DesktopSummary({
 /** Mobile: sticky footer with the primary button. */
 function MobileFooter({ canGo, ready = true, submitting, err, onNext, label }) {
   return (
-    <div className="sticky bottom-0 z-30 border-t border-line bg-surface/95 px-4.5 pt-3.5 pb-safe-3.5 backdrop-frost lg:hidden">
+    <div className="sticky -bottom-0.5 z-30 border-t border-line bg-surface px-4.5 pt-3.5 pb-safe-4 lg:hidden">
       <PrimaryButton
         className="h-12.5 w-full px-5 text-base"
         disabled={!canGo || submitting}
@@ -872,11 +872,11 @@ export default function BookPage() {
       : 'Confirm booking';
 
   return (
-    <div className="flex min-h-[calc(100dvh-var(--spacing-header))] flex-col lg:min-h-0">
+    <div className="flex min-h-[calc(100dvh-var(--spacing-header))] flex-1 flex-col lg:min-h-0">
       <h1 className="sr-only">Book an appointment</h1>
       <MobileProgress step={step} goStep={goStep} />
 
-      <div className="mx-auto w-full max-w-6xl flex-1 px-5.5 pt-10 pb-8 lg:px-page lg:py-7">
+      <div className="mx-auto w-full max-w-6xl flex-1 px-5.5 pt-4 pb-8 lg:max-w-[84rem] lg:px-page lg:py-10">
         <DesktopStepper step={step} goStep={goStep} />
 
         <form
@@ -885,7 +885,7 @@ export default function BookPage() {
             e.preventDefault();
             next();
           }}
-          className="lg:flex lg:items-start lg:gap-11.5"
+          className="lg:flex lg:items-start lg:gap-16"
         >
           <HoneypotField
             id="bk-company"

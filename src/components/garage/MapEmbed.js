@@ -22,7 +22,7 @@ function thumbUrl({ mobile, aspect }) {
     zoom: String(zoom),
     size: `${w}x${h}`,
     scale: '2',
-    markers: `${mobile ? '' : 'size:mid|'}color:0xd8352e|${WHERE}`,
+    markers: `${mobile ? '' : 'size:mid|'}color:0xed2f38|${WHERE}`,
     key: KEY,
   });
   return `https://maps.googleapis.com/maps/api/staticmap?${params.toString()}`;

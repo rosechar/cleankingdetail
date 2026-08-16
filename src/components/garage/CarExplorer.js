@@ -114,7 +114,7 @@ function CarViewer({ zone, coverage, onPick, className }) {
           window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ??
           false;
         const ctl = createCarScene(host, {
-          accent: '#d8352e',
+          accent: '#ed2f38',
           bg: '#141419',
           fx: 'scrub',
           reducedMotion,

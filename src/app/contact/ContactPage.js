@@ -5,7 +5,13 @@ import Link from 'next/link';
 import { site } from '@/data/site';
 import { faqs } from '@/data/faqs';
 import { isEmail, isPhone } from '@/lib/validation';
-import { GPin, GPhone, GCheck } from '@/components/garage/Icons';
+import {
+  GPin,
+  GPhone,
+  GCheck,
+  GFacebook,
+  GGoogle,
+} from '@/components/garage/Icons';
 import HoneypotField from '@/components/forms/HoneypotField';
 import MapEmbed from '@/components/garage/MapEmbed';
 import Button from '@/components/ui/Button';
@@ -21,8 +27,9 @@ const INPUT =
   'w-full border border-line-2 bg-canvas px-3.5 py-3.25 font-body text-base text-fg transition-colors focus:border-accent focus:outline-none';
 const LABEL = 'font-mono text-xs uppercase tracking-label text-fg-3';
 const FIELD = 'flex flex-col gap-1.75';
-const SOCIAL =
-  'border border-line-2 px-4 py-2.75 text-center font-mono text-xs uppercase tracking-label text-fg-2 transition-colors hover:border-accent hover:text-fg';
+// Icon-only social links, same treatment as the footer, just bigger.
+const SOCIAL = 'text-fg-2 transition-colors hover:text-accent';
+const SOCIAL_ICON = 'size-8 fill-current';
 
 function InfoRow({ icon, label, children }) {
   return (
@@ -94,7 +101,9 @@ export default function ContactPage() {
           the band) from md; on phones the map sits directly under the title,
           flush against the contact info below. */}
       <section className="relative border-b border-line md:grid md:grid-cols-2">
-        <div className="px-page pt-6.5 pb-8.5 md:pt-9 md:pb-11 lg:pt-12 lg:pb-13.5">
+        {/* The left margin lines the text up with PageHero's centred
+            max-w-7xl column on other sub-pages. */}
+        <div className="px-page pt-6.5 pb-8.5 md:pt-9 md:pb-11 md:pl-[max(var(--spacing-page),calc((100vw-80rem)/2))] lg:pt-12 lg:pb-13.5">
           <Eyebrow className={RISE} style={riseDelay(0)}>
             Get in touch
           </Eyebrow>
@@ -113,7 +122,7 @@ export default function ContactPage() {
       </section>
 
       <section className="px-page pb-section md:pt-9 lg:pt-12">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 items-start gap-10 md:grid-cols-2 md:gap-11 lg:gap-18">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-11 lg:gap-18">
           <div>
             <div className="flex flex-col md:mt-7">
               <InfoRow
@@ -148,22 +157,24 @@ export default function ContactPage() {
                 </div>
               </InfoRow>
             </div>
-            <div className="mt-7 flex gap-3 max-sm:flex-col">
+            <div className="mt-7 flex gap-5">
               <a
                 className={SOCIAL}
                 href={site.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Clean King on Facebook"
               >
-                Facebook
+                <GFacebook className={SOCIAL_ICON} aria-hidden="true" />
               </a>
               <a
                 className={SOCIAL}
                 href={site.google}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Clean King reviews on Google"
               >
-                Google Reviews
+                <GGoogle className={SOCIAL_ICON} aria-hidden="true" />
               </a>
             </div>
           </div>

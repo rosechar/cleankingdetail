@@ -19,8 +19,9 @@ export default function LocationSection({
   chips,
 }) {
   return (
-    <section id={id} className="px-page py-section">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-px border border-line bg-line md:grid-cols-2">
+    // Full-bleed on phones so the map runs edge to edge; boxed from md.
+    <section id={id} className="py-section md:px-page">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-px border-y border-line bg-line md:grid-cols-2 md:border">
         <div className="bg-surface px-7 py-8.5 md:px-9 md:py-11 lg:px-11.5 lg:py-13">
           <Eyebrow>{eyebrow}</Eyebrow>
           <h2 className="mt-3.5 font-display text-display-lg uppercase">

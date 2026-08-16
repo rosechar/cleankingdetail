@@ -80,7 +80,7 @@ export default function Header() {
             key={n.href}
             href={n.href}
             className={cn(
-              'relative border-b border-line px-0.5 py-4 font-mono text-base tracking-label uppercase transition-colors hover:text-fg md:border-0 md:p-0 md:text-sm md:after:absolute md:after:-bottom-1.5 md:after:left-0 md:after:h-0.5 md:after:bg-accent md:after:transition-[right] md:after:duration-250 md:after:content-[""]',
+              'relative border-b border-line px-0.5 py-4 font-mono text-base tracking-label uppercase transition-colors hover:text-fg md:border-0 md:p-0 md:text-sm md:after:absolute md:after:-bottom-1.5 md:after:left-0 md:after:h-0.5 md:after:bg-accent md:after:transition-[right] md:after:duration-250 md:after:content-[""] lg:text-base',
               n.mobileOnly && 'md:hidden',
               pathname === n.href
                 ? 'text-fg md:after:right-0'
@@ -94,7 +94,11 @@ export default function Header() {
       </nav>
 
       <div className="hidden shrink-0 items-center md:flex">
-        <Button variant="accent" href="/appointment">
+        <Button
+          variant="accent"
+          href="/appointment"
+          className="lg:px-7 lg:py-4 lg:text-lg"
+        >
           Book Now
         </Button>
       </div>

@@ -161,11 +161,11 @@ const Home = () => {
         className="overflow-hidden border-b border-line py-4.5"
         aria-hidden="true"
       >
-        <div className="flex w-max animate-marquee gap-11 whitespace-nowrap motion-reduce:animate-none">
+        <div className="flex w-max animate-marquee whitespace-nowrap motion-reduce:animate-none">
           {[0, 1].map((k) => (
             <span
               key={k}
-              className="inline-flex items-center gap-11 font-display text-marquee leading-normal text-fg-2 uppercase"
+              className="inline-flex items-center gap-11 pr-11 font-display text-marquee leading-normal text-fg-2 uppercase"
             >
               {MARQUEE.map((m) => (
                 <span key={m} className="contents">
@@ -177,9 +177,6 @@ const Home = () => {
           ))}
         </div>
       </div>
-
-      {/* review — social proof before pricing */}
-      <ReviewsCarousel />
 
       {/* services preview */}
       <section className="px-page py-section" id="services">
@@ -219,6 +216,9 @@ const Home = () => {
           <AddOnCard as={Link} href="/contact" />
         </PackageGrid>
       </section>
+
+      {/* reviews */}
+      <ReviewsCarousel />
 
       {/* our work */}
       {/* <Gallery /> */}

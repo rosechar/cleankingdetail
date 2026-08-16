@@ -18,6 +18,7 @@ import Link from 'next/link';
 import { CalendarCheck, CalendarPlus, CarFront } from 'lucide-react';
 import { GArrow } from '@/components/garage/Icons';
 import BookingCelebration from '@/components/garage/BookingCelebration';
+import PageHero from '@/components/ui/PageHero';
 import AddressLink from '@/components/ui/AddressLink';
 import HoneypotField from '@/components/forms/HoneypotField';
 import Stars from '@/components/ui/Stars';
@@ -467,7 +468,7 @@ function MobileProgress({ step, goStep }) {
   return (
     <nav
       aria-label="Booking steps"
-      className="sticky top-[calc(var(--header-h,var(--spacing-header))-2px)] z-30 -mt-0.5 bg-canvas px-3.5 pt-6 pb-4 lg:hidden"
+      className="sticky top-[calc(var(--header-h,var(--spacing-header))-2px)] z-30 bg-canvas px-3.5 pt-6 pb-4 lg:hidden"
     >
       <Steps step={step} goStep={goStep} />
     </nav>
@@ -873,7 +874,16 @@ export default function BookPage() {
 
   return (
     <div className="flex min-h-[calc(100dvh-var(--spacing-header))] flex-1 flex-col lg:min-h-0">
-      <h1 className="sr-only">Book an appointment</h1>
+      <PageHero
+        eyebrow="Book online"
+        title={
+          <>
+            Ready to
+            <br />
+            get clean?
+          </>
+        }
+      />
       <MobileProgress step={step} goStep={goStep} />
 
       <div className="mx-auto w-full max-w-6xl flex-1 px-5.5 pt-4 pb-8 lg:max-w-[84rem] lg:px-page lg:py-10">

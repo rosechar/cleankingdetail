@@ -10,10 +10,10 @@ export const metadata = {
     title: 'Book a Car Detailing Appointment | Clean King — Blissfield, MI',
     description:
       'Schedule your car wash, detailing, or window tinting service online. Easy booking system for Blissfield, Adrian, and Tecumseh areas.',
-    url: 'https://www.cleankingdetail.com/appointment',
+    url: '/appointment',
   },
   alternates: {
-    canonical: 'https://www.cleankingdetail.com/appointment',
+    canonical: '/appointment',
   },
 };
 

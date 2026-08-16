@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { site, packages } from '@/data/site';
+import { site, packages, findPackage } from '@/data/site';
 import { GCheck } from '@/components/garage/Icons';
 import IncludesToggle from '@/components/garage/IncludesToggle';
 import Button from '@/components/ui/Button';
@@ -19,12 +19,14 @@ export const metadata = {
     title: 'Car Detailing Services & Pricing | Clean King — Blissfield, MI',
     description:
       'View our complete range of car wash, detailing, and window tinting services with transparent pricing from $35-$160.',
-    url: 'https://www.cleankingdetail.com/services',
+    url: '/services',
   },
   alternates: {
-    canonical: 'https://www.cleankingdetail.com/services',
+    canonical: '/services',
   },
 };
+
+const alaCarte = findPackage('a-la-carte');
 
 export default function Services() {
   return (
@@ -112,9 +114,9 @@ export default function Services() {
             <FeatureCard
               tag="À la carte"
               title="Single Services"
-              price={site.alacarte.price}
+              price={alaCarte.price}
               description="Pick exactly what your car needs — no full package required."
-              items={site.alacarte.items}
+              items={alaCarte.items}
             />
             {site.addons.map((a) => (
               <FeatureCard

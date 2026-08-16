@@ -1,6 +1,7 @@
 import { site } from '@/data/site';
 import { locationSchema } from '@/data/locationSchema';
 import LocationPage from '@/components/location/LocationPage';
+import JsonLd from '@/components/seo/JsonLd';
 
 export const metadata = {
   title: 'Car Detailing in Tecumseh, MI | Clean King Detailing',
@@ -12,10 +13,10 @@ export const metadata = {
     title: 'Car Detailing in Tecumseh, MI | Clean King Detailing',
     description:
       'Hand car wash, auto detailing & ceramic window tinting for Tecumseh, MI drivers. Flat pricing from $35–$160.',
-    url: 'https://www.cleankingdetail.com/car-detailing-tecumseh-mi',
+    url: '/car-detailing-tecumseh-mi',
   },
   alternates: {
-    canonical: 'https://www.cleankingdetail.com/car-detailing-tecumseh-mi',
+    canonical: '/car-detailing-tecumseh-mi',
   },
 };
 
@@ -119,10 +120,7 @@ const locationLd = locationSchema({
 export default function CarDetailingTecumsehMI() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(locationLd) }}
-      />
+      <JsonLd data={locationLd} />
       <LocationPage {...content} />
     </>
   );

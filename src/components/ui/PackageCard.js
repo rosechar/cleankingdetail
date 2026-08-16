@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { GArrow } from '@/components/garage/Icons';
+import { GArrow, GCheck } from '@/components/garage/Icons';
 import Eyebrow from './Eyebrow';
 import { cn } from './cn';
 
@@ -61,6 +61,24 @@ export function PackageCard({
       <p className="mt-4 text-base text-fg-2">{blurb}</p>
       {children}
     </Tag>
+  );
+}
+
+/** Check-marked feature list inside a card (the package's headline items). */
+export function PackageFeatures({ items, className }) {
+  return (
+    <ul className={cn('mt-4.5 flex flex-col gap-2', className)}>
+      {items.map((it) => (
+        <li key={it} className="flex items-baseline gap-2.5 text-sm text-fg-2">
+          <GCheck
+            className="size-3.75 shrink-0 translate-y-0.5 fill-none stroke-accent"
+            strokeWidth={2.6}
+            aria-hidden="true"
+          />
+          {it}
+        </li>
+      ))}
+    </ul>
   );
 }
 

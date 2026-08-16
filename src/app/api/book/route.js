@@ -1,121 +1,98 @@
 import {
   escapeHtml,
   renderRows,
+  renderOwnerAlert,
+  renderCustomerEmail,
   sendOwnerEmail,
   sendCustomerEmail,
   getOwnerEmails,
   addToSegment,
 } from '@/services/email';
-import { site } from '@/data/site';
-import { isLikelySpam } from '@/services/spam';
+import { jsonError, jsonOk, readFormBody } from '@/services/forms';
+import { cleanString, isEmail, isPhone, LIMITS } from '@/lib/validation';
+import { findPackage } from '@/data/site';
+import { DROP_OFF_WINDOW, VEHICLES } from '@/data/booking';
 
 export const runtime = 'nodejs';
 
-const isEmail = (v) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v || '').trim());
-
 export async function POST(req) {
-  let data;
-  try {
-    data = await req.json();
-  } catch {
-    return Response.json({ error: 'Invalid request.' }, { status: 400 });
-  }
+  const { data, response } = await readFormBody(req);
+  if (response) return response;
 
-  // Silently accept bot submissions without sending anything.
-  if (isLikelySpam(data)) {
-    return Response.json({ ok: true });
-  }
+  // The client sends the package *name*; price and id are resolved here so a
+  // tampered payload can't put an invented price in front of the shop.
+  const pkg = findPackage(data.pkg);
+  const vehicle = VEHICLES.includes(data.vehicle) ? data.vehicle : '';
+  const date = cleanString(data.date, LIMITS.date);
+  const name = cleanString(data.name, LIMITS.name);
+  const phone = cleanString(data.phone, LIMITS.phone);
+  const email = cleanString(data.email, LIMITS.email);
+  const makeModel = cleanString(data.makeModel, LIMITS.makeModel);
+  const notes = cleanString(data.notes, LIMITS.notes);
+  const optIn = Boolean(data.optIn);
 
-  const { pkg, vehicle, date, name, phone } = data || {};
   if (!pkg || !vehicle || !date || !name || !phone) {
-    return Response.json(
-      { error: 'Missing required fields.' },
-      { status: 400 }
-    );
+    return jsonError('Missing required fields.', 400);
+  }
+  if (!isPhone(phone)) return jsonError('Enter a valid phone number.', 400);
+  if (email && !isEmail(email)) {
+    return jsonError('Enter a valid email address or leave it blank.', 400);
   }
 
   const details = {
-    Package: data.pkg,
-    'Est. price': data.price,
-    Vehicle: data.vehicle,
-    Date: data.date,
-    Name: data.name,
-    Phone: data.phone,
-    Email: data.email,
-    'Make & model': data.makeModel,
-    Notes: data.notes,
-    'Promo opt-in': data.optIn ? 'Yes' : 'No',
+    Package: pkg.name,
+    'Est. price': pkg.price,
+    Vehicle: vehicle,
+    Date: date,
+    Name: name,
+    Phone: phone,
+    Email: email,
+    'Make & model': makeModel,
+    Notes: notes,
+    'Promo opt-in': optIn ? 'Yes' : 'No',
   };
 
   // 1) Owner alert (authoritative — failure means the lead didn't land).
-  const ownerHtml = `
-    <div style="max-width:560px;margin:0 auto;font-family:system-ui,sans-serif;">
-      <h2 style="font:600 20px/1.2 system-ui,sans-serif;color:#16140f;margin:0 0 4px;">New booking request</h2>
-      <p style="color:#6e6e72;font-size:13px;margin:0 0 18px;">via cleankingdetail.com</p>
-      <table style="border-collapse:collapse;width:100%;">${renderRows(details)}</table>
-    </div>`;
-
   const owner = await sendOwnerEmail({
-    subject: `New booking — ${pkg} · ${name}`,
-    html: ownerHtml,
-    replyTo: data.email || undefined,
+    subject: `New booking — ${pkg.name} · ${name}`,
+    html: renderOwnerAlert({ heading: 'New booking request', rows: details }),
+    replyTo: email,
   });
-
-  if (!owner.ok) {
-    return Response.json({ error: owner.message }, { status: owner.status });
-  }
+  if (!owner.ok) return jsonError(owner.message, owner.status);
 
   // Opted-in contacts join the Resend segment for future promos.
-  if (data.optIn) {
-    await addToSegment({
-      email: data.email,
-      name: data.name,
-      phone: data.phone,
-    });
-  }
+  if (optIn && email) await addToSegment({ email, name, phone });
 
-  // 2) Customer confirmation (best-effort; only if they gave a valid email).
-  //    Requires a verified Resend domain to actually deliver to the customer.
-  if (isEmail(data.email)) {
-    const first = String(name).trim().split(' ')[0] || 'there';
-    const customerHtml = `
-      <div style="max-width:560px;margin:0 auto;font-family:system-ui,sans-serif;color:#16140f;">
-        <div style="text-align:center;margin:0 0 24px;">
-          <img src="https://www.cleankingdetail.com/cleanking.png" alt="Clean King Detailing" width="96" height="96" style="display:inline-block;border:0;" />
-        </div>
-        <h2 style="font:600 22px/1.2 system-ui,sans-serif;margin:0 0 10px;">Thanks, ${escapeHtml(first)} — we've got your request</h2>
-        <p style="font-size:15px;line-height:1.55;margin:0 0 18px;">
-          We've received your request for a <b>${escapeHtml(pkg)}</b> on <b>${escapeHtml(date)}</b>.
-          We'll call <b>${escapeHtml(phone)}</b> shortly to confirm your spot.
-        </p>
-        <table style="border-collapse:collapse;width:100%;margin-bottom:18px;">${renderRows(
-          {
-            Package: data.pkg,
-            'Est. price': data.price,
-            Vehicle: data.vehicle,
-            Date: data.date,
-            'Make & model': data.makeModel,
-            Notes: data.notes,
-          }
-        )}</table>
-        <p style="font-size:14px;line-height:1.55;color:#4c4c54;margin:0 0 18px;">
-          Heads up: so we can give your vehicle the time it deserves, we ask for
-          drop-offs between <b>9:30–10:00 AM</b> on your appointment day.
-        </p>
-        <p style="font-size:14px;line-height:1.55;margin:0 0 18px;">
-          Questions? Call us at <b>${site.phone}</b> or just reply to this email.
-        </p>
-        <p style="color:#6e6e72;font-size:12.5px;line-height:1.5;border-top:1px solid #e6e4dd;padding-top:14px;margin:0;">
-          Clean King Detailing · ${site.address1}, ${site.address2} · ${site.phone}
-        </p>
-      </div>`;
+  // 2) Customer confirmation (best-effort; only if they gave an email).
+  //    Requires a verified Resend domain to actually deliver.
+  if (email) {
+    const first = name.split(/\s+/)[0] || 'there';
+    const body = `
+      <h2 style="font:600 22px/1.2 system-ui,sans-serif;margin:0 0 10px;">Thanks, ${escapeHtml(first)} — we've got your request</h2>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 18px;">
+        We've received your request for a <b>${escapeHtml(pkg.name)}</b> on <b>${escapeHtml(date)}</b>.
+        We'll call <b>${escapeHtml(phone)}</b> shortly to confirm your spot.
+      </p>
+      <table style="border-collapse:collapse;width:100%;margin-bottom:18px;">${renderRows(
+        {
+          Package: pkg.name,
+          'Est. price': pkg.price,
+          Vehicle: vehicle,
+          Date: date,
+          'Make & model': makeModel,
+          Notes: notes,
+        }
+      )}</table>
+      <p style="font-size:14px;line-height:1.55;color:#4c4c54;margin:0 0 18px;">
+        Heads up: so we can give your vehicle the time it deserves, we ask for
+        drop-offs between <b>${DROP_OFF_WINDOW}</b> on your appointment day.
+      </p>`;
 
     const customer = await sendCustomerEmail({
-      to: data.email,
+      to: email,
       subject: 'Your Clean King booking request',
-      html: customerHtml,
-      replyTo: getOwnerEmails()[0] || undefined,
+      html: renderCustomerEmail({ body }),
+      replyTo: getOwnerEmails()[0],
     });
     if (!customer.ok) {
       // Don't fail the request — the shop still got the lead.
@@ -123,5 +100,5 @@ export async function POST(req) {
     }
   }
 
-  return Response.json({ ok: true });
+  return jsonOk();
 }

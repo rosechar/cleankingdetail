@@ -1,13 +1,28 @@
-// Clean King — shared site content used across the Garage design pages.
+// Clean King — shared site content used across every page, the email
+// templates and the structured data. Edit business facts here, nowhere else.
+
+/** Canonical origin (no trailing slash) for metadata, sitemap and JSON-LD. */
+export const SITE_URL = 'https://www.cleankingdetail.com';
+
 export const site = {
+  name: 'Clean King Detailing',
   phone: '(517) 682-1919',
   phoneHref: 'tel:5176821919',
+  // Postal address, split so structured data can use the parts and the UI can
+  // print the two display lines.
+  street: '610 W Adrian St',
+  city: 'Blissfield',
+  region: 'MI',
+  postalCode: '49228',
   address1: '610 W Adrian St',
   address2: 'Blissfield, MI 49228',
+  geo: { latitude: 41.836244, longitude: -83.876009 },
   facebook: 'https://www.facebook.com/people/Clean-King/100063915012506/',
   google: 'https://www.google.com/maps?cid=11223607935664648783',
   tagline: 'The King of Clean',
   hoursNote: 'Mon–Fri · 9 AM – 6 PM',
+  // schema.org openingHours form of `hoursNote`.
+  openingHours: ['Mo-Fr 09:00-18:00'],
   areas: ['Blissfield', 'Adrian', 'Tecumseh', 'Monroe', 'Lenawee County'],
   // Google review summary shown as the hero trust strip. IMPORTANT: keep these
   // in sync with your live Google Business Profile — `score` is the average
@@ -48,10 +63,6 @@ export const site = {
     { label: 'Engine Bay', tag: 'Deluxe Detail' },
     { label: 'Ceramic Tint', tag: 'Add-on' },
   ],
-  alacarte: {
-    price: '$70–$110',
-    items: ['Clay bar treatment', 'Paint buffing', 'Premium wax'],
-  },
   addons: [
     {
       name: 'Ceramic Window Tint',
@@ -64,13 +75,15 @@ export const site = {
   ],
 };
 
-// Canonical detail packages — shared by the home preview, services page and
-// booking picker. Copy from the design handoff.
+// Canonical detail packages — shared by the home preview, services page,
+// booking picker and structured data. Copy from the design handoff. `amount`
+// is the numeric price (or [low, high] for a range) used for schema.org.
 export const packages = [
   {
     id: 'full-detail',
     name: 'Full Detail',
     price: '$140',
+    amount: 140,
     blurb:
       'The complete package: a spotless interior plus a washed & waxed exterior.',
     items: [
@@ -106,6 +119,7 @@ export const packages = [
     id: 'spiffy-detail',
     name: 'Spiffy Detail',
     price: '$35',
+    amount: 35,
     blurb:
       'Interior vacuum, exterior wash & windows cleaned — quick and affordable.',
     items: ['Interior vacuum', 'Exterior wash', 'Windows cleaned'],
@@ -115,6 +129,7 @@ export const packages = [
     id: 'interior-detail',
     name: 'Interior Detail',
     price: '$110',
+    amount: 110,
     blurb: 'A deep clean inside and out of every surface in the cabin.',
     items: [
       'Deep interior clean',
@@ -138,6 +153,7 @@ export const packages = [
     id: 'deluxe-detail',
     name: 'Deluxe Detail',
     price: '$160',
+    amount: 160,
     blurb:
       'Everything in the Full Detail, taken further. Our ultimate service.',
     items: ['Premium full detail', 'Engine bay cleaning', 'Trunk cleaning'],
@@ -170,8 +186,28 @@ export const packages = [
     id: 'a-la-carte',
     name: 'À La Carte',
     price: '$70–$110',
+    amount: [70, 110],
     blurb: 'Single services, your choice — buff out, clay, or a premium wax.',
     items: ['Clay bar treatment', 'Paint buffing', 'Premium wax'],
     details: ['Clay Bar Treatment', 'Paint Buffing', 'Premium Wax'],
   },
 ];
+
+/** Cheapest / priciest fixed-price package — feeds priceRange in JSON-LD. */
+export const PRICE_BOUNDS = packages
+  .flatMap((p) => (Array.isArray(p.amount) ? p.amount : [p.amount]))
+  .reduce(
+    ([lo, hi], n) => [Math.min(lo, n), Math.max(hi, n)],
+    [Infinity, -Infinity]
+  );
+
+/** Look up a package by id or (case-insensitive) display name. */
+export function findPackage(idOrName) {
+  const needle = String(idOrName ?? '')
+    .trim()
+    .toLowerCase();
+  if (!needle) return undefined;
+  return packages.find(
+    (p) => p.id === needle || p.name.toLowerCase() === needle
+  );
+}

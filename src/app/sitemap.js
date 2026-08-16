@@ -1,52 +1,25 @@
+import { SITE_URL } from '@/data/site';
+import { AREA_LINKS } from '@/data/nav';
+
+// Every indexable route. `lastModified` is the build time (the site is fully
+// static, so a deploy is the only time content can change).
+const ROUTES = [
+  { path: '/', changeFrequency: 'weekly', priority: 1 },
+  { path: '/services', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/appointment', changeFrequency: 'monthly', priority: 0.9 },
+  { path: '/contact', changeFrequency: 'monthly', priority: 0.8 },
+  ...AREA_LINKS.map(({ href }) => ({
+    path: href,
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  })),
+];
+
 export default function sitemap() {
-  return [
-    {
-      url: 'https://www.cleankingdetail.com',
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 1,
-    },
-    {
-      url: 'https://www.cleankingdetail.com/car-detailing-adrian-mi',
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 1,
-    },
-    {
-      url: 'https://www.cleankingdetail.com/car-detailing-tecumseh-mi',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: 'https://www.cleankingdetail.com/car-detailing-lenawee-county',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: 'https://www.cleankingdetail.com/car-detailing-ann-arbor-mi',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: 'https://www.cleankingdetail.com/services',
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: 'https://www.cleankingdetail.com/contact',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: 'https://www.cleankingdetail.com/appointment',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-  ];
+  const lastModified = new Date();
+  return ROUTES.map(({ path, ...rest }) => ({
+    url: `${SITE_URL}${path}`,
+    lastModified,
+    ...rest,
+  }));
 }

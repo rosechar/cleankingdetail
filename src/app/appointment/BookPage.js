@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { site } from '@/data/site';
+import { findPackage, site } from '@/data/site';
+import { isEmail, isPhone } from '@/lib/validation';
 import {
   bookingPackages,
   DEFAULT_PACKAGE_ID,
@@ -667,10 +668,8 @@ export default function BookPage() {
   // Optional ?pkg= preselect (package id or name, case-insensitive) — the
   // "Book this" links on the services/home pages pass the id.
   useEffect(() => {
-    const p = new URLSearchParams(window.location.search).get('pkg');
-    if (!p) return;
-    const match = bookingPackages.find(
-      (o) => o.id === p || o.name.toLowerCase() === p.toLowerCase()
+    const match = findPackage(
+      new URLSearchParams(window.location.search).get('pkg')
     );
     if (match) setForm((prev) => ({ ...prev, pkg: match.id }));
   }, []);
@@ -714,8 +713,9 @@ export default function BookPage() {
   };
 
   const submit = async () => {
-    if (form.phone.replace(/\D/g, '').length < 7)
-      return setErr('Enter a valid phone number.');
+    if (!isPhone(form.phone)) return setErr('Enter a valid phone number.');
+    if (form.email.trim() && !isEmail(form.email))
+      return setErr('Enter a valid email address or leave it blank.');
     setErr('');
     setSubmitting(true);
     try {

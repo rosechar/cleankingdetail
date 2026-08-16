@@ -6,6 +6,8 @@ import Footer from '@/components/layout/Footer';
 import MobileCTA from '@/components/layout/MobileCTA';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/react';
+import JsonLd from '@/components/seo/JsonLd';
+import { packages, PRICE_BOUNDS, site, SITE_URL } from '@/data/site';
 
 const anton = Anton({
   subsets: ['latin'],
@@ -22,13 +24,15 @@ const hanken = Hanken_Grotesk({
 });
 
 export const metadata = {
-  metadataBase: new URL('https://www.cleankingdetail.com'),
+  metadataBase: new URL(SITE_URL),
   title: 'Car Detailing & Window Tinting in Blissfield, MI | Clean King',
   description:
     'Professional car detailing, window tinting & paint protection in Blissfield, MI. Hand-detailed packages from $35. Serving Adrian, Tecumseh & Lenawee County.',
   keywords:
     'car wash near me, car detailing near me, best car wash near me, best car detailing near me, auto wash, car cleaning services, window tinting near me, auto detailing near me, detailing near me, mobile car wash, car wash Blissfield MI, car detailing Blissfield MI, window tinting Blissfield MI, ceramic window tint, automotive window tinting, car window film, tint installation, UV protection tinting, car tinting, Clean King autodetail, Clean King carwash, detailer for car, paint correction, headlight restoration, leather cleaning, carpet cleaning, steam cleaning, pressure washing, car detailing Adrian MI, car wash Adrian MI, window tinting Adrian MI, car detailing Tecumseh MI, car wash Tecumseh MI, window tinting Tecumseh MI, Lenawee County car detailing, auto detailing, interior detailing, exterior detailing, engine bay cleaning, clay bar service, car waxing, car buffing',
   openGraph: {
+    siteName: site.name,
+    url: '/',
     title: 'Car Detailing & Window Tinting in Blissfield, MI | Clean King',
     description:
       'Expert car wash, auto detailing and ceramic tint services from $35-$160. Serving Blissfield, Adrian, Tecumseh, and Lenawee County.',
@@ -36,7 +40,7 @@ export const metadata = {
     locale: 'en_US',
     images: [
       {
-        url: 'https://www.cleankingdetail.com/cleanking.jpg',
+        url: '/cleanking.jpg',
         width: 1200,
         height: 630,
         alt: 'Clean King Detailing - Professional Car Detailing & Window Tinting Services',
@@ -47,7 +51,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Car Detailing & Window Tinting in Blissfield, MI | Clean King',
     description: 'Car detailing & window tinting in Blissfield, MI',
-    images: ['https://www.cleankingdetail.com/cleanking.jpg'],
+    images: ['/cleanking.jpg'],
   },
   other: {
     'geo.region': 'US-MI',
@@ -64,65 +68,62 @@ export const metadata = {
   manifest: '/manifest.json',
 };
 
+// schema.org LocalBusiness entity for the shop. Location pages reference it
+// by `@id`, so keep that stable. Business facts come from `site` and prices
+// from `packages` so this can never drift from what the pages show.
+const offerFor = (p) => ({
+  '@type': 'Offer',
+  name: p.name,
+  description: p.blurb,
+  priceCurrency: 'USD',
+  availability: 'https://schema.org/InStock',
+  ...(Array.isArray(p.amount)
+    ? {
+        priceSpecification: {
+          '@type': 'PriceSpecification',
+          minPrice: p.amount[0],
+          maxPrice: p.amount[1],
+          priceCurrency: 'USD',
+        },
+      }
+    : { price: String(p.amount) }),
+});
+
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'AutoWash',
-  '@id': 'https://www.cleankingdetail.com/#business',
-  name: 'Clean King Detailing',
-  image: 'https://www.cleankingdetail.com/cleanking.jpg',
-  url: 'https://www.cleankingdetail.com',
-  telephone: '(517) 682-1919',
+  '@id': `${SITE_URL}/#business`,
+  name: site.name,
+  image: `${SITE_URL}/cleanking.jpg`,
+  url: SITE_URL,
+  telephone: site.phone,
   address: {
     '@type': 'PostalAddress',
-    streetAddress: '610 W Adrian St',
-    addressLocality: 'Blissfield',
-    addressRegion: 'MI',
-    postalCode: '49228',
+    streetAddress: site.street,
+    addressLocality: site.city,
+    addressRegion: site.region,
+    postalCode: site.postalCode,
     addressCountry: 'US',
   },
   geo: {
     '@type': 'GeoCoordinates',
-    latitude: '41.836244',
-    longitude: '-83.876009',
+    latitude: site.geo.latitude,
+    longitude: site.geo.longitude,
   },
-  openingHours: ['Mo-Fr 09:00-18:00'],
-  priceRange: '$35-$160',
+  openingHours: site.openingHours,
+  priceRange: `$${PRICE_BOUNDS[0]}-$${PRICE_BOUNDS[1]}`,
   description:
     'Premier car wash, detailing and window tinting services in Blissfield, MI offering interior, exterior, full-service packages, professional car washing, and ceramic window tinting. Complete auto care and protection services.',
   areaServed: [
-    {
-      '@type': 'City',
-      name: 'Blissfield',
-    },
-    {
-      '@type': 'City',
-      name: 'Adrian',
-    },
-    {
-      '@type': 'City',
-      name: 'Tecumseh',
-    },
-    {
-      '@type': 'City',
-      name: 'Monroe',
-    },
-    {
-      '@type': 'City',
-      name: 'Ann Arbor',
-    },
-    {
+    ...['Blissfield', 'Adrian', 'Tecumseh', 'Monroe', 'Ann Arbor'].map(
+      (name) => ({ '@type': 'City', name })
+    ),
+    ...['Lenawee County', 'Washtenaw County'].map((name) => ({
       '@type': 'County',
-      name: 'Lenawee County',
-    },
-    {
-      '@type': 'County',
-      name: 'Washtenaw County',
-    },
+      name,
+    })),
   ],
-  sameAs: [
-    'https://www.facebook.com/people/Clean-King/100063915012506/',
-    'https://www.google.com/maps?cid=11223607935664648783',
-  ],
+  sameAs: [site.facebook, site.google],
   paymentAccepted: ['Cash', 'Credit Card', 'Debit Card'],
   currenciesAccepted: 'USD',
   hasOfferCatalog: {
@@ -131,94 +132,36 @@ const structuredData = {
     itemListElement: [
       {
         '@type': 'OfferCatalog',
-        name: 'Interior Services',
-        itemListElement: [
-          {
-            '@type': 'Offer',
-            name: 'Interior Detail',
-            price: '110',
-            priceCurrency: 'USD',
-            description:
-              'Comprehensive interior cleaning and detailing service including deep cleaning of seats, carpets, and all interior surfaces',
-            availability: 'https://schema.org/InStock',
-          },
-        ],
+        name: 'Detailing Packages',
+        itemListElement: packages.map(offerFor),
       },
       {
         '@type': 'OfferCatalog',
-        name: 'Exterior Services',
-        itemListElement: [
-          {
-            '@type': 'Offer',
-            name: 'Spiffy Detail',
-            price: '35',
-            priceCurrency: 'USD',
-            description:
-              'Quick detail service including interior vacuum and exterior wash',
-            availability: 'https://schema.org/InStock',
-          },
-          {
-            '@type': 'Offer',
-            name: 'Full Detail',
-            price: '140',
-            priceCurrency: 'USD',
-            description: 'Complete interior and exterior detailing service',
-            availability: 'https://schema.org/InStock',
-          },
-          {
-            '@type': 'Offer',
-            name: 'Deluxe Detail',
-            price: '160',
-            priceCurrency: 'USD',
-            description:
-              'Premium detailing package including clay bar treatment and engine bay cleaning',
-            availability: 'https://schema.org/InStock',
-          },
-        ],
-      },
-      {
-        '@type': 'OfferCatalog',
-        name: 'Window Tinting Services',
-        itemListElement: [
-          {
-            '@type': 'Offer',
-            name: 'Window Tint',
-            description:
-              'Quality window tinting film installation for cars, trucks, and SUVs.',
-            availability: 'https://schema.org/InStock',
-            category: 'Window Tinting',
-          },
-        ],
+        name: 'Add-ons',
+        itemListElement: site.addons.map((a) => ({
+          '@type': 'Offer',
+          name: a.name,
+          description: a.desc,
+          availability: 'https://schema.org/InStock',
+        })),
       },
     ],
   },
   amenityFeature: [
-    {
-      '@type': 'LocationFeatureSpecification',
-      name: 'On-site Service',
-      value: true,
-    },
-    {
-      '@type': 'LocationFeatureSpecification',
-      name: 'Professional Equipment',
-      value: true,
-    },
-    {
-      '@type': 'LocationFeatureSpecification',
-      name: 'Window Tinting Services',
-      value: true,
-    },
-    {
-      '@type': 'LocationFeatureSpecification',
-      name: 'Book Online Car Wash and Detail',
-      value: true,
-    },
-  ],
+    'On-site Service',
+    'Professional Equipment',
+    'Window Tinting Services',
+    'Book Online Car Wash and Detail',
+  ].map((name) => ({
+    '@type': 'LocationFeatureSpecification',
+    name,
+    value: true,
+  })),
   potentialAction: {
     '@type': 'ReserveAction',
     target: {
       '@type': 'EntryPoint',
-      urlTemplate: 'https://www.cleankingdetail.com/appointment',
+      urlTemplate: `${SITE_URL}/appointment`,
     },
     result: {
       '@type': 'Reservation',
@@ -231,12 +174,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${anton.variable} ${hanken.variable}`}>
       <body>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData),
-          }}
-        />
+        <JsonLd data={structuredData} />
         <div className="relative min-h-screen w-full overflow-x-clip">
           {/* faint engineering grid that fades down the page */}
           <div

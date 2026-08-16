@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { site } from '@/data/site';
+import { AREA_LINKS, NAV_LINKS } from '@/data/nav';
 
 const LINK = 'transition-colors hover:text-accent';
 
@@ -18,9 +19,7 @@ export default function Footer() {
           className="size-10"
         />
         <div>
-          <div className="font-display text-lg uppercase">
-            Clean King Detailing
-          </div>
+          <div className="font-display text-lg uppercase">{site.name}</div>
           <div className="mt-0.75 font-mono text-xs tracking-widest text-fg-3">
             {site.address1} · {site.address2}
           </div>
@@ -32,29 +31,18 @@ export default function Footer() {
           <Link className={LINK} href="/">
             Home
           </Link>
-          <Link className={LINK} href="/services">
-            Services
-          </Link>
-          <Link className={LINK} href="/appointment">
-            Book
-          </Link>
-          <Link className={LINK} href="/contact">
-            Contact
-          </Link>
+          {NAV_LINKS.map(({ href, label }) => (
+            <Link key={href} className={LINK} href={href}>
+              {label}
+            </Link>
+          ))}
         </div>
         <div className="flex flex-wrap gap-5.5">
-          <Link className={LINK} href="/car-detailing-adrian-mi">
-            Adrian
-          </Link>
-          <Link className={LINK} href="/car-detailing-tecumseh-mi">
-            Tecumseh
-          </Link>
-          <Link className={LINK} href="/car-detailing-ann-arbor-mi">
-            Ann Arbor
-          </Link>
-          <Link className={LINK} href="/car-detailing-lenawee-county">
-            Lenawee County
-          </Link>
+          {AREA_LINKS.map(({ href, label }) => (
+            <Link key={href} className={LINK} href={href}>
+              {label}
+            </Link>
+          ))}
         </div>
       </nav>
 

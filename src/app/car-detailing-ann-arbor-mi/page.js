@@ -1,6 +1,7 @@
 import { site } from '@/data/site';
 import { locationSchema } from '@/data/locationSchema';
 import LocationPage from '@/components/location/LocationPage';
+import JsonLd from '@/components/seo/JsonLd';
 
 export const metadata = {
   title: 'Car Detailing near Ann Arbor, MI | Clean King Detailing',
@@ -12,10 +13,10 @@ export const metadata = {
     title: 'Car Detailing near Ann Arbor, MI | Clean King Detailing',
     description:
       'Hand car wash, auto detailing & ceramic window tinting for Ann Arbor, MI drivers. Flat pricing from $35–$160.',
-    url: 'https://www.cleankingdetail.com/car-detailing-ann-arbor-mi',
+    url: '/car-detailing-ann-arbor-mi',
   },
   alternates: {
-    canonical: 'https://www.cleankingdetail.com/car-detailing-ann-arbor-mi',
+    canonical: '/car-detailing-ann-arbor-mi',
   },
 };
 
@@ -119,10 +120,7 @@ const locationLd = locationSchema({
 export default function CarDetailingAnnArborMI() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(locationLd) }}
-      />
+      <JsonLd data={locationLd} />
       <LocationPage {...content} />
     </>
   );

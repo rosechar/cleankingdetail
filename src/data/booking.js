@@ -20,8 +20,9 @@ export const VEHICLES = ['Car', 'SUV', 'Truck', 'Van'];
 
 export const STEP_TITLES = ['Package', 'Your vehicle', 'Details'];
 
-export const DROP_OFF_NOTE =
-  'To ensure we can deliver the highest quality detail, we ask that you drop off your vehicle between 9:30 AM - 10:00 AM';
+/** Morning drop-off window — quoted in the booking flow and the confirmation email. */
+export const DROP_OFF_WINDOW = '9:30–10:00 AM';
+export const DROP_OFF_NOTE = `To ensure we can deliver the highest quality detail, we ask that you drop off your vehicle between ${DROP_OFF_WINDOW}.`;
 export const OPT_IN_LABEL =
   'Send me occasional offers and detailing tips from Clean King.';
 

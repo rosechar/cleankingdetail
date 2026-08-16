@@ -5,14 +5,9 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { site } from '@/data/site';
+import { NAV_LINKS } from '@/data/nav';
 import Button from '@/components/ui/Button';
 import { cn } from '@/components/ui/cn';
-
-const NAV = [
-  { href: '/services', label: 'Services' },
-  { href: '/appointment', label: 'Book' },
-  { href: '/contact', label: 'Contact' },
-];
 
 export default function Header() {
   const pathname = usePathname();
@@ -42,9 +37,9 @@ export default function Header() {
       >
         <Image
           src="/cleanking-mark.png"
-          alt="Clean King Detailing"
-          width={54}
-          height={54}
+          alt={site.name}
+          width={62}
+          height={62}
           className="size-15.5 md:size-13.5"
         />
         <span className="font-display text-xl leading-none tracking-wide whitespace-nowrap uppercase sm:text-2xl">
@@ -58,7 +53,7 @@ export default function Header() {
           open ? 'flex' : 'hidden'
         )}
       >
-        {NAV.map((n) => (
+        {NAV_LINKS.map((n) => (
           <Link
             key={n.href}
             href={n.href}

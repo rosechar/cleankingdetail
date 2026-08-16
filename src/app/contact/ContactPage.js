@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import { site } from '@/data/site';
 import { faqs } from '@/data/faqs';
+import { isEmail, isPhone } from '@/lib/validation';
 import { GPin, GPhone, GCheck } from '@/components/garage/Icons';
 import HoneypotField from '@/components/forms/HoneypotField';
 import MapEmbed from '@/components/garage/MapEmbed';
@@ -58,8 +59,9 @@ export default function ContactPage() {
   const submit = async (e) => {
     e.preventDefault();
     if (!form.name.trim()) return setErr('Please enter your name.');
-    if (form.phone.replace(/\D/g, '').length < 7)
-      return setErr('Enter a valid phone number.');
+    if (!isPhone(form.phone)) return setErr('Enter a valid phone number.');
+    if (form.email.trim() && !isEmail(form.email))
+      return setErr('Enter a valid email address or leave it blank.');
 
     setErr('');
     setSubmitting(true);
@@ -186,37 +188,56 @@ export default function ContactPage() {
                 </p>
                 <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className={FIELD}>
-                    <label className={LABEL}>Name</label>
+                    <label htmlFor="ct-name" className={LABEL}>
+                      Name
+                    </label>
                     <input
+                      id="ct-name"
                       className={INPUT}
                       value={form.name}
                       onChange={(e) => set('name', e.target.value)}
                       placeholder="Jane Doe"
+                      autoComplete="name"
+                      required
                     />
                   </div>
                   <div className={FIELD}>
-                    <label className={LABEL}>Phone</label>
+                    <label htmlFor="ct-phone" className={LABEL}>
+                      Phone
+                    </label>
                     <input
+                      id="ct-phone"
                       className={INPUT}
                       type="tel"
+                      inputMode="tel"
                       value={form.phone}
                       onChange={(e) => set('phone', e.target.value)}
                       placeholder="(517) 000-0000"
+                      autoComplete="tel"
+                      required
                     />
                   </div>
                   <div className={cn(FIELD, 'sm:col-span-2')}>
-                    <label className={LABEL}>Email (optional)</label>
+                    <label htmlFor="ct-email" className={LABEL}>
+                      Email (optional)
+                    </label>
                     <input
+                      id="ct-email"
                       className={INPUT}
                       type="email"
+                      inputMode="email"
                       value={form.email}
                       onChange={(e) => set('email', e.target.value)}
                       placeholder="you@email.com"
+                      autoComplete="email"
                     />
                   </div>
                   <div className={cn(FIELD, 'sm:col-span-2')}>
-                    <label className={LABEL}>Message</label>
+                    <label htmlFor="ct-message" className={LABEL}>
+                      Message
+                    </label>
                     <textarea
+                      id="ct-message"
                       className={cn(INPUT, 'min-h-23 resize-y')}
                       value={form.msg}
                       onChange={(e) => set('msg', e.target.value)}
@@ -234,9 +255,12 @@ export default function ContactPage() {
                   Send me occasional offers and detailing tips from Clean King.
                 </label>
                 {err && (
-                  <div className="mt-3.5 text-sm font-medium text-accent">
+                  <p
+                    className="mt-3.5 text-sm font-medium text-accent"
+                    role="alert"
+                  >
                     {err}
-                  </div>
+                  </p>
                 )}
                 <div className="mt-7 flex flex-wrap items-center justify-between gap-3">
                   <Button variant="accent" type="submit" disabled={submitting}>
@@ -253,8 +277,8 @@ export default function ContactPage() {
                   Message sent
                 </h2>
                 <p className="mx-auto mt-3.5 max-w-115 text-base text-fg-2">
-                  Thanks, {form.name.split(' ')[0] || 'there'}! We&apos;ll get
-                  back to you at {form.phone} as soon as we can.
+                  Thanks, {form.name.trim().split(/\s+/)[0] || 'there'}!
+                  We&apos;ll get back to you at {form.phone} as soon as we can.
                 </p>
                 <div className="mt-7.5 flex flex-wrap justify-center gap-3.25">
                   <Button variant="ghost" href={site.phoneHref}>

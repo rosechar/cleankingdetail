@@ -1,6 +1,7 @@
 import { site } from '@/data/site';
 import { locationSchema } from '@/data/locationSchema';
 import LocationPage from '@/components/location/LocationPage';
+import JsonLd from '@/components/seo/JsonLd';
 
 export const metadata = {
   title: 'Car Detailing in Lenawee County, MI | Clean King Detailing',
@@ -12,10 +13,10 @@ export const metadata = {
     title: 'Car Detailing in Lenawee County, MI | Clean King Detailing',
     description:
       'Hand car wash, full detailing and ceramic window tinting across Lenawee County, MI. Flat pricing from $35–$160.',
-    url: 'https://www.cleankingdetail.com/car-detailing-lenawee-county',
+    url: '/car-detailing-lenawee-county',
   },
   alternates: {
-    canonical: 'https://www.cleankingdetail.com/car-detailing-lenawee-county',
+    canonical: '/car-detailing-lenawee-county',
   },
 };
 
@@ -120,10 +121,7 @@ const locationLd = locationSchema({
 export default function CarDetailingLenaweeCounty() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(locationLd) }}
-      />
+      <JsonLd data={locationLd} />
       <LocationPage {...content} />
     </>
   );

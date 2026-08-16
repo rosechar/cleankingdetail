@@ -1,5 +1,6 @@
 import ContactPage from './ContactPage';
 import { faqs } from '@/data/faqs';
+import JsonLd from '@/components/seo/JsonLd';
 
 export const metadata = {
   title: 'Contact Clean King Detailing | Blissfield, MI',
@@ -11,10 +12,10 @@ export const metadata = {
     title: 'Contact Clean King Detailing | Blissfield, MI',
     description:
       'Get in touch with Clean King Detailing. Located in Blissfield, MI serving Adrian, Tecumseh, and Lenawee County.',
-    url: 'https://www.cleankingdetail.com/contact',
+    url: '/contact',
   },
   alternates: {
-    canonical: 'https://www.cleankingdetail.com/contact',
+    canonical: '/contact',
   },
 };
 
@@ -34,10 +35,7 @@ const faqSchema = {
 export default function Contact() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+      <JsonLd data={faqSchema} />
       <ContactPage />
     </>
   );

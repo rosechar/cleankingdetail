@@ -8,6 +8,8 @@ import CtaBand from '@/components/ui/CtaBand';
 import {
   PackageGrid,
   PackageCard,
+  PackageFeatures,
+  PackageActions,
   PackageLink,
   AddOnCard,
 } from '@/components/ui/PackageCard';
@@ -77,14 +79,12 @@ export default function LocationPage({
               blurb={s.blurb}
               popular={s.popular}
             >
-              <ul className="list-disc">
-                {s.items.map((it) => (
-                  <li key={it}>{it}</li>
-                ))}
-              </ul>
-              <PackageLink href={`/appointment?pkg=${s.id}`}>
-                Book this
-              </PackageLink>
+              <PackageFeatures items={s.items} />
+              <PackageActions>
+                <PackageLink href={`/appointment?pkg=${s.id}`}>
+                  Book this
+                </PackageLink>
+              </PackageActions>
             </PackageCard>
           ))}
           <AddOnCard />

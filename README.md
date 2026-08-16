@@ -4,7 +4,7 @@ Marketing and booking site for [Clean King Detailing](https://www.cleankingdetai
 
 ## Getting started
 
-Requires **Node 20** (`next build` is known to break on Node 23).
+Requires **Node 24** (see `.nvmrc`; `nvm use` picks it up).
 
 ```bash
 npm install

@@ -6,8 +6,6 @@ export const metadata = {
   title: 'Contact Clean King Detailing | Blissfield, MI',
   description:
     'Contact Clean King Detailing for car wash, auto detailing, and window tinting services. Located at 610 W Adrian St, Blissfield, MI. Call (517) 682-1919 for quotes and questions.',
-  keywords:
-    'contact car detailing Blissfield MI, Clean King phone number, car wash contact, window tinting contact, auto detailing contact Blissfield',
   openGraph: {
     title: 'Contact Clean King Detailing | Blissfield, MI',
     description:

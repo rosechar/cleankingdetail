@@ -13,8 +13,6 @@ export const metadata = {
   title: 'Car Detailing Services & Pricing | Clean King — Blissfield, MI',
   description:
     'Professional car wash and detailing services from $35-$160. Interior detail, exterior detail, full detail, window tinting. Serving Blissfield, Adrian, Tecumseh, and Lenawee County.',
-  keywords:
-    'car detailing services Blissfield MI, car wash pricing, interior detail, exterior detail, full detail, deluxe detail, window tinting services, auto detailing packages',
   openGraph: {
     title: 'Car Detailing Services & Pricing | Clean King — Blissfield, MI',
     description:

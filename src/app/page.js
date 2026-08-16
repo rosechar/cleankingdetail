@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { site, packages } from '@/data/site';
+import { AREA_LINKS } from '@/data/nav';
 import ReviewsCarousel from '@/components/garage/ReviewsCarousel';
 import Button from '@/components/ui/Button';
 import CtaBand from '@/components/ui/CtaBand';
@@ -45,6 +46,9 @@ const Home = () => {
             className="absolute top-header right-page left-page z-3 mt-4 max-w-fit border border-white/22 bg-canvas/62 px-4 pt-3 pb-3.5 font-display text-hero-mobile uppercase backdrop-blur-xs motion-safe:animate-rise md:static md:mt-5 md:max-w-none md:border-0 md:bg-transparent md:p-0 md:text-hero-tablet md:backdrop-blur-none lg:text-hero"
             style={rise(1)}
           >
+            <span className="sr-only">
+              Car detailing &amp; window tinting in Blissfield, MI —{' '}
+            </span>
             The King
             <br />
             <span className="text-accent">of</span> Clean
@@ -220,7 +224,11 @@ const Home = () => {
           { label: 'Phone', value: site.phone },
         ]}
         chipsLabel="Proudly serving"
-        chips={site.areas}
+        chips={[
+          { label: 'Blissfield', href: '/contact' },
+          ...AREA_LINKS,
+          { label: 'Monroe' },
+        ]}
       />
 
       {/* cta */}

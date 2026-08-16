@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { site, packages } from '@/data/site';
+import { AREA_LINKS } from '@/data/nav';
 import Button from '@/components/ui/Button';
 import PageHero from '@/components/ui/PageHero';
 import LocationSection from '@/components/ui/LocationSection';
@@ -19,14 +20,18 @@ import { FeatureGrid, FeatureCard } from '@/components/ui/FeatureCard';
  * Shared template for the "car detailing in <area>" landing pages.
  * Every prop is copy; the route files own metadata + JSON-LD.
  *
+ * slug:      this page's route (e.g. '/car-detailing-adrian-mi'), used to
+ *            cross-link the *other* service-area pages
  * hero:      { eyebrow, title (node), lead }
- * location:  { eyebrow, title, description, info: [{ label, value }] }
+ * location:  { eyebrow, title, description (string | string[]),
+ *              info: [{ label, value }] }
  * packages:  { note (node — right-hand paragraph next to "Detailing packages") }
  * services:  { title, note, items: [{ name, desc }] }
  * whyUs:     { title, note, items: [{ name, desc }] }
  * cta:       { eyebrow, title (node) }
  */
 export default function LocationPage({
+  slug,
   hero,
   location,
   packages: pkgs,
@@ -51,6 +56,11 @@ export default function LocationPage({
         title={location.title}
         description={location.description}
         info={location.info}
+        chipsLabel="Also serving"
+        chips={[
+          { label: 'Blissfield', href: '/contact' },
+          ...AREA_LINKS.filter((l) => l.href !== slug),
+        ]}
       />
 
       {/* packages */}

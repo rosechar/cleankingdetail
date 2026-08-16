@@ -3,66 +3,67 @@ import { locationSchema } from '@/data/locationSchema';
 import LocationPage from '@/components/location/LocationPage';
 import JsonLd from '@/components/seo/JsonLd';
 
+const SLUG = '/car-detailing-tecumseh-mi';
+
 export const metadata = {
   title: 'Car Detailing in Tecumseh, MI | Clean King Detailing',
   description:
-    'Professional car detailing & window tinting near Tecumseh, MI from $35–$160. Hand wash, interior deep clean, clay bar, ceramic tint — detailed by hand. A short drive south. Call (517) 682-1919.',
-  keywords:
-    'car detailing Tecumseh MI, car wash Tecumseh Michigan, auto detailing Tecumseh, window tinting Tecumseh MI, interior detailing Tecumseh, ceramic tint Tecumseh, headlight restoration Tecumseh, best car detailing near Tecumseh',
+    'Car detailing & ceramic window tint for Tecumseh, MI from $35–$160. Hand-washed, interior deep clean, wax and paint sealant at our Blissfield shop, about 25 minutes south. Call (517) 682-1919.',
   openGraph: {
     title: 'Car Detailing in Tecumseh, MI | Clean King Detailing',
     description:
-      'Hand car wash, auto detailing & ceramic window tinting for Tecumseh, MI drivers. Flat pricing from $35–$160.',
-    url: '/car-detailing-tecumseh-mi',
+      'Hand car wash, interior detailing & ceramic tint for Tecumseh, MI drivers. Flat pricing from $35–$160.',
+    url: SLUG,
   },
   alternates: {
-    canonical: '/car-detailing-tecumseh-mi',
+    canonical: SLUG,
   },
 };
 
 const detailedServices = [
   {
-    name: 'Hand Car Wash',
-    desc: 'A careful two-bucket hand wash and foam bath that lifts road film and salt without swirling your paint — gentler than the automatic tunnels around town.',
+    name: 'Full Interior Detail',
+    desc: 'Every cabin surface — upholstery and carpets shampooed, leather cleaned and conditioned, vents, dash and door panels finished. The reset a family SUV needs after a season of Tecumseh youth sports and lake trips.',
   },
   {
-    name: 'Interior Deep Clean',
-    desc: 'Vacuum, shampoo and steam for seats, carpets and mats, clearing out the mud and salt that pile up over a Lenawee County winter.',
+    name: 'Hand Wash & Wax',
+    desc: 'Foam, two-bucket hand wash, chamois dry and a spray wax over the whole body. Gentle enough for dark paint, thorough enough to clear the salt film that builds up on M-50.',
   },
   {
-    name: 'Clay Bar & Decontamination',
-    desc: 'Pulls bonded contaminants and rail dust out of the clear coat so wax and sealant actually grip — the step most quick washes skip.',
-  },
-  {
-    name: 'Hand Wax & Paint Sealant',
-    desc: 'A hand-applied wax or sealant that stands up to Michigan sun, rain and winter road brine, locking in a deep gloss for months.',
+    name: 'Paint Correction & Buffing',
+    desc: 'Machine buff to knock down swirls and light scratches, then a premium wax to hold the shine — an à la carte option popular with owners of classics and weekend cars.',
   },
   {
     name: 'Ceramic Window Tint',
-    desc: 'Professional ceramic film that cuts heat, glare and 99% of UV — a real difference on open M-50 drives and bright winter mornings.',
+    desc: 'Ceramic film blocks 99% of UV and a big share of the heat, so the cabin stays cooler on the drive down M-52 and your dash and seats do not fade. Priced per vehicle.',
   },
   {
-    name: 'Headlight Restoration',
-    desc: 'Sand, polish and seal foggy, yellowed headlights back to clear for safer night driving and a fresher-looking front end.',
+    name: 'Paint Sealant',
+    desc: 'A long-lasting sealant layered on after a wash and clay bar. Beads water, sheds brine, and buys your clear coat time between waxes.',
+  },
+  {
+    name: 'Trunk & Cargo Cleanup',
+    desc: 'Vacuum, spot-clean and dress the trunk or cargo area and its channels — usually the dirtiest, most forgotten part of a family vehicle.',
   },
 ];
 
 const whyUs = [
   {
-    name: 'Minutes Down US-223',
-    desc: 'Family-owned in Blissfield, a short drive south of Tecumseh. Drop the car off, run your errands, pick it up looking new.',
+    name: 'About 25 Minutes South',
+    desc: 'M-52 south to Adrian, then US-223 east, or the back way through Britton and Deerfield. Either way you are at our door in Blissfield in under half an hour.',
   },
   {
-    name: 'One Flat Price',
-    desc: '$35 to $160, posted up front. No upsells and no "while we had it open" surprises when you come back.',
+    name: 'No Surprise Add-Ons',
+    desc: '$35 to $160 across five packages, priced on the site. If your vehicle needs something extra we tell you before we start, not at pickup.',
   },
   {
     name: 'Detailed By Hand',
-    desc: "Every car is finished by hand, never run through a tunnel. It's the difference our Tecumseh repeat customers keep coming back for.",
+    desc: 'Nothing goes through a tunnel. Every car is washed and finished by hand, which is what brings Tecumseh customers back for a second and third detail.',
   },
 ];
 
 const content = {
+  slug: SLUG,
   hero: {
     eyebrow: 'Tecumseh, Michigan',
     title: (
@@ -72,30 +73,32 @@ const content = {
         in Tecumseh, MI
       </>
     ),
-    lead: 'Hand car wash, full auto detailing and ceramic window tinting from $35–$160. Clean King is family-owned in Blissfield — a short drive south of Tecumseh — and every vehicle is detailed by hand.',
+    lead: 'Hand car wash, full interior detailing and ceramic window tint from $35–$160. Clean King is a family-owned shop in Blissfield, about 25 minutes south of Tecumseh, and every vehicle is finished by hand.',
   },
   location: {
     eyebrow: 'Serving Tecumseh & Lenawee',
-    title: 'An easy drive from Tecumseh',
-    description:
-      "We're based in Blissfield, just south of Tecumseh down US-223 — close enough to be your regular detailer, far enough from the automatic washes to do the job right. Tecumseh drivers come to Clean King for hand washing, interior detailing and ceramic tint that's built for Michigan roads and weather.",
+    title: 'Worth the drive from Tecumseh',
+    description: [
+      'Tecumseh has plenty of places to run a car through a wash, but not many that will hand-shampoo the carpets, condition the leather and clay the paint. That is the work we do at Clean King, and it is why drivers from Tecumseh, Clinton and Britton make the trip down to Blissfield.',
+      'Take M-52 south to Adrian and US-223 east, or cut across through Britton and Deerfield — about 25 minutes either way. Drop the car off between 9:30 and 10, and it is ready to go home the same afternoon.',
+    ],
     info: [
       { label: 'Shop', value: `${site.address1}, ${site.address2}` },
       { label: 'Phone', value: site.phone },
-      { label: 'From Tecumseh', value: 'About 30 minutes via US-223' },
+      { label: 'From Tecumseh', value: 'About 25 minutes via M-52 & US-223' },
     ],
   },
   packages: {
-    note: 'Flat, honest packages for Tecumseh vehicle owners.',
+    note: 'Five flat-priced packages — the Full Detail is the one most Tecumseh families book.',
   },
   services: {
     title: 'What we do for Tecumseh drivers',
-    note: 'From a careful hand wash to ceramic tint — the work that keeps a vehicle looking and lasting better.',
+    note: 'Interior deep cleans, hand waxing, paint correction and ceramic tint — the jobs a quick wash cannot do.',
     items: detailedServices,
   },
   whyUs: {
     title: 'Why Tecumseh drivers make the trip',
-    note: 'Local, honest, and detailed by hand — the way it should be.',
+    note: 'A short drive south, honest pricing, and a car that comes back looking new.',
     items: whyUs,
   },
   cta: {
@@ -113,7 +116,7 @@ const content = {
 const locationLd = locationSchema({
   areaType: 'City',
   areaName: 'Tecumseh',
-  slug: 'car-detailing-tecumseh-mi',
+  slug: SLUG.slice(1),
   description: metadata.description,
 });
 

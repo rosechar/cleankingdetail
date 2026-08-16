@@ -28,8 +28,7 @@ export const metadata = {
   title: 'Car Detailing & Window Tinting in Blissfield, MI | Clean King',
   description:
     'Professional car detailing, window tinting & paint protection in Blissfield, MI. Hand-detailed packages from $35. Serving Adrian, Tecumseh & Lenawee County.',
-  keywords:
-    'car wash near me, car detailing near me, best car wash near me, best car detailing near me, auto wash, car cleaning services, window tinting near me, auto detailing near me, detailing near me, mobile car wash, car wash Blissfield MI, car detailing Blissfield MI, window tinting Blissfield MI, ceramic window tint, automotive window tinting, car window film, tint installation, UV protection tinting, car tinting, Clean King autodetail, Clean King carwash, detailer for car, paint correction, headlight restoration, leather cleaning, carpet cleaning, steam cleaning, pressure washing, car detailing Adrian MI, car wash Adrian MI, window tinting Adrian MI, car detailing Tecumseh MI, car wash Tecumseh MI, window tinting Tecumseh MI, Lenawee County car detailing, auto detailing, interior detailing, exterior detailing, engine bay cleaning, clay bar service, car waxing, car buffing',
+  alternates: { canonical: '/' },
   openGraph: {
     siteName: site.name,
     url: '/',
@@ -38,20 +37,12 @@ export const metadata = {
       'Expert car wash, auto detailing and ceramic tint services from $35-$160. Serving Blissfield, Adrian, Tecumseh, and Lenawee County.',
     type: 'website',
     locale: 'en_US',
-    images: [
-      {
-        url: '/cleanking.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Clean King Detailing - Professional Car Detailing & Window Tinting Services',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Car Detailing & Window Tinting in Blissfield, MI | Clean King',
-    description: 'Car detailing & window tinting in Blissfield, MI',
-    images: ['/cleanking.jpg'],
+    description:
+      'Professional car detailing, window tinting & paint protection in Blissfield, MI. Hand-detailed packages from $35.',
   },
   other: {
     'geo.region': 'US-MI',
@@ -66,6 +57,10 @@ export const metadata = {
     apple: [{ url: '/apple-icon.png', sizes: '180x180' }],
   },
   manifest: '/manifest.json',
+};
+
+export const viewport = {
+  themeColor: '#0d0d0f',
 };
 
 // schema.org LocalBusiness entity for the shop. Location pages reference it
@@ -94,8 +89,10 @@ const structuredData = {
   '@type': 'AutoWash',
   '@id': `${SITE_URL}/#business`,
   name: site.name,
-  image: `${SITE_URL}/cleanking.jpg`,
+  image: [`${SITE_URL}/tire.webp`, `${SITE_URL}/cleanking.jpg`],
+  logo: `${SITE_URL}/cleanking.png`,
   url: SITE_URL,
+  hasMap: site.google,
   telephone: site.phone,
   address: {
     '@type': 'PostalAddress',

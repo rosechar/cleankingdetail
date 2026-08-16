@@ -1,8 +1,8 @@
 import { SITE_URL } from '@/data/site';
 import { AREA_LINKS } from '@/data/nav';
 
-// Every indexable route. `lastModified` is the build time (the site is fully
-// static, so a deploy is the only time content can change).
+// Every indexable route. No `lastModified`: stamping the build time on every
+// URL each deploy just teaches crawlers to ignore the field.
 const ROUTES = [
   { path: '/', changeFrequency: 'weekly', priority: 1 },
   { path: '/services', changeFrequency: 'weekly', priority: 0.9 },
@@ -16,10 +16,8 @@ const ROUTES = [
 ];
 
 export default function sitemap() {
-  const lastModified = new Date();
   return ROUTES.map(({ path, ...rest }) => ({
     url: `${SITE_URL}${path}`,
-    lastModified,
     ...rest,
   }));
 }

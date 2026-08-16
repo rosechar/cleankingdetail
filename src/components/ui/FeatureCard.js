@@ -30,7 +30,7 @@ export function FeatureCard({
           {tag}
         </div>
       )}
-      <h4 className="mt-3 font-display text-2xl uppercase">{title}</h4>
+      <h3 className="mt-3 font-display text-2xl uppercase">{title}</h3>
       {price && <div className="mt-2.5 font-display text-3xl">{price}</div>}
       {description && <p className="mt-3 text-sm text-fg-2">{description}</p>}
       {items && (

@@ -8,14 +8,20 @@
   "theme_color": "#d8352e",
   "icons": [
     {
-      "src": "/cleanking.png",
-      "sizes": "192x192",
+      "src": "/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-icon.png",
+      "sizes": "180x180",
       "type": "image/png"
     },
     {
       "src": "/cleanking.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "sizes": "525x525",
+      "type": "image/png",
+      "purpose": "any"
     }
   ],
   "categories": ["business", "automotive", "services"],

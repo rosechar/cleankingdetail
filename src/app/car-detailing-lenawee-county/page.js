@@ -3,66 +3,67 @@ import { locationSchema } from '@/data/locationSchema';
 import LocationPage from '@/components/location/LocationPage';
 import JsonLd from '@/components/seo/JsonLd';
 
+const SLUG = '/car-detailing-lenawee-county';
+
 export const metadata = {
   title: 'Car Detailing in Lenawee County, MI | Clean King Detailing',
   description:
-    'Auto detailing, hand car wash & window tinting across Lenawee County, MI from $35–$160. Serving Adrian, Tecumseh, Blissfield, Hudson, Morenci, Clinton and beyond — detailed by hand. Call (517) 682-1919.',
-  keywords:
-    'car detailing Lenawee County, auto detailing Lenawee County MI, car wash Lenawee County, window tinting Lenawee County, mobile detailing Lenawee, detailing Hudson MI, detailing Morenci MI, detailing Clinton MI, detailing Onsted MI',
+    'Auto detailing, hand car wash & window tinting for all of Lenawee County, MI from $35–$160. Family-owned in Blissfield, serving Adrian, Tecumseh, Hudson, Morenci, Clinton, Deerfield and beyond. Call (517) 682-1919.',
   openGraph: {
     title: 'Car Detailing in Lenawee County, MI | Clean King Detailing',
     description:
       'Hand car wash, full detailing and ceramic window tinting across Lenawee County, MI. Flat pricing from $35–$160.',
-    url: '/car-detailing-lenawee-county',
+    url: SLUG,
   },
   alternates: {
-    canonical: '/car-detailing-lenawee-county',
+    canonical: SLUG,
   },
 };
 
 const detailedServices = [
   {
-    name: 'Exterior Hand Wash',
-    desc: 'Hand wash and foam bath that strips the gravel dust, farm-road grime and winter salt that coat vehicles all over rural Lenawee.',
+    name: 'Work Truck & Farm Vehicle Detail',
+    desc: 'Mud, feed dust and gravel are normal in this county. We vacuum and shampoo work trucks and SUVs down to the floor pans and pressure-clean the wheel wells and bed.',
   },
   {
-    name: 'Full Interior Detail',
-    desc: 'Deep vacuum, shampoo and conditioning for work trucks and family cars alike — built for boots, kids and county-road mud.',
+    name: 'Salt & Brine Removal',
+    desc: 'The Lenawee County road commission brines hard. A hand wash, door-jamb clean and undercarriage-adjacent rinse get it off before it eats at the rockers and clear coat.',
   },
   {
-    name: 'Paint Clay & Polish',
-    desc: 'Clay decontamination and light polishing to pull embedded grit out of the finish and bring back depth a basic wash never can.',
+    name: 'Full & Deluxe Detail',
+    desc: 'Interior shampoo plus exterior wash and wax ($140), or add engine bay and trunk for the Deluxe ($160). The two packages most county customers book once or twice a year.',
   },
   {
-    name: 'Wax & Paint Protection',
-    desc: "Hand wax, sealant or ceramic protection to shield your paint through Lenawee's full range of weather — August sun to February brine.",
+    name: 'Ceramic Window Tint',
+    desc: 'Ceramic film for cars, trucks and SUVs that spend the day parked in open lots or driving wide-open county roads. Heat and UV rejection, priced per vehicle.',
   },
   {
-    name: 'Ceramic Window Tinting',
-    desc: 'Heat- and UV-rejecting ceramic tint, professionally installed for comfort on long county and US-223 drives.',
+    name: 'Clay Bar, Buff & Premium Wax',
+    desc: 'À la carte paint work: clay to strip bonded contaminants, a machine buff to clear swirls, and a premium wax to protect it — $70–$110 depending on the job.',
   },
   {
-    name: 'Engine Bay & Wheels',
-    desc: 'Degrease the engine bay and deep-clean wheels, tires and barrels — the finishing details that protect resale value.',
+    name: 'Pre-Sale & Lease-Return Detail',
+    desc: 'Selling on Marketplace or turning in a lease? A Full Detail with headlight restoration is the cheapest way to add hundreds to the number you get back.',
   },
 ];
 
 const whyUs = [
   {
     name: 'Central to the County',
-    desc: "Based in Blissfield, we're an easy drive from Adrian, Tecumseh, Hudson, Morenci, Clinton, Onsted and everywhere between.",
+    desc: 'Blissfield sits on US-223 in the southeast corner of Lenawee — 15 minutes from Adrian, 25 from Tecumseh, and an easy run from Deerfield, Palmyra, Ottawa Lake and Morenci.',
   },
   {
-    name: 'Honest, Flat Pricing',
-    desc: '$35 to $160, the same for everyone and posted before we start. Small-town pricing without the runaround.',
+    name: 'Same Price for Everyone',
+    desc: '$35 to $160, listed publicly and the same whether you drive in from Hudson or walk over from downtown Blissfield.',
   },
   {
-    name: 'Hand-Detailed, Every Time',
-    desc: 'No conveyor tunnels. Every vehicle is washed and detailed by hand — the standard that has earned us repeat customers countywide.',
+    name: 'A Lenawee Family Business',
+    desc: 'Owned and run locally, and every vehicle detailed by hand. Our reviews are from your neighbors, not from a franchise marketing team.',
   },
 ];
 
 const content = {
+  slug: SLUG,
   hero: {
     eyebrow: 'Lenawee County, Michigan',
     title: (
@@ -72,35 +73,40 @@ const content = {
         across Lenawee County
       </>
     ),
-    lead: 'Professional auto detailing, hand washing and window tinting from $35–$160, serving every corner of Lenawee County. Family-owned in Blissfield and detailed by hand — from Adrian and Tecumseh to Hudson, Morenci and Clinton.',
+    lead: 'Hand car wash, full auto detailing and ceramic window tint from $35–$160 for every corner of Lenawee County — Adrian, Tecumseh, Hudson, Morenci, Clinton, Deerfield and the townships in between. Family-owned in Blissfield.',
   },
   location: {
     eyebrow: 'Serving all of Lenawee',
     title: 'One shop for the whole county',
-    description:
-      "Clean King Detailing is rooted in Blissfield, near the heart of Lenawee County. We detail cars, trucks and work vehicles for residents and businesses across the county — Adrian, Tecumseh, Hudson, Morenci, Clinton, Onsted, Britton, Deerfield and Sand Creek included. Rural roads, farm dust and Michigan winters are hard on a finish; we're the shop that does it by hand.",
+    description: [
+      'Lenawee County is farm roads, brined highways and vehicles that work for a living, and that is what Clean King is set up for. From our shop on US-223 in Blissfield we detail everything from a farm pickup caked in spring mud to a Tecumseh minivan that has survived a season of travel ball.',
+      'Wherever you are in the county — Adrian, Tecumseh, Hudson, Morenci, Onsted, Clinton, Britton, Deerfield or Palmyra — you are within about half an hour. Book online, drop the vehicle off in the morning, and pick it up the same day.',
+    ],
     info: [
       { label: 'Shop', value: `${site.address1}, ${site.address2}` },
       { label: 'Phone', value: site.phone },
-      { label: 'Coverage', value: 'All of Lenawee County' },
+      {
+        label: 'Coverage',
+        value: 'All of Lenawee County, plus Monroe & Washtenaw neighbors',
+      },
     ],
   },
   packages: {
-    note: 'The same flat pricing countywide.',
+    note: 'Flat, posted pricing for every vehicle in the county — from a $35 Spiffy to the $160 Deluxe.',
   },
   services: {
     title: 'Built for Lenawee County roads',
-    note: 'From gravel-road dust to winter salt — everything your vehicle needs to look right and last longer.',
+    note: 'The work that actually matters here: salt removal, deep interiors, paint protection and tint.',
     items: detailedServices,
   },
   whyUs: {
     title: 'Why the county trusts us',
-    note: 'Local, honest, and detailed by hand — the way it should be.',
+    note: 'Central, honest, and local — a detail shop run by people who drive the same roads you do.',
     items: whyUs,
   },
   cta: {
     eyebrow:
-      'Adrian · Tecumseh · Blissfield · Hudson · Morenci · Clinton · Onsted',
+      'Serving Adrian · Tecumseh · Blissfield · Hudson · Morenci · Clinton',
     title: (
       <>
         Ready to detail
@@ -112,9 +118,9 @@ const content = {
 };
 
 const locationLd = locationSchema({
-  areaType: 'AdministrativeArea',
+  areaType: 'County',
   areaName: 'Lenawee County',
-  slug: 'car-detailing-lenawee-county',
+  slug: SLUG.slice(1),
   description: metadata.description,
 });
 

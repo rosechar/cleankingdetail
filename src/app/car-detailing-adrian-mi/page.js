@@ -3,66 +3,67 @@ import { locationSchema } from '@/data/locationSchema';
 import LocationPage from '@/components/location/LocationPage';
 import JsonLd from '@/components/seo/JsonLd';
 
+const SLUG = '/car-detailing-adrian-mi';
+
 export const metadata = {
   title: 'Car Detailing in Adrian, MI | Clean King Detailing',
   description:
-    'Professional car detailing in Adrian, MI from $35-$160. Interior/exterior detailing, clay bar, wax, buff, window tinting. Serving Adrian, Lenawee County. Call (517) 682-1919.',
-  keywords:
-    'car detailing Adrian MI, car wash Adrian Michigan, auto detailing Adrian, window tinting Adrian MI, clay bar Adrian, car wax Adrian, car buff Adrian, mobile car wash Adrian, best car detailing Adrian',
+    'Car detailing for Adrian, MI drivers from $35–$160 — 15 minutes down US-223 in Blissfield. Hand wash, interior shampoo, clay bar, wax and ceramic window tint. Call (517) 682-1919.',
   openGraph: {
     title: 'Car Detailing in Adrian, MI | Clean King Detailing',
     description:
-      'Professional car wash, detailing & window tinting in Adrian, MI. Clay bar, wax, buff services from $35-$160.',
-    url: '/car-detailing-adrian-mi',
+      'Hand car wash, full detailing & ceramic window tint for Adrian, MI. Flat pricing from $35–$160, 15 minutes from downtown Adrian.',
+    url: SLUG,
   },
   alternates: {
-    canonical: '/car-detailing-adrian-mi',
+    canonical: SLUG,
   },
 };
 
 const detailedServices = [
   {
-    name: 'Professional Car Wash',
-    desc: "Hand wash and foam treatment to safely clean your vehicle's exterior, removing dirt, grime, and road salt common on Adrian area roads.",
+    name: 'Hand Car Wash',
+    desc: 'Two-bucket hand wash, foam bath and chamois dry — no brushes, no tunnel. Gets the winter brine off without the swirl marks the drive-through washes on US-223 leave behind.',
   },
   {
-    name: 'Clay Bar Treatment',
-    desc: "Remove embedded contaminants from your paint surface that regular washing can't eliminate, leaving your car's paint smooth and ready for wax protection.",
+    name: 'Interior Shampoo & Steam',
+    desc: 'Seats, carpets, mats and headliner vacuumed, shampooed and steamed. Built for the salt, gravel and dog hair that come with commuting between Adrian and the farm roads around it.',
   },
   {
-    name: 'Wax & Buff Services',
-    desc: "Professional waxing and buffing to protect your paint from Michigan's harsh weather conditions while restoring that showroom shine.",
+    name: 'Clay Bar & Wax',
+    desc: 'Clay pulls the bonded grit out of the paint, then a hand-applied wax or sealant locks in gloss and keeps road salt from biting into the clear coat through the winter.',
   },
   {
-    name: 'Interior Detailing',
-    desc: 'Deep cleaning of seats, carpets, dashboard, and all interior surfaces. Perfect for removing winter salt stains and keeping your Adrian vehicle fresh.',
+    name: 'Ceramic Window Tint',
+    desc: 'Heat-rejecting ceramic film that cuts glare on the long, open stretches of M-52 and keeps a parked car cooler in the Adrian College and downtown lots. Priced per vehicle.',
   },
   {
-    name: 'Window Tinting',
-    desc: "Professional ceramic window tint installation to reduce heat, glare, and UV rays. Especially beneficial for Adrian's sunny summer days and winter glare.",
+    name: 'Engine Bay & Trunk',
+    desc: 'Degrease and dress the engine bay, vacuum the trunk and clean the channels — the Deluxe Detail finishing touches that make a used car photograph like a new one.',
   },
   {
-    name: 'Engine Bay Cleaning',
-    desc: "Thorough cleaning and degreasing of your engine bay, helping maintain your vehicle's performance and resale value.",
+    name: 'Headlight Restoration',
+    desc: 'Wet-sand, polish and seal yellowed lenses so they pass a glance and light the road properly again. A cheap fix that adds real value before you sell or trade in.',
   },
 ];
 
 const whyUs = [
   {
-    name: 'Local Expertise',
-    desc: 'Family-owned in Blissfield, just minutes from Adrian. We know what Michigan roads and winters do to your vehicle.',
+    name: '15 Minutes from Adrian',
+    desc: 'Straight down US-223 from the Adrian Mall to our shop on W Adrian St in Blissfield. Drop off in the morning, pick up the same day.',
   },
   {
-    name: 'Transparent Pricing',
-    desc: 'Flat, honest pricing from $35 to $160 — no surprises, no upsells. You know the cost before we start.',
+    name: 'Posted, Flat Pricing',
+    desc: '$35 to $160 for every package, listed on the site. What we quote is what you pay — no upsells at pickup.',
   },
   {
-    name: '5-Star Service',
-    desc: 'Every vehicle detailed by hand with the care that earns repeat customers across Lenawee County.',
+    name: 'Family-Owned & By Hand',
+    desc: 'Clean King is a Lenawee County family business. Every vehicle is washed and detailed by hand, which is why Adrian customers keep coming back.',
   },
 ];
 
 const content = {
+  slug: SLUG,
   hero: {
     eyebrow: 'Adrian, Michigan',
     title: (
@@ -72,39 +73,41 @@ const content = {
         in Adrian, MI
       </>
     ),
-    lead: 'Expert auto wash, detailing & window tinting services from $35–$160. Clean King proudly serves Adrian, Tecumseh and the wider Lenawee County area — every vehicle detailed by hand.',
+    lead: 'Hand car wash, interior and exterior detailing and ceramic window tint from $35–$160 — a 15-minute drive from downtown Adrian to our family-owned shop in Blissfield.',
   },
   location: {
     eyebrow: 'Serving Adrian & Lenawee',
-    title: 'Adrian, Tecumseh, Lenawee & surrounding areas',
-    description:
-      "Clean King Detailing is just 15 minutes from Adrian down US-223, so dropping the car off is easy — whether you're an Adrian College or Siena Heights student cleaning up before break, a downtown Adrian business keeping a work vehicle sharp, or a family shaking off a Michigan winter. We hand wash, detail and ceramic tint for Adrian drivers who want the job done right, not rushed through a tunnel.",
+    title: 'The county seat’s closest hand-detail shop',
+    description: [
+      'Adrian is our biggest customer base and our closest neighbor. From the Adrian Mall or Siena Heights, hop on US-223 heading east and you are pulling into Clean King at 610 W Adrian St in Blissfield about fifteen minutes later — no appointment lottery, no waiting in a tunnel line.',
+      'Most Adrian drivers book a Full or Deluxe Detail after winter to get the road salt out of the carpets and off the paint, and a Spiffy Detail in between. If you commute on M-52 or park downtown all day, ask about ceramic tint — it makes a noticeable difference in July.',
+    ],
     info: [
       { label: 'Shop', value: `${site.address1}, ${site.address2}` },
       { label: 'Phone', value: site.phone },
-      { label: 'From Adrian', value: 'Just 15 minutes via US-223' },
+      { label: 'From Adrian', value: 'About 15 minutes east on US-223' },
     ],
   },
   packages: {
-    note: 'Professional auto care tailored for Adrian vehicle owners.',
+    note: 'Same flat prices for Adrian drivers as everyone else — pick a package and book online.',
   },
   services: {
-    title: 'Comprehensive auto care in Adrian',
-    note: 'From hand washes to ceramic tint — everything your Adrian vehicle needs in one shop.',
+    title: 'What we do for Adrian drivers',
+    note: 'From a quick hand wash to a full engine-bay Deluxe Detail, everything is done by hand in our Blissfield shop.',
     items: detailedServices,
   },
   whyUs: {
-    title: 'Why Adrian drivers choose us',
-    note: 'Local, honest, and detailed by hand — the way it should be.',
+    title: 'Why Adrian drives to Blissfield',
+    note: 'Close, honest, and finished properly — the reasons our Adrian customers make the short trip.',
     items: whyUs,
   },
   cta: {
-    eyebrow: 'Serving Adrian · Blissfield · Tecumseh · Monroe · Lenawee County',
+    eyebrow: 'Serving Adrian · Tecumseh · Blissfield · Lenawee County',
     title: (
       <>
         Ready to detail
         <br />
-        your vehicle in Adrian?
+        your vehicle?
       </>
     ),
   },
@@ -113,7 +116,7 @@ const content = {
 const locationLd = locationSchema({
   areaType: 'City',
   areaName: 'Adrian',
-  slug: 'car-detailing-adrian-mi',
+  slug: SLUG.slice(1),
   description: metadata.description,
 });
 

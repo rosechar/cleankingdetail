@@ -2,11 +2,13 @@ import MapEmbed from '@/components/garage/MapEmbed';
 import Button from './Button';
 import Chip from './Chip';
 import Eyebrow from './Eyebrow';
+import { cn } from './cn';
 
 /**
  * Two-pane "find us" block: copy + address/phone facts on the left, map on
- * the right. `info` rows are { label, value }; `chips` (optional) renders a
- * labelled row of service-area tags.
+ * the right. `description` is a paragraph or an array of paragraphs. `info`
+ * rows are { label, value }; `chips` (optional) renders a labelled row of
+ * service-area tags — each a plain string or { label, href } to link it.
  */
 export default function LocationSection({
   id,
@@ -25,9 +27,19 @@ export default function LocationSection({
           <h2 className="mt-3.5 font-display text-display-lg uppercase">
             {title}
           </h2>
-          <p className="mt-4.5 text-base leading-relaxed text-fg-2">
-            {description}
-          </p>
+          {(Array.isArray(description) ? description : [description]).map(
+            (para, i) => (
+              <p
+                key={i}
+                className={cn(
+                  'text-base leading-relaxed text-fg-2',
+                  i === 0 ? 'mt-4.5' : 'mt-3.5'
+                )}
+              >
+                {para}
+              </p>
+            )
+          )}
           <div className="mt-7.5 flex flex-col gap-4.5">
             {info.map(({ label, value }) => (
               <div key={label}>
@@ -43,11 +55,15 @@ export default function LocationSection({
                   {chipsLabel}
                 </div>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {chips.map((c) => (
-                    <Chip key={c} hover>
-                      {c}
-                    </Chip>
-                  ))}
+                  {chips.map((c) => {
+                    const { label, href } =
+                      typeof c === 'string' ? { label: c } : c;
+                    return (
+                      <Chip key={label} href={href} hover>
+                        {label}
+                      </Chip>
+                    );
+                  })}
                 </div>
               </div>
             )}

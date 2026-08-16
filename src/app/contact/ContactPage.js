@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import Link from 'next/link';
 import { site } from '@/data/site';
 import { faqs } from '@/data/faqs';
 import { isEmail, isPhone } from '@/lib/validation';
@@ -11,7 +12,7 @@ import Button from '@/components/ui/Button';
 import Chip from '@/components/ui/Chip';
 import CtaBand from '@/components/ui/CtaBand';
 import Eyebrow from '@/components/ui/Eyebrow';
-import SectionHead from '@/components/ui/SectionHead';
+import Faq from '@/components/ui/Faq';
 import { cn } from '@/components/ui/cn';
 
 // 16px (not 15) so iOS Safari doesn't auto-zoom on focus.
@@ -49,7 +50,6 @@ export default function ContactPage() {
   const [sent, setSent] = useState(false);
   const [err, setErr] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [openFaq, setOpenFaq] = useState(null);
   const set = (key, value) => {
     setForm((prev) => ({ ...prev, [key]: value }));
     setErr('');
@@ -269,13 +269,32 @@ export default function ContactPage() {
                 </h2>
                 <p className="mx-auto mt-3.5 max-w-115 text-base text-fg-2">
                   Thanks, {form.name.trim().split(/\s+/)[0] || 'there'}!
-                  We&apos;ll get back to you at {form.phone} as soon as we can.
+                  We&apos;ll get back to you at {form.phone} — usually within an
+                  hour during shop hours ({site.hoursNote}). Need an answer
+                  right now? Give us a call.
                 </p>
                 <div className="mt-7.5 flex flex-wrap justify-center gap-3.25">
+                  <Button variant="accent" href="/appointment">
+                    Book an appointment
+                  </Button>
                   <Button variant="ghost" href={site.phoneHref}>
                     Call {site.phone}
                   </Button>
                 </div>
+                <p className="mt-6 text-sm text-fg-3">
+                  <Link href="/" className="transition-colors hover:text-fg">
+                    ← Back to home
+                  </Link>
+                  <span className="mx-2.5" aria-hidden="true">
+                    ·
+                  </span>
+                  <Link
+                    href="/services"
+                    className="transition-colors hover:text-fg"
+                  >
+                    Browse services &amp; pricing
+                  </Link>
+                </p>
               </div>
             )}
           </div>
@@ -284,43 +303,7 @@ export default function ContactPage() {
 
       {/* FAQ */}
       <section className="px-page pb-section">
-        <div className="mx-auto max-w-6xl">
-          <SectionHead eyebrow="Good to know" title="FAQ" tight />
-          <div className="border-t border-line">
-            {faqs.map(({ id, question, answer }) => {
-              const open = openFaq === id;
-              return (
-                <div key={id} className="border-b border-line">
-                  <button
-                    type="button"
-                    className="flex w-full cursor-pointer items-center justify-between gap-5 py-5.5 text-left font-display text-display-xs text-fg uppercase"
-                    aria-expanded={open}
-                    onClick={() => setOpenFaq(open ? null : id)}
-                  >
-                    {question}
-                    <span
-                      className={cn(
-                        'relative size-5.5 shrink-0 before:absolute before:top-1/2 before:left-1/2 before:h-0.5 before:w-3.25 before:-translate-x-1/2 before:-translate-y-1/2 before:bg-accent before:content-[""] after:absolute after:top-1/2 after:left-1/2 after:h-0.5 after:w-3.25 after:-translate-x-1/2 after:-translate-y-1/2 after:bg-accent after:transition-transform after:duration-250 after:content-[""]',
-                        open ? 'after:rotate-0' : 'after:rotate-90'
-                      )}
-                      aria-hidden="true"
-                    />
-                  </button>
-                  <div
-                    className={cn(
-                      'overflow-hidden transition-[max-height] duration-300 ease-in-out',
-                      open ? 'max-h-80' : 'max-h-0'
-                    )}
-                  >
-                    <p className="max-w-190 pr-10 pb-6 text-base leading-relaxed text-fg-2">
-                      {answer}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        <Faq items={faqs} />
       </section>
 
       <CtaBand

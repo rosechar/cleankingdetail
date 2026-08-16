@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { site, packages } from '@/data/site';
 import { AREA_LINKS } from '@/data/nav';
+import { faqsForArea, faqJsonLd } from '@/data/faqs';
+import JsonLd from '@/components/seo/JsonLd';
+import Faq from '@/components/ui/Faq';
 import Button from '@/components/ui/Button';
 import PageHero from '@/components/ui/PageHero';
 import LocationSection from '@/components/ui/LocationSection';
@@ -29,6 +32,7 @@ import { FeatureGrid, FeatureCard } from '@/components/ui/FeatureCard';
  * services:  { title, note, items: [{ name, desc }] }
  * whyUs:     { title, note, items: [{ name, desc }] }
  * cta:       { eyebrow, title (node) }
+ * FAQs come from data/faqs `faqsForArea(slug)` and emit FAQPage JSON-LD.
  */
 export default function LocationPage({
   slug,
@@ -39,8 +43,10 @@ export default function LocationPage({
   whyUs,
   cta,
 }) {
+  const faqs = faqsForArea(slug);
   return (
     <>
+      {faqs.length > 0 && <JsonLd data={faqJsonLd(faqs)} />}
       <PageHero eyebrow={hero.eyebrow} title={hero.title} lead={hero.lead}>
         <Button variant="accent" href="/appointment">
           Book Appointment
@@ -138,6 +144,13 @@ export default function LocationPage({
           </FeatureGrid>
         </div>
       </section>
+
+      {/* faq */}
+      {faqs.length > 0 && (
+        <section className="border-t border-line px-page py-section">
+          <Faq items={faqs} eyebrow="Good to know" title="FAQ" />
+        </section>
+      )}
 
       <CtaBand eyebrow={cta.eyebrow} title={cta.title}>
         <Button variant="accent" href="/appointment">

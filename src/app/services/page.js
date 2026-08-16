@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import { site, findPackage } from '@/data/site';
+import { servicesFaqs, faqJsonLd } from '@/data/faqs';
+import JsonLd from '@/components/seo/JsonLd';
+import Faq from '@/components/ui/Faq';
 import PackagePicker from '@/components/garage/PackagePicker';
 import Button from '@/components/ui/Button';
 import CtaBand from '@/components/ui/CtaBand';
@@ -27,6 +30,7 @@ const alaCarte = findPackage('a-la-carte');
 export default function Services() {
   return (
     <>
+      <JsonLd data={faqJsonLd(servicesFaqs)} />
       <PageHero
         eyebrow="Services & Pricing"
         title={
@@ -77,6 +81,15 @@ export default function Services() {
             </Link>
           </p>
         </div>
+      </section>
+
+      {/* FAQ — objection handling right before the booking band */}
+      <section className="border-t border-line px-page py-section" id="faq">
+        <Faq items={servicesFaqs} eyebrow="Before you book" title="FAQ">
+          <Link href="/contact" className="text-accent">
+            Ask us anything else →
+          </Link>
+        </Faq>
       </section>
 
       <CtaBand

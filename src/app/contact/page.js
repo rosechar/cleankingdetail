@@ -1,5 +1,5 @@
 import ContactPage from './ContactPage';
-import { faqs } from '@/data/faqs';
+import { faqs, faqJsonLd } from '@/data/faqs';
 import JsonLd from '@/components/seo/JsonLd';
 
 export const metadata = {
@@ -17,18 +17,7 @@ export const metadata = {
   },
 };
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqs.map((f) => ({
-    '@type': 'Question',
-    name: f.question,
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: f.answer,
-    },
-  })),
-};
+const faqSchema = faqJsonLd(faqs);
 
 export default function Contact() {
   return (

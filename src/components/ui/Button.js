@@ -16,7 +16,8 @@ const SIZES = {
 
 /**
  * Primary CTA button (variants: solid | ghost | accent; sizes: xs | sm | md | lg). Renders a Next <Link> for internal hrefs, an <a> for
- * external/tel/mailto hrefs, and a <button> when no href is given.
+ * external/tel/mailto hrefs (and /api/ routes, which are downloads rather
+ * than pages), and a <button> when no href is given.
  */
 export default function Button({
   variant = 'solid',
@@ -34,7 +35,7 @@ export default function Button({
     className
   );
 
-  if (href && href.startsWith('/')) {
+  if (href && href.startsWith('/') && !href.startsWith('/api/')) {
     return (
       <Link href={href} className={classes} {...rest}>
         {children}

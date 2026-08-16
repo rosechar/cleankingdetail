@@ -7,14 +7,18 @@ import {
   bookingPackages,
   DEFAULT_PACKAGE_ID,
   DROP_OFF_NOTE,
+  DROP_OFF_WINDOW,
   formatDayLong,
   nextWeekdays,
   OPT_IN_LABEL,
   STEP_TITLES,
   VEHICLES,
 } from '@/data/booking';
-import { CalendarCheck, CarFront } from 'lucide-react';
+import Link from 'next/link';
+import { CalendarCheck, CalendarPlus, CarFront } from 'lucide-react';
 import { GArrow } from '@/components/garage/Icons';
+import AddressLink from '@/components/ui/AddressLink';
+import Button from '@/components/ui/Button';
 import HoneypotField from '@/components/forms/HoneypotField';
 import Stars from '@/components/ui/Stars';
 import { cn } from '@/components/ui/cn';
@@ -534,7 +538,11 @@ function MobileFooter({ canGo, submitting, err, onNext, label }) {
 /*  Confirmation                                                       */
 /* ------------------------------------------------------------------ */
 
-function Confirmed({ firstName, phone, summary }) {
+function Confirmed({ firstName, phone, summary, day, pkg }) {
+  const calendarHref =
+    day && pkg
+      ? `/api/calendar?date=${day.iso}&pkg=${encodeURIComponent(pkg.id)}`
+      : null;
   return (
     <section className="flex min-h-[70dvh] flex-col items-center justify-center px-5.5 py-10 text-center lg:min-h-[60vh] lg:px-page lg:py-14">
       <div className="w-full max-w-130">
@@ -551,12 +559,14 @@ function Confirmed({ firstName, phone, summary }) {
           />
         </div>
         <h1 className="mb-3 font-display text-display-lg text-fg uppercase lg:mb-3.5">
-          Request sent!
+          Confirmation
         </h1>
         <p className="mb-6 text-[15px] leading-relaxed text-fg-2 lg:mb-7 lg:text-base">
-          Thanks {firstName} — we&apos;ve got your details. We&apos;ll call{' '}
-          <strong className="font-semibold text-fg">{phone}</strong> shortly to
-          lock in your spot.
+          Thanks {firstName}, we&apos;ve got your details.
+          <br />
+          We&apos;ll call{' '}
+          <strong className="font-semibold text-fg">{phone}</strong> to lock in
+          your spot.
         </p>
         <div className="bg-surface p-4.5 text-left lg:p-6">
           <div className={cn(ROW, 'py-1.75 lg:py-2')}>
@@ -571,7 +581,66 @@ function Confirmed({ firstName, phone, summary }) {
             <span className={ROW_KEY}>Requested</span>
             <span className={ROW_VAL}>{summary.when}</span>
           </div>
+          <div className={cn(ROW, 'py-1.75 lg:py-2')}>
+            <span className={ROW_KEY}>Drop-off</span>
+            <span className={ROW_VAL}>{DROP_OFF_WINDOW}</span>
+          </div>
+          <div className={cn(ROW, 'py-1.75 lg:py-2')}>
+            <span className={ROW_KEY}>Where</span>
+            <span className={ROW_VAL}>
+              <AddressLink stacked className="hover:text-accent" />
+            </span>
+          </div>
         </div>
+
+        {/* What happens next — the drop-off rules people otherwise only see
+            in the confirmation email (and only if they gave an email). */}
+        <ul className="mt-6 flex flex-col gap-2.5 text-left text-sm leading-relaxed text-fg-2 lg:text-[15px]">
+          {[
+            'Please clear out personal belongings, including the trunk, before you arrive.',
+            'Most details are ready for pickup the same afternoon.',
+          ].map((t) => (
+            <li key={t} className="flex gap-2.5">
+              <span
+                className="mt-2 size-1.5 shrink-0 rotate-45 bg-accent"
+                aria-hidden="true"
+              />
+              <span>{t}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-7 flex flex-wrap justify-center gap-3">
+          {calendarHref && (
+            <Button variant="ghost" href={calendarHref} download>
+              <CalendarPlus
+                className="size-4.5 shrink-0 text-accent"
+                strokeWidth={2}
+                aria-hidden="true"
+              />
+              Add to calendar
+            </Button>
+          )}
+          <Button variant="ghost" href={site.phoneHref}>
+            Call {site.phone}
+          </Button>
+        </div>
+        <p className="mt-6 text-sm text-fg-3">
+          <Link href="/" className="transition-colors hover:text-fg">
+            ← Back to home
+          </Link>
+          <span className="mx-2.5" aria-hidden="true">
+            ·
+          </span>
+          <a
+            href={site.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-fg"
+          >
+            Follow us on Facebook
+          </a>
+        </p>
       </div>
     </section>
   );
@@ -719,7 +788,13 @@ export default function BookPage() {
 
   if (screen === 'confirmed') {
     return (
-      <Confirmed firstName={firstName} phone={form.phone} summary={summary} />
+      <Confirmed
+        firstName={firstName}
+        phone={form.phone}
+        summary={summary}
+        day={day}
+        pkg={pkg}
+      />
     );
   }
 

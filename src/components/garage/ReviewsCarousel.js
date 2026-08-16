@@ -62,7 +62,7 @@ export default function ReviewsCarousel() {
                 tabIndex={idx === index ? 0 : -1}
               >
                 <blockquote className="font-display text-quote">
-                  {rev.quote}
+                  &ldquo;{rev.quote}&rdquo;
                 </blockquote>
                 <div className="mt-auto flex flex-wrap items-center gap-4 pt-5.5 font-mono text-sm tracking-label text-fg-2 uppercase">
                   <Stars />{' '}

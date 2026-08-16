@@ -65,9 +65,9 @@
   /* layout rhythm */
   --spacing-page: clamp(1.25rem, 5.2vw, 5rem); /* horizontal page gutter */
   --spacing-section: clamp(2.5rem, 5vw, 4.5rem); /* vertical section padding */
-  /* mobile header height (83px); the home hero tucks under it so the frosted
+  /* mobile header height (101px); the home hero tucks under it so the frosted
      header blurs the photo instead of the flat page background */
-  --spacing-header: 5.1875rem;
+  --spacing-header: 6.3125rem;
 
   /* motion */
   --ease-snap: cubic-bezier(0.2, 0.7, 0.3, 1);

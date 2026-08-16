@@ -46,7 +46,7 @@ export default function Header() {
     <header
       ref={ref}
       className={cn(
-        "sticky top-0 z-40 flex items-center justify-between gap-6 border-b px-page py-1.25 before:absolute before:inset-0 before:-z-1 before:bg-canvas/82 before:backdrop-frost before:content-[''] md:border-line md:py-2",
+        "sticky top-0 z-40 flex items-center justify-between gap-6 border-b px-page py-2.5 before:absolute before:inset-0 before:-z-1 before:bg-canvas/82 before:backdrop-frost before:content-[''] md:border-line md:py-3",
         open ? 'border-transparent before:hidden' : 'border-line'
       )}
     >
@@ -55,15 +55,15 @@ export default function Header() {
         href="/"
         onClick={() => setOpen(false)}
       >
-        {/* Logo sizes + vertical padding are tuned so the header stays 83px on
-            phones (--spacing-header) and 87px from md — other sticky elements
+        {/* Logo sizes + vertical padding are tuned so the header stays 101px on
+            phones (--spacing-header) and 113px from md — other sticky elements
             offset against those. */}
         <Image
           src="/cleanking-mark.png"
           alt={site.name}
-          width={72}
-          height={72}
-          className="size-18 md:size-17.5"
+          width={88}
+          height={88}
+          className="size-20 md:size-22"
         />
       </Link>
 

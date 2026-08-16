@@ -17,8 +17,7 @@ import {
   PackageGrid,
 } from '@/components/ui/PackageCard';
 
-// Staggered entrance for the hero copy (only when motion is allowed).
-const rise = (i) => ({ animationDelay: `${50 + i * 80}ms` });
+import { riseDelay as rise } from '@/components/ui/rise';
 
 const MARQUEE = [
   'Spiffy Detail',
@@ -123,8 +122,8 @@ const Home = () => {
             priority
             className="object-cover"
           />
-          {/* mobile-only: CTA overlaid on the center of the image */}
-          <div className="relative z-3 flex translate-y-5.5 items-center gap-3 md:hidden">
+          {/* mobile-only: CTA overlaid along the bottom of the image */}
+          <div className="absolute right-0 bottom-6 left-0 z-3 flex items-center justify-center gap-3 md:hidden">
             <Button
               variant="ghost"
               size="sm"
@@ -151,7 +150,7 @@ const Home = () => {
               Call
             </Button>
           </div>
-          <span className="absolute right-6 bottom-6 z-2 border border-white/22 bg-canvas/62 px-3.25 py-2 font-mono text-xs tracking-label whitespace-nowrap text-white uppercase backdrop-blur-xs">
+          <span className="absolute right-6 bottom-6 z-2 hidden border border-white/22 bg-canvas/62 px-3.25 py-2 font-mono text-xs tracking-label whitespace-nowrap text-white uppercase backdrop-blur-xs md:block">
             Deluxe Detail · Wheels &amp; Tires
           </span>
         </div>

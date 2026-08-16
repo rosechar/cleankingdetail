@@ -5,12 +5,12 @@ import Link from 'next/link';
 import { findPackage } from '@/data/site';
 import { cn } from '@/components/ui/cn';
 
-// Services page package browser: a swipeable rail of full package cards
-// (name, price, blurb, every line item, inherited-services accordion), or a
+// Services page package browser: a grid of full package cards (name, price,
+// blurb, collapsible line items + inherited-services accordion), or a
 // "Compare all" matrix grouped into accordion sections. Tapping a card or a
 // table column heading goes straight to booking with that package selected.
 
-const SWIPE_ORDER = [
+const CARD_ORDER = [
   'full-detail',
   'deluxe-detail',
   'interior-detail',
@@ -26,7 +26,7 @@ const TABLE_ORDER = [
 ];
 
 const byIds = (ids) => ids.map((id) => findPackage(id)).filter(Boolean);
-const swipePkgs = byIds(SWIPE_ORDER);
+const cardPkgs = byIds(CARD_ORDER);
 const tablePkgs = byIds(TABLE_ORDER);
 
 /** Everything a package delivers: its own line items + inherited ones. */
@@ -110,9 +110,14 @@ function ItemList({ items, className }) {
   );
 }
 
-/** "Includes <tier> detail services" accordion at the foot of a card. */
-function Includes({ title, items }) {
-  const [open, setOpen] = useState(false);
+/** Collapsible item list ("What's included", "Includes <tier> services").
+ *  `defaultOpen` is honoured on mount and whenever it flips to true (deep
+ *  links from the home page open that package's lists). */
+function Includes({ title, items, defaultOpen = false }) {
+  const [open, setOpen] = useState(defaultOpen);
+  useEffect(() => {
+    if (defaultOpen) setOpen(true);
+  }, [defaultOpen]);
   // Stop clicks/keys reaching the card, which is itself a link to booking.
   const stop = (e) => e.stopPropagation();
   return (
@@ -139,24 +144,25 @@ function Includes({ title, items }) {
   );
 }
 
-/** One full package card in the swipe rail. The whole card links to booking. */
-function PackageCard({ pkg }) {
+/** One full package card. The whole card links to booking; the item lists
+ *  are closed accordions so all five cards fit on one screen. */
+function PackageCard({ pkg, expanded }) {
   return (
     <article
       id={pkg.id}
       className={cn(
-        'relative flex flex-[0_0_min(86vw,380px)] snap-start scroll-mt-28 flex-col border border-line bg-surface transition-colors duration-[180ms] focus-within:border-line-2 hover:border-line-2',
+        'relative flex scroll-mt-28 flex-col border border-line bg-surface transition-colors duration-[180ms] focus-within:border-line-2 hover:border-line-2',
         pkg.popular && 'border-l-[3px] border-l-accent hover:border-l-accent'
       )}
     >
       {/* Stretched link: the whole card is one tap target for booking; the
-          "Includes…" accordion sits above it (z-1) so it stays clickable. */}
+          accordions sit above it (z-1) so they stay clickable. */}
       <Link
         href={bookHref(pkg)}
         className="absolute inset-0 z-0"
         aria-label={`Book ${pkg.name}`}
       />
-      <div className="border-b border-line p-4 sm:p-5.5">
+      <div className="flex-1 p-4 sm:p-5.5">
         <div className="flex items-start justify-between gap-3">
           <h2 className="font-display text-[26px] leading-[.95] uppercase">
             {pkg.name}
@@ -177,11 +183,17 @@ function PackageCard({ pkg }) {
         </div>
         <p className="mt-3 text-sm leading-normal text-fg-2">{pkg.blurb}</p>
       </div>
-      <div className="flex-1 p-4 sm:p-5.5">
-        <ItemList items={pkg.details || pkg.items} />
-      </div>
+      <Includes
+        title="What's included"
+        items={pkg.details || pkg.items}
+        defaultOpen={expanded}
+      />
       {pkg.includes && (
-        <Includes title={pkg.includesText} items={pkg.includes} />
+        <Includes
+          title={pkg.includesText}
+          items={pkg.includes}
+          defaultOpen={expanded}
+        />
       )}
     </article>
   );
@@ -202,7 +214,7 @@ function CompareTable() {
 
   return (
     <div>
-      <div className="touch-pan-x overflow-auto border border-line bg-surface">
+      <div className="overflow-auto border border-line bg-surface">
         <table className="w-full table-fixed border-collapse text-sm sm:min-w-[660px] sm:text-base">
           <thead>
             <tr>
@@ -290,24 +302,23 @@ function CompareTable() {
           </tbody>
         </table>
       </div>
-      <p className="mt-3 hidden font-mono text-xs text-fg-3 sm:block">
-        Scroll sideways to compare all five →
-      </p>
     </div>
   );
 }
 
 export default function PackagePicker() {
   const [layout, setLayout] = useState('packages');
+  const [expanded, setExpanded] = useState('');
 
-  // Deep links like /services#deluxe-detail (home page cards) scroll the
-  // rail so that card is in view.
+  // Deep links like /services#deluxe-detail (home page cards): open that
+  // package's lists and scroll it into view.
   useEffect(() => {
     const id = window.location.hash.slice(1);
     if (!id || !findPackage(id)) return;
+    setExpanded(id);
     document
       .getElementById(id)
-      ?.scrollIntoView({ block: 'start', inline: 'start', behavior: 'smooth' });
+      ?.scrollIntoView({ block: 'start', behavior: 'smooth' });
   }, []);
 
   return (
@@ -343,9 +354,9 @@ export default function PackagePicker() {
       </div>
 
       {layout === 'packages' ? (
-        <div className="-mx-page flex scrollbar-visible snap-x snap-proximity scroll-px-page items-stretch gap-2.5 overflow-x-auto px-page pt-0.5 pb-3.5">
-          {swipePkgs.map((p) => (
-            <PackageCard key={p.id} pkg={p} />
+        <div className="mx-auto grid max-w-6xl grid-cols-1 items-start gap-10 sm:grid-cols-2 lg:grid-cols-3">
+          {cardPkgs.map((p) => (
+            <PackageCard key={p.id} pkg={p} expanded={expanded === p.id} />
           ))}
         </div>
       ) : (

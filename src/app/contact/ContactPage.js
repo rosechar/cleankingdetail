@@ -14,6 +14,7 @@ import CtaBand from '@/components/ui/CtaBand';
 import Eyebrow from '@/components/ui/Eyebrow';
 import Faq from '@/components/ui/Faq';
 import { cn } from '@/components/ui/cn';
+import { RISE, riseDelay } from '@/components/ui/rise';
 
 // 16px (not 15) so iOS Safari doesn't auto-zoom on focus.
 const INPUT =
@@ -94,14 +95,19 @@ export default function ContactPage() {
           flush against the contact info below. */}
       <section className="relative border-b border-line md:grid md:grid-cols-2">
         <div className="px-page pt-6.5 pb-8.5 md:pt-9 md:pb-11 lg:pt-12 lg:pb-13.5">
-          <Eyebrow>Get in touch</Eyebrow>
-          <h1 className="mt-4 font-display text-display-3xl uppercase">
+          <Eyebrow className={RISE} style={riseDelay(0)}>
+            Get in touch
+          </Eyebrow>
+          <h1
+            className={cn('mt-4 font-display text-display-3xl uppercase', RISE)}
+            style={riseDelay(1)}
+          >
             Come see
             <br />
             the King
           </h1>
         </div>
-        <div className="relative h-70 border-t border-line md:h-auto md:min-h-90 md:border-t-0 md:border-l">
+        <div className="relative h-70 border-t border-line motion-safe:animate-fade-in motion-safe:opacity-0 md:h-auto md:min-h-90 md:border-t-0 md:border-l">
           <MapEmbed />
         </div>
       </section>

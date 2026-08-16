@@ -17,11 +17,12 @@ import {
 import Link from 'next/link';
 import { CalendarCheck, CalendarPlus, CarFront } from 'lucide-react';
 import { GArrow } from '@/components/garage/Icons';
+import BookingCelebration from '@/components/garage/BookingCelebration';
 import AddressLink from '@/components/ui/AddressLink';
-import Button from '@/components/ui/Button';
 import HoneypotField from '@/components/forms/HoneypotField';
 import Stars from '@/components/ui/Stars';
 import { cn } from '@/components/ui/cn';
+import { RISE, riseDelay } from '@/components/ui/rise';
 
 /* ------------------------------------------------------------------ */
 /*  Style constants (design values × the "large" 1.15 content scale)   */
@@ -82,16 +83,18 @@ function StepHeading({ children }) {
 }
 
 /** Accent primary button with the disabled state from the design. */
-function PrimaryButton({ disabled, className, children, ...rest }) {
+function PrimaryButton({ disabled, muted, className, children, ...rest }) {
   return (
     <button
       type="button"
       disabled={disabled}
       className={cn(
-        'inline-flex items-center justify-center gap-2 font-body font-semibold transition-opacity',
+        'inline-flex items-center justify-center gap-2 font-body font-semibold transition-colors duration-200',
         disabled
           ? 'cursor-not-allowed bg-[#34343a] text-[#7a766f]'
-          : 'cursor-pointer bg-accent text-on-accent hover:opacity-90',
+          : muted
+            ? 'cursor-pointer bg-[#34343a] text-[#a9a59e] hover:bg-[#3d3d44]'
+            : 'cursor-pointer bg-accent text-on-accent hover:opacity-90',
         className
       )}
       {...rest}
@@ -464,7 +467,7 @@ function MobileProgress({ step, goStep }) {
   return (
     <nav
       aria-label="Booking steps"
-      className="sticky top-[var(--header-h,var(--spacing-header))] z-30 bg-canvas/92 px-3.5 pt-8 pb-4 backdrop-frost lg:hidden"
+      className="sticky top-[var(--header-h,var(--spacing-header))] z-30 bg-canvas/95 px-3.5 py-4 backdrop-frost lg:hidden"
     >
       <Steps step={step} goStep={goStep} />
     </nav>
@@ -488,7 +491,15 @@ function ratingLine() {
 }
 
 /** Desktop: sticky summary card with the primary button beneath the rows. */
-function DesktopSummary({ summary, canGo, submitting, err, onNext, label }) {
+function DesktopSummary({
+  summary,
+  canGo,
+  ready = true,
+  submitting,
+  err,
+  onNext,
+  label,
+}) {
   return (
     <aside className="sticky top-28 hidden w-95 flex-none lg:block">
       <div className="border border-line bg-surface p-6">
@@ -497,6 +508,7 @@ function DesktopSummary({ summary, canGo, submitting, err, onNext, label }) {
         <PrimaryButton
           className="mt-5 h-15 w-full text-lg"
           disabled={!canGo || submitting}
+          muted={!ready}
           onClick={onNext}
         >
           {label}
@@ -515,12 +527,13 @@ function DesktopSummary({ summary, canGo, submitting, err, onNext, label }) {
 }
 
 /** Mobile: sticky footer with the primary button. */
-function MobileFooter({ canGo, submitting, err, onNext, label }) {
+function MobileFooter({ canGo, ready = true, submitting, err, onNext, label }) {
   return (
     <div className="sticky bottom-0 z-30 border-t border-line bg-surface/95 px-4.5 pt-3.5 pb-safe-3.5 backdrop-frost lg:hidden">
       <PrimaryButton
         className="h-12.5 w-full px-5 text-base"
         disabled={!canGo || submitting}
+        muted={!ready}
         onClick={onNext}
       >
         {label}
@@ -543,64 +556,130 @@ function Confirmed({ firstName, phone, summary, day, pkg }) {
     day && pkg
       ? `/api/calendar?date=${day.iso}&pkg=${encodeURIComponent(pkg.id)}`
       : null;
+  const rows = [
+    ['Package', summary.pkgName],
+    ['Vehicle', summary.vehicleFull],
+    ['Requested', summary.when],
+    ['Drop-off', DROP_OFF_WINDOW],
+    ['Where', <AddressLink key="addr" stacked className="hover:text-accent" />],
+  ];
+  const cardBtn =
+    'flex flex-1 basis-[150px] cursor-pointer items-center justify-center gap-2 px-4.5 py-3.25 text-center font-display text-[15px] tracking-[.05em] whitespace-nowrap uppercase transition-all duration-200 ease-snap hover:-translate-y-0.5';
   return (
-    <section className="flex min-h-[70dvh] flex-col items-center justify-center px-5.5 py-10 text-center lg:min-h-[60vh] lg:px-page lg:py-14">
-      <div className="w-full max-w-130">
-        <div className="mx-auto mb-6 flex h-16 w-fit items-center justify-center gap-3.5 rounded-full bg-accent px-6 lg:mb-6.5 lg:h-18 lg:px-7">
-          <CarFront
-            className="size-8 text-on-accent lg:size-9"
-            strokeWidth={2}
-            aria-hidden="true"
-          />
-          <CalendarCheck
-            className="size-8 text-on-accent lg:size-9"
-            strokeWidth={2}
-            aria-hidden="true"
-          />
-        </div>
-        <h1 className="mb-3 font-display text-display-lg text-fg uppercase lg:mb-3.5">
-          Confirmation
-        </h1>
-        <p className="mb-6 text-[15px] leading-relaxed text-fg-2 lg:mb-7 lg:text-base">
-          Thanks {firstName}, we&apos;ve got your details.
-          <br />
-          We&apos;ll call{' '}
-          <strong className="font-semibold text-fg">{phone}</strong> to lock in
-          your spot.
-        </p>
-        <div className="bg-surface p-4.5 text-left lg:p-6">
-          <div className={cn(ROW, 'py-1.75 lg:py-2')}>
-            <span className={ROW_KEY}>Package</span>
-            <span className={ROW_VAL}>{summary.pkgName}</span>
+    <section className="px-5.5 py-10 lg:px-page lg:py-14">
+      <div className="mx-auto w-full max-w-5xl">
+        {/* One grid so the phone order is scene → heading → card while
+            desktop keeps the heading on top and scene | card below. */}
+        <div className="grid items-stretch gap-4.5 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+          <div
+            className={cn(
+              'order-2 text-center lg:order-none lg:col-span-2 lg:mb-4.5',
+              RISE
+            )}
+            style={riseDelay(1)}
+          >
+            <h1 className="mb-3 font-display text-display-lg text-fg uppercase lg:mb-3.5">
+              Confirmation
+            </h1>
+            <p className="text-[15px] leading-relaxed text-fg-2 lg:text-base">
+              Thanks {firstName}, we&apos;ve got your details.
+              <br />
+              We&apos;ll call{' '}
+              <strong className="font-semibold text-fg">{phone}</strong> to lock
+              in your spot.
+            </p>
           </div>
-          <div className={cn(ROW, 'py-1.75 lg:py-2')}>
-            <span className={ROW_KEY}>Vehicle</span>
-            <span className={ROW_VAL}>{summary.vehicleFull}</span>
+
+          {/* celebration scene */}
+          <div
+            className={cn(
+              'order-1 flex items-center justify-center py-2 lg:order-none lg:py-0',
+              RISE
+            )}
+            style={riseDelay(0)}
+          >
+            <BookingCelebration
+              className="mx-0"
+              fallback={
+                <div className="flex h-16 w-fit items-center justify-center gap-3.5 rounded-full bg-accent px-6 lg:h-18 lg:px-7">
+                  <CarFront
+                    className="size-8 text-on-accent lg:size-9"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
+                  <CalendarCheck
+                    className="size-8 text-on-accent lg:size-9"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
+                </div>
+              }
+            />
           </div>
-          <div className={cn(ROW, 'py-1.75 lg:py-2')}>
-            <span className={ROW_KEY}>Requested</span>
-            <span className={ROW_VAL}>{summary.when}</span>
-          </div>
-          <div className={cn(ROW, 'py-1.75 lg:py-2')}>
-            <span className={ROW_KEY}>Drop-off</span>
-            <span className={ROW_VAL}>{DROP_OFF_WINDOW}</span>
-          </div>
-          <div className={cn(ROW, 'py-1.75 lg:py-2')}>
-            <span className={ROW_KEY}>Where</span>
-            <span className={ROW_VAL}>
-              <AddressLink stacked className="hover:text-accent" />
-            </span>
+
+          {/* confirmation card */}
+          <div
+            className={cn(
+              'order-3 flex flex-col border border-l-[3px] border-line border-l-accent bg-surface p-5.5 text-left lg:order-none',
+              RISE
+            )}
+            style={riseDelay(2)}
+          >
+            {rows.map(([k, v], i) => (
+              <div
+                key={k}
+                className={cn(
+                  'flex justify-between gap-3 py-3.25 text-[15px]',
+                  i === 0 && 'pt-1',
+                  i < rows.length - 1 && 'border-b border-line'
+                )}
+              >
+                <span className="text-fg-3">{k}</span>
+                <span className="text-right font-semibold text-fg">{v}</span>
+              </div>
+            ))}
+            <div className="mt-auto flex flex-wrap gap-2.5 pt-4">
+              {calendarHref && (
+                <a
+                  href={calendarHref}
+                  download
+                  className={cn(cardBtn, 'bg-accent text-on-accent')}
+                >
+                  <CalendarPlus
+                    className="size-4 shrink-0"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
+                  Add to calendar
+                </a>
+              )}
+              <a
+                href={site.phoneHref}
+                className={cn(
+                  cardBtn,
+                  'border border-line-2 text-fg hover:border-fg'
+                )}
+              >
+                Call to reschedule
+              </a>
+            </div>
           </div>
         </div>
 
         {/* What happens next — the drop-off rules people otherwise only see
             in the confirmation email (and only if they gave an email). */}
-        <ul className="mt-6 flex flex-col gap-2.5 text-left text-sm leading-relaxed text-fg-2 lg:text-[15px]">
+        <ul
+          className={cn(
+            'mx-auto mt-6 flex w-fit flex-col gap-2.5 text-left text-sm leading-relaxed text-fg-2 lg:mt-8 lg:items-center lg:text-center lg:text-[15px]',
+            RISE
+          )}
+          style={riseDelay(3)}
+        >
           {[
             'Please clear out personal belongings, including the trunk, before you arrive.',
             'Most details are ready for pickup the same afternoon.',
           ].map((t) => (
-            <li key={t} className="flex gap-2.5">
+            <li key={t} className="flex gap-2.5 lg:justify-center">
               <span
                 className="mt-2 size-1.5 shrink-0 rotate-45 bg-accent"
                 aria-hidden="true"
@@ -610,22 +689,7 @@ function Confirmed({ firstName, phone, summary, day, pkg }) {
           ))}
         </ul>
 
-        <div className="mt-7 flex flex-wrap justify-center gap-3">
-          {calendarHref && (
-            <Button variant="ghost" href={calendarHref} download>
-              <CalendarPlus
-                className="size-4.5 shrink-0 text-accent"
-                strokeWidth={2}
-                aria-hidden="true"
-              />
-              Add to calendar
-            </Button>
-          )}
-          <Button variant="ghost" href={site.phoneHref}>
-            Call {site.phone}
-          </Button>
-        </div>
-        <p className="mt-6 text-sm text-fg-3">
+        <p className="mt-6 text-center text-sm text-fg-3">
           <Link href="/" className="transition-colors hover:text-fg">
             ← Back to home
           </Link>
@@ -735,6 +799,9 @@ export default function BookPage() {
     step === 0 ||
     (step === 1 && !!form.vehicle && !!form.makeModel.trim()) ||
     step === 2;
+  // Final step: the button stays grey until every required field is filled,
+  // but remains clickable so a tap can surface the field errors.
+  const looksReady = step < 2 || detailsValid;
 
   const goStep = (n) => {
     if (n <= step) setStep(n);
@@ -799,7 +866,7 @@ export default function BookPage() {
   }
 
   const buttonLabel = submitting
-    ? 'Sending…'
+    ? 'Submitting…'
     : step < 2
       ? 'Continue'
       : 'Confirm booking';
@@ -826,7 +893,7 @@ export default function BookPage() {
             onChange={(e) => set('company', e.target.value)}
           />
 
-          <div className="min-w-0 lg:flex-[1.7]">
+          <div key={step} className={cn('min-w-0 lg:flex-[1.7]', RISE)}>
             {step === 0 && (
               <PackageStep value={form.pkg} onChange={(id) => set('pkg', id)} />
             )}
@@ -845,6 +912,7 @@ export default function BookPage() {
           <DesktopSummary
             summary={summary}
             canGo={canGo}
+            ready={looksReady}
             submitting={submitting}
             err={err}
             onNext={next}
@@ -855,6 +923,7 @@ export default function BookPage() {
 
       <MobileFooter
         canGo={canGo}
+        ready={looksReady}
         submitting={submitting}
         err={err}
         onNext={next}

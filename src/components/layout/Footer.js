@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { site } from '@/data/site';
 import { AREA_LINKS, NAV_LINKS } from '@/data/nav';
+import { cn } from '@/components/ui/cn';
 
 const LINK = 'transition-colors hover:text-accent';
 
@@ -13,16 +14,24 @@ export default function Footer() {
         <Image
           src="/cleanking-mark.png"
           alt=""
-          width={40}
-          height={40}
+          width={56}
+          height={56}
           aria-hidden="true"
-          className="size-10"
+          className="size-14"
         />
         <div>
           <div className="font-display text-lg uppercase">{site.name}</div>
-          <div className="mt-0.75 font-mono text-xs tracking-widest text-fg-3">
+          <a
+            className={cn(
+              LINK,
+              'mt-0.75 block font-mono text-xs tracking-widest text-fg-3'
+            )}
+            href={site.google}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {site.address1} · {site.address2}
-          </div>
+          </a>
         </div>
       </div>
 

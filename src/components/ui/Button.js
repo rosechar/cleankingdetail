@@ -8,13 +8,14 @@ const VARIANTS = {
 };
 
 const SIZES = {
-  sm: 'px-4.5 py-3.5',
-  md: 'px-6.5 py-3.75',
-  lg: 'px-6 py-4.25',
+  xs: 'px-3 py-3.75 text-sm',
+  sm: 'px-4.5 py-3.5 text-base',
+  md: 'px-6.5 py-3.75 text-base',
+  lg: 'px-6 py-4.25 text-base',
 };
 
 /**
- * Primary CTA button (variants: solid | ghost | accent; sizes: sm | md | lg). Renders a Next <Link> for internal hrefs, an <a> for
+ * Primary CTA button (variants: solid | ghost | accent; sizes: xs | sm | md | lg). Renders a Next <Link> for internal hrefs, an <a> for
  * external/tel/mailto hrefs, and a <button> when no href is given.
  */
 export default function Button({
@@ -27,7 +28,7 @@ export default function Button({
   ...rest
 }) {
   const classes = cn(
-    'inline-flex cursor-pointer items-center justify-center gap-2 font-body text-base font-semibold whitespace-nowrap transition-all duration-200 ease-snap hover:-translate-y-0.5',
+    'inline-flex cursor-pointer items-center justify-center gap-2 font-body font-semibold whitespace-nowrap transition-all duration-200 ease-snap hover:-translate-y-0.5',
     VARIANTS[variant],
     SIZES[size],
     className

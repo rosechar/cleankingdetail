@@ -1,21 +1,26 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { site } from '@/data/site';
 
 const KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_STATIC_KEY;
 const WHERE = `${site.address1}, ${site.address2}`;
 
-// Static Maps thumbnail for the shop. Mobile uses a slightly wider zoom and a
-// larger (default) pin so the location reads clearly on a small screen; desktop
-// uses a mid pin. Returns null with no key so the component degrades to a dark
-// pane + address.
-function thumbUrl(mobile) {
+// Static Maps thumbnail for the shop, sized to the pane it's shown in so the
+// image is never cropped: the longer side is the API's 640px maximum and the
+// other side follows the pane's aspect ratio (scale 2 for retina). Wide strips
+// get one more zoom level so they don't read as a zoomed-out sliver; phones
+// use a slightly closer zoom and the default (larger) pin. Returns null with
+// no key so the component degrades to a dark pane + address.
+function thumbUrl({ mobile, aspect }) {
   if (!KEY) return null;
+  const w = aspect >= 1 ? 640 : Math.round(640 * aspect);
+  const h = aspect >= 1 ? Math.round(640 / aspect) : 640;
+  const zoom = mobile ? 16 : aspect > 1.8 ? 15 : 14;
   const params = new URLSearchParams({
     center: WHERE,
-    zoom: mobile ? '17' : '15',
-    size: '640x640',
+    zoom: String(zoom),
+    size: `${w}x${h}`,
     scale: '2',
     markers: `${mobile ? '' : 'size:mid|'}color:0xd8352e|${WHERE}`,
     key: KEY,
@@ -31,6 +36,9 @@ function thumbUrl(mobile) {
 export default function MapEmbed() {
   const [imgFailed, setImgFailed] = useState(false);
   const [mobile, setMobile] = useState(false);
+  // Pane aspect ratio (w/h), rounded to 2dp so resize jitter doesn't refetch.
+  const [aspect, setAspect] = useState(null);
+  const ref = useRef(null);
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 760px)');
@@ -40,16 +48,29 @@ export default function MapEmbed() {
     return () => mq.removeEventListener('change', update);
   }, []);
 
-  const thumb = thumbUrl(mobile);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const measure = () => {
+      const { width, height } = el.getBoundingClientRect();
+      if (width && height) setAspect(Math.round((width / height) * 100) / 100);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const thumb = aspect ? thumbUrl({ mobile, aspect }) : null;
   const showThumb = thumb && !imgFailed;
 
   return (
     <a
+      ref={ref}
       className="group absolute inset-0 block size-full overflow-hidden bg-surface-2"
       href={site.google}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Open Clean King Detailing in Google Maps"
     >
       {showThumb && (
         /* eslint-disable-next-line @next/next/no-img-element */
@@ -58,8 +79,6 @@ export default function MapEmbed() {
           src={thumb}
           alt=""
           aria-hidden="true"
-          width={640}
-          height={640}
           loading="lazy"
           onError={() => setImgFailed(true)}
         />

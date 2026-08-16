@@ -1,4 +1,5 @@
 import { site } from '@/data/site';
+import AddressLink from '@/components/ui/AddressLink';
 import { locationSchema } from '@/data/locationSchema';
 import LocationPage from '@/components/location/LocationPage';
 import JsonLd from '@/components/seo/JsonLd';
@@ -83,7 +84,7 @@ const content = {
       'Most Adrian drivers book a Full or Deluxe Detail after winter to get the road salt out of the carpets and off the paint, and a Spiffy Detail in between. If you commute on M-52 or park downtown all day, ask about ceramic tint — it makes a noticeable difference in July.',
     ],
     info: [
-      { label: 'Shop', value: `${site.address1}, ${site.address2}` },
+      { label: 'Shop', value: <AddressLink /> },
       { label: 'Phone', value: site.phone },
       { label: 'From Adrian', value: 'About 15 minutes east on US-223' },
     ],

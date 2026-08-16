@@ -170,6 +170,22 @@
   backdrop-filter: blur(14px) saturate(1.2);
 }
 
+/* always-visible thin scrollbar for horizontal rails (iOS hides overlay
+   scrollbars until you scroll; styling ::-webkit-scrollbar makes it persistent) */
+@utility scrollbar-visible {
+  /* no scrollbar-width/scrollbar-color here — setting them makes Blink/WebKit
+     ignore the ::-webkit-scrollbar rules below */
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--color-line);
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-line-2);
+  }
+}
+
 /* keep fixed bottom bars clear of the iOS home indicator */
 @utility pb-safe-* {
   padding-bottom: calc(

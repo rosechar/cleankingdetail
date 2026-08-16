@@ -1,4 +1,5 @@
 import { site } from '@/data/site';
+import AddressLink from '@/components/ui/AddressLink';
 import { locationSchema } from '@/data/locationSchema';
 import LocationPage from '@/components/location/LocationPage';
 import JsonLd from '@/components/seo/JsonLd';
@@ -83,7 +84,7 @@ const content = {
       'Wherever you are in the county — Adrian, Tecumseh, Hudson, Morenci, Onsted, Clinton, Britton, Deerfield or Palmyra — you are within about half an hour. Book online, drop the vehicle off in the morning, and pick it up the same day.',
     ],
     info: [
-      { label: 'Shop', value: `${site.address1}, ${site.address2}` },
+      { label: 'Shop', value: <AddressLink /> },
       { label: 'Phone', value: site.phone },
       {
         label: 'Coverage',

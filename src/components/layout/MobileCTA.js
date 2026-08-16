@@ -35,10 +35,10 @@ export default function MobileCTA() {
   return (
     <div
       className={cn(
-        'fixed inset-x-0 bottom-0 z-50 flex gap-2.5 border-t border-line bg-canvas/86 px-3 pt-2.5 pb-safe-2.5 backdrop-frost transition-[transform,opacity] duration-300 ease-snap motion-reduce:translate-none motion-reduce:transition-opacity motion-reduce:duration-200 md:hidden',
+        'fixed inset-x-0 bottom-0 z-50 flex gap-2.5 border-t border-line bg-canvas/86 px-3 pt-2.5 pb-safe-2.5 backdrop-frost transition-[transform,opacity,visibility] duration-300 ease-snap motion-reduce:translate-none motion-reduce:transition-opacity motion-reduce:duration-200 md:hidden',
         show
-          ? 'pointer-events-auto translate-y-0 opacity-100'
-          : 'pointer-events-none translate-y-full opacity-0'
+          ? 'visible translate-y-0 opacity-100'
+          : 'invisible translate-y-full opacity-0'
       )}
       role="region"
       aria-label="Quick actions"

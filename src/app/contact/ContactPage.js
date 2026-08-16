@@ -11,7 +11,6 @@ import Button from '@/components/ui/Button';
 import Chip from '@/components/ui/Chip';
 import CtaBand from '@/components/ui/CtaBand';
 import Eyebrow from '@/components/ui/Eyebrow';
-import PageHero from '@/components/ui/PageHero';
 import SectionHead from '@/components/ui/SectionHead';
 import { cn } from '@/components/ui/cn';
 
@@ -90,35 +89,27 @@ export default function ContactPage() {
 
   return (
     <>
-      <PageHero
-        eyebrow="Get in touch"
-        title={
-          <>
+      {/* Hero: title on the left, map filling the right half (full height of
+          the band) from md; on phones the map sits directly under the title,
+          flush against the contact info below. */}
+      <section className="relative border-b border-line md:grid md:grid-cols-2">
+        <div className="px-page pt-6.5 pb-8.5 md:pt-9 md:pb-11 lg:pt-12 lg:pb-13.5">
+          <Eyebrow>Get in touch</Eyebrow>
+          <h1 className="mt-4 font-display text-display-3xl uppercase">
             Come see
             <br />
             the King
-          </>
-        }
-      />
+          </h1>
+        </div>
+        <div className="relative h-70 border-t border-line md:h-auto md:min-h-90 md:border-t-0 md:border-l">
+          <MapEmbed />
+        </div>
+      </section>
 
-      <section className="px-page pt-6 pb-section md:pt-9 lg:pt-12">
+      <section className="px-page pb-section md:pt-9 lg:pt-12">
         <div className="mx-auto grid max-w-6xl grid-cols-1 items-start gap-10 md:grid-cols-2 md:gap-11 lg:gap-18">
           <div>
-            <Eyebrow>Details</Eyebrow>
-            <h2 className="mt-3 font-display text-display-md uppercase">
-              Reach the shop
-            </h2>
-            <div className="mt-7 flex flex-col">
-              <InfoRow
-                icon={<GPin className="size-4.5 fill-accent" />}
-                label="Visit"
-              >
-                <div className="mt-1 text-base">
-                  {site.address1}
-                  <br />
-                  {site.address2}
-                </div>
-              </InfoRow>
+            <div className="flex flex-col md:mt-7">
               <InfoRow
                 icon={<GPhone className="size-4.5 fill-accent" />}
                 label="Call or text"
@@ -179,9 +170,9 @@ export default function ContactPage() {
                   value={form.company}
                   onChange={(e) => set('company', e.target.value)}
                 />
-                <h3 className="font-display text-display-sm uppercase">
+                <h2 className="font-display text-display-sm uppercase">
                   Send a message
-                </h3>
+                </h2>
                 <p className="mt-2 text-sm text-fg-2">
                   Tell us what your vehicle needs and we&apos;ll follow up with
                   a quote or a time.
@@ -289,10 +280,6 @@ export default function ContactPage() {
             )}
           </div>
         </div>
-
-        <div className="relative mx-auto mt-8 h-70 max-w-6xl overflow-hidden border border-line md:mt-11 md:h-85 lg:mt-13 lg:h-105">
-          <MapEmbed />
-        </div>
       </section>
 
       {/* FAQ */}
@@ -340,9 +327,9 @@ export default function ContactPage() {
         eyebrow="Gift certificates available"
         title={
           <>
-            Ready when
+            Ready to
             <br />
-            you are
+            get clean?
           </>
         }
       >

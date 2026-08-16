@@ -1,6 +1,5 @@
 import { Anton, Hanken_Grotesk } from 'next/font/google';
 import './globals.css';
-import Strip from '@/components/layout/Strip';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import MobileCTA from '@/components/layout/MobileCTA';
@@ -171,6 +170,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${anton.variable} ${hanken.variable}`}>
       <body>
+        <a
+          href="#main"
+          className="sr-only z-100 bg-accent px-4 py-3 font-semibold text-on-accent focus:not-sr-only focus:fixed focus:top-2 focus:left-2"
+        >
+          Skip to content
+        </a>
         <JsonLd data={structuredData} />
         <div className="relative min-h-screen w-full overflow-x-clip">
           {/* faint engineering grid that fades down the page */}
@@ -179,9 +184,8 @@ export default function RootLayout({ children }) {
             className="pointer-events-none fixed inset-0 z-0 bg-grid opacity-28"
           />
           <div className="relative z-1">
-            <Strip />
             <Header />
-            <main>{children}</main>
+            <main id="main">{children}</main>
             <Footer />
             <MobileCTA />
           </div>

@@ -7,14 +7,14 @@ import Button from '@/components/ui/Button';
 import CtaBand from '@/components/ui/CtaBand';
 import Eyebrow from '@/components/ui/Eyebrow';
 import LocationSection from '@/components/ui/LocationSection';
+import AddressLink from '@/components/ui/AddressLink';
 import SectionHead from '@/components/ui/SectionHead';
-import { GStar } from '@/components/garage/Icons';
+import { GArrow, GCalendar, GPhone, GStar } from '@/components/garage/Icons';
 import {
   AddOnCard,
   PackageActions,
   PackageCard,
   PackageGrid,
-  PackageLink,
 } from '@/components/ui/PackageCard';
 
 // Staggered entrance for the hero copy (only when motion is allowed).
@@ -40,7 +40,7 @@ const Home = () => {
       >
         <div className="flex shrink-0 flex-col justify-center border-b border-line px-page pt-5.5 pb-6.5 md:pt-16 md:pb-13.5 lg:border-r lg:border-b-0 lg:pt-24 lg:pb-20">
           <Eyebrow className="motion-safe:animate-rise" style={rise(0)}>
-            Showroom-grade auto detailing in Blissfield, Michigan
+            Showroom-grade auto detailing in Blissfield, MI
           </Eyebrow>
           <h1
             className="absolute top-header right-page left-page z-3 mt-4 max-w-fit border border-white/22 bg-canvas/62 px-4 pt-3 pb-3.5 font-display text-hero-mobile uppercase backdrop-blur-xs motion-safe:animate-rise md:static md:mt-5 md:max-w-none md:border-0 md:bg-transparent md:p-0 md:text-hero-tablet md:backdrop-blur-none lg:text-hero"
@@ -87,10 +87,12 @@ const Home = () => {
               href={site.google}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Rated ${site.rating.score} out of 5${
-                site.rating.count ? ` from ${site.rating.count} reviews` : ''
-              } on Google — read our reviews`}
             >
+              <span className="sr-only">
+                Rated {site.rating.score} out of 5
+                {site.rating.count ? ` from ${site.rating.count} reviews` : ''}{' '}
+                on Google — read our reviews:{' '}
+              </span>
               <div className="font-display text-stat">
                 5
                 <GStar
@@ -112,7 +114,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="relative order-first flex min-h-75 flex-1 items-center justify-center overflow-hidden pt-header after:absolute after:inset-0 after:bg-linear-120 after:from-canvas/55 after:to-transparent after:to-42% after:content-[''] motion-safe:animate-fade-in motion-safe:opacity-0 md:min-h-80 md:pt-0 lg:order-none lg:min-h-115">
+        <div className="relative order-first flex min-h-[max(30rem,62svh)] flex-1 items-center justify-center overflow-hidden pt-header after:absolute after:inset-0 after:bg-linear-120 after:from-canvas/55 after:to-transparent after:to-42% after:content-[''] motion-safe:animate-fade-in motion-safe:opacity-0 md:min-h-80 md:pt-0 lg:order-none lg:min-h-115">
           <Image
             src="/tire.webp"
             alt="Freshly detailed wheel and tire"
@@ -122,25 +124,34 @@ const Home = () => {
             className="object-cover"
           />
           {/* mobile-only: CTA overlaid on the center of the image */}
-          <div className="relative z-3 mx-page flex flex-1 translate-y-5.5 flex-col gap-3 md:hidden">
+          <div className="relative z-3 flex translate-y-5.5 items-center gap-3 md:hidden">
             <Button
-              variant="accent"
-              size="lg"
+              variant="ghost"
+              size="sm"
               href="/appointment"
-              className="w-full"
+              className="w-40 bg-canvas/55 backdrop-blur-xs"
             >
-              Book Appointment
+              <GCalendar
+                aria-hidden="true"
+                className="size-5 shrink-0 stroke-accent stroke-2"
+              />
+              Book
             </Button>
             <Button
               variant="ghost"
-              size="lg"
+              size="sm"
               href={site.phoneHref}
-              className="w-full bg-canvas/55 backdrop-blur-xs"
+              className="w-40 bg-canvas/55 backdrop-blur-xs"
+              aria-label={`Call ${site.phone}`}
             >
-              {site.phone}
+              <GPhone
+                aria-hidden="true"
+                className="size-5 shrink-0 fill-accent"
+              />
+              Call
             </Button>
           </div>
-          <span className="absolute right-6 bottom-6 z-2 border border-white/22 bg-canvas/62 px-3.25 py-2 font-mono text-xs tracking-label text-white uppercase backdrop-blur-xs">
+          <span className="absolute right-6 bottom-6 z-2 border border-white/22 bg-canvas/62 px-3.25 py-2 font-mono text-xs tracking-label whitespace-nowrap text-white uppercase backdrop-blur-xs">
             Deluxe Detail · Wheels &amp; Tires
           </span>
         </div>
@@ -183,8 +194,6 @@ const Home = () => {
             </>
           }
         >
-          Every package detailed by hand in Blissfield.
-          <br />
           <Link href="/services" className="text-accent">
             See full details &amp; what&apos;s included →
           </Link>
@@ -192,18 +201,19 @@ const Home = () => {
         <PackageGrid>
           {packages.map((s) => (
             <PackageCard
-              as="article"
+              as={Link}
+              href={`/services#${s.id}`}
               key={s.name}
               name={s.name}
               price={s.price}
               blurb={s.blurb}
               popular={s.popular}
             >
-              <PackageActions>
-                <PackageLink href={`/appointment?pkg=${s.id}`}>
-                  Book
-                </PackageLink>
-                <PackageLink href={`/services#${s.id}`}>Details</PackageLink>
+              <PackageActions className="justify-end">
+                <GArrow
+                  className="size-4 shrink-0 fill-none stroke-accent stroke-2 transition-transform duration-200 group-hover:translate-x-1"
+                  aria-hidden="true"
+                />
               </PackageActions>
             </PackageCard>
           ))}
@@ -220,7 +230,7 @@ const Home = () => {
         eyebrow="Find us"
         title={<>Family-owned in Blissfield</>}
         info={[
-          { label: 'Shop', value: `${site.address1}, ${site.address2}` },
+          { label: 'Shop', value: <AddressLink /> },
           { label: 'Phone', value: site.phone },
         ]}
         chipsLabel="Proudly serving"
@@ -236,9 +246,9 @@ const Home = () => {
         eyebrow="Gift certificates available"
         title={
           <>
-            Ready to make
+            Ready when
             <br />
-            your car shine?
+            you are
           </>
         }
       >

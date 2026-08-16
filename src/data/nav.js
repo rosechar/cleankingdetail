@@ -3,7 +3,9 @@
 
 export const NAV_LINKS = [
   { href: '/services', label: 'Services' },
-  { href: '/appointment', label: 'Book' },
+  // Book: shown in the mobile menu only — the desktop header has the
+  // "Book Now" button for that.
+  { href: '/appointment', label: 'Book', mobileOnly: true },
   { href: '/contact', label: 'Contact' },
 ];
 

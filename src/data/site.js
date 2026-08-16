@@ -78,10 +78,14 @@ export const site = {
 // Canonical detail packages — shared by the home preview, services page,
 // booking picker and structured data. Copy from the design handoff. `amount`
 // is the numeric price (or [low, high] for a range) used for schema.org.
+// `short` is the name used in "Book <short>" CTAs; `badge` is the small tag
+// shown on the services-page package cards.
 export const packages = [
   {
     id: 'full-detail',
     name: 'Full Detail',
+    short: 'Full',
+    badge: 'Most popular',
     price: '$140',
     amount: 140,
     blurb:
@@ -118,6 +122,8 @@ export const packages = [
   {
     id: 'spiffy-detail',
     name: 'Spiffy Detail',
+    short: 'Spiffy',
+    badge: 'Best value',
     price: '$35',
     amount: 35,
     blurb:
@@ -128,6 +134,7 @@ export const packages = [
   {
     id: 'interior-detail',
     name: 'Interior Detail',
+    short: 'Interior',
     price: '$110',
     amount: 110,
     blurb: 'A deep clean inside and out of every surface in the cabin.',
@@ -152,6 +159,8 @@ export const packages = [
   {
     id: 'deluxe-detail',
     name: 'Deluxe Detail',
+    short: 'Deluxe',
+    badge: 'Best clean',
     price: '$160',
     amount: 160,
     blurb:
@@ -185,6 +194,7 @@ export const packages = [
   {
     id: 'a-la-carte',
     name: 'À La Carte',
+    short: 'À la carte',
     price: '$70–$110',
     amount: [70, 110],
     blurb: 'Single services, your choice — buff out, clay, or a premium wax.',

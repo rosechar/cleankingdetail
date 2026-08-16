@@ -1,4 +1,5 @@
 import { site } from '@/data/site';
+import AddressLink from '@/components/ui/AddressLink';
 import { locationSchema } from '@/data/locationSchema';
 import LocationPage from '@/components/location/LocationPage';
 import JsonLd from '@/components/seo/JsonLd';
@@ -83,7 +84,7 @@ const content = {
       'Take M-52 south to Adrian and US-223 east, or cut across through Britton and Deerfield — about 25 minutes either way. Drop the car off between 9:30 and 10, and it is ready to go home the same afternoon.',
     ],
     info: [
-      { label: 'Shop', value: `${site.address1}, ${site.address2}` },
+      { label: 'Shop', value: <AddressLink /> },
       { label: 'Phone', value: site.phone },
       { label: 'From Tecumseh', value: 'About 25 minutes via M-52 & US-223' },
     ],

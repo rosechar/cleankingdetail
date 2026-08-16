@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { findPackage, site } from '@/data/site';
 import { isEmail, isPhone } from '@/lib/validation';
 import {
@@ -9,7 +8,6 @@ import {
   DEFAULT_PACKAGE_ID,
   DROP_OFF_NOTE,
   formatDayLong,
-  isPriceRange,
   nextWeekdays,
   OPT_IN_LABEL,
   STEP_TITLES,
@@ -25,7 +23,7 @@ import { cn } from '@/components/ui/cn';
 /*  Style constants (design values × the "large" 1.15 content scale)   */
 /* ------------------------------------------------------------------ */
 
-// Section eyebrow ("Choose your package", "Pick a day"…) — the site's mono label.
+// Section eyebrow ("Choose your detail", "Pick a day"…) — the site's mono label.
 const LABEL = 'font-mono text-xs tracking-label text-fg-3 uppercase';
 // Inputs are 16px+ so iOS Safari never auto-zooms; border turns accent on focus.
 const INPUT =
@@ -60,10 +58,20 @@ function SectionLabel({ className, children }) {
   return <div className={cn(LABEL, className)}>{children}</div>;
 }
 
+/** Inline validation message under a field (renders nothing when empty). */
+function FieldError({ id, children }) {
+  if (!children) return null;
+  return (
+    <p id={id} className="mt-1.5 text-sm font-medium text-accent" role="alert">
+      {children}
+    </p>
+  );
+}
+
 /** Desktop-only step heading (the mobile header carries the title instead). */
 function StepHeading({ children }) {
   return (
-    <h2 className="mb-2 hidden font-display text-display-md text-fg uppercase lg:block">
+    <h2 className="mb-2 hidden font-display text-display-md text-fg uppercase lg:mb-5 lg:block">
       {children}
     </h2>
   );
@@ -97,8 +105,10 @@ function PrimaryButton({ disabled, className, children, ...rest }) {
 function PackageStep({ value, onChange }) {
   return (
     <div>
-      <StepHeading>Choose your package</StepHeading>
-      <SectionLabel className="mb-3.5">Choose your package</SectionLabel>
+      <StepHeading>Choose your detail</StepHeading>
+      <SectionLabel className="mb-3.5 lg:hidden">
+        Choose your detail
+      </SectionLabel>
       <div
         role="radiogroup"
         aria-label="Package"
@@ -120,14 +130,16 @@ function PackageStep({ value, onChange }) {
                   : 'border-line hover:border-line-2'
               )}
             >
-              {p.popular && (
-                <span className="absolute -top-2 left-4.5 bg-accent px-2 py-0.5 text-[10px] font-bold tracking-wider text-on-accent uppercase">
-                  Most popular
-                </span>
-              )}
               <span className="flex w-full items-center justify-between gap-3">
-                <span className="font-display text-xl leading-none text-fg uppercase">
-                  {p.name}
+                <span className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1.5">
+                  <span className="font-display text-xl leading-none text-fg uppercase">
+                    {p.name}
+                  </span>
+                  {p.popular && (
+                    <span className="bg-accent px-2 py-0.5 text-[10px] font-bold tracking-wider text-on-accent uppercase">
+                      Most popular
+                    </span>
+                  )}
                 </span>
                 <span className="flex items-center gap-3">
                   <span className="font-display text-2xl leading-none whitespace-nowrap text-fg">
@@ -157,7 +169,7 @@ function PackageStep({ value, onChange }) {
 function VehicleStep({ form, set }) {
   return (
     <div>
-      <StepHeading>Tell us about your vehicle</StepHeading>
+      <StepHeading>Your vehicle</StepHeading>
       <SectionLabel className="mb-3.5">Vehicle type</SectionLabel>
       <div
         role="radiogroup"
@@ -241,14 +253,19 @@ function DayChip({ day, selected, onSelect }) {
   );
 }
 
-function DetailsStep({ form, set, days, summary }) {
+function DetailsStep({ form, set, days, summary, errors = {} }) {
+  const invalid = (k) => (errors[k] ? 'border-accent!' : '');
   return (
     <div>
-      <StepHeading>Pick a day &amp; your details</StepHeading>
+      <StepHeading>Day &amp; details</StepHeading>
       <SectionLabel className="mb-3.5">Pick a day</SectionLabel>
       <div
+        id="bk-day"
         role="radiogroup"
         aria-label="Day"
+        aria-invalid={!!errors.day || undefined}
+        aria-describedby={errors.day ? 'bk-day-err' : undefined}
+        tabIndex={-1}
         className="-mx-5.5 flex gap-2.5 overflow-x-auto px-5.5 pb-3 lg:mx-0 lg:gap-3.5 lg:px-0 lg:pb-3.5 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-line-2 [&::-webkit-scrollbar-track]:bg-line"
       >
         {days.map((day, i) => (
@@ -260,11 +277,8 @@ function DetailsStep({ form, set, days, summary }) {
           />
         ))}
       </div>
-      <p className="mt-4 flex items-start gap-2 text-sm leading-normal text-fg-3 lg:mt-3.5 lg:max-w-160">
-        <span
-          className="mt-1.5 size-2 flex-none rounded-full bg-[#1f8a4c]"
-          aria-hidden="true"
-        />
+      <FieldError id="bk-day-err">{errors.day}</FieldError>
+      <p className="mt-4 text-sm leading-normal text-fg-3 lg:mt-3.5 lg:max-w-160">
         {DROP_OFF_NOTE}
       </p>
 
@@ -272,35 +286,53 @@ function DetailsStep({ form, set, days, summary }) {
         Your details
       </SectionLabel>
       <div className="flex flex-col gap-3 lg:max-w-150 lg:gap-3.5">
-        <input
-          className={FIELD}
-          value={form.name}
-          onChange={(e) => set('name', e.target.value)}
-          placeholder="Full name"
-          aria-label="Full name"
-          autoComplete="name"
-        />
-        <div className="flex flex-col gap-3 lg:flex-row lg:gap-3.5">
+        <div>
           <input
-            className={cn(FIELD, 'lg:flex-1')}
-            type="tel"
-            inputMode="tel"
-            value={form.phone}
-            onChange={(e) => set('phone', e.target.value)}
-            placeholder="Phone number"
-            aria-label="Phone number"
-            autoComplete="tel"
+            id="bk-name"
+            className={cn(FIELD, invalid('name'))}
+            value={form.name}
+            onChange={(e) => set('name', e.target.value)}
+            placeholder="Full name"
+            aria-label="Full name"
+            aria-invalid={!!errors.name || undefined}
+            aria-describedby={errors.name ? 'bk-name-err' : undefined}
+            autoComplete="name"
           />
-          <input
-            className={cn(FIELD, 'lg:flex-1')}
-            type="email"
-            inputMode="email"
-            value={form.email}
-            onChange={(e) => set('email', e.target.value)}
-            placeholder="Email (optional)"
-            aria-label="Email (optional)"
-            autoComplete="email"
-          />
+          <FieldError id="bk-name-err">{errors.name}</FieldError>
+        </div>
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:gap-3.5">
+          <div className="lg:flex-1">
+            <input
+              id="bk-phone"
+              className={cn(FIELD, invalid('phone'))}
+              type="tel"
+              inputMode="tel"
+              value={form.phone}
+              onChange={(e) => set('phone', e.target.value)}
+              placeholder="Phone number"
+              aria-label="Phone number"
+              aria-invalid={!!errors.phone || undefined}
+              aria-describedby={errors.phone ? 'bk-phone-err' : undefined}
+              autoComplete="tel"
+            />
+            <FieldError id="bk-phone-err">{errors.phone}</FieldError>
+          </div>
+          <div className="lg:flex-1">
+            <input
+              id="bk-email"
+              className={cn(FIELD, invalid('email'))}
+              type="email"
+              inputMode="email"
+              value={form.email}
+              onChange={(e) => set('email', e.target.value)}
+              placeholder="Email (optional)"
+              aria-label="Email (optional)"
+              aria-invalid={!!errors.email || undefined}
+              aria-describedby={errors.email ? 'bk-email-err' : undefined}
+              autoComplete="email"
+            />
+            <FieldError id="bk-email-err">{errors.email}</FieldError>
+          </div>
         </div>
       </div>
       <button
@@ -358,145 +390,88 @@ function SummaryRows({ summary, rowClassName }) {
 /*  Chrome                                                             */
 /* ------------------------------------------------------------------ */
 
-function BackIcon({ className }) {
+/** Numbered stepper: ① Package — ② Vehicle — ③ Details. */
+function Steps({ step, goStep }) {
   return (
-    <svg viewBox="0 0 9 15" className={className} aria-hidden="true">
-      <path
-        d="M7.5 1.5L1.5 7.5l6 6"
-        stroke="currentColor"
-        strokeWidth="2"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+    <ol className="flex w-full items-center gap-1.5 lg:w-auto lg:gap-3">
+      {STEP_TITLES.map((label, i) => {
+        const active = i === step;
+        const done = i < step;
+        return (
+          <li
+            key={label}
+            className={cn(
+              'flex min-w-0 items-center gap-1.5 lg:gap-3',
+              i < STEP_TITLES.length - 1 && 'flex-1 lg:flex-none'
+            )}
+          >
+            <button
+              type="button"
+              disabled={i > step}
+              onClick={() => goStep(i)}
+              aria-current={active ? 'step' : undefined}
+              className={cn(
+                'flex items-center gap-2.5',
+                i <= step ? 'cursor-pointer' : 'cursor-default'
+              )}
+            >
+              <span
+                className={cn(
+                  'flex size-7 shrink-0 items-center justify-center rounded-full text-sm font-bold lg:size-7.5',
+                  active || done
+                    ? 'bg-accent text-on-accent'
+                    : 'bg-surface-2 text-fg-3'
+                )}
+              >
+                {done ? '✓' : i + 1}
+              </span>
+              <span
+                className={cn(
+                  'text-[17px] whitespace-nowrap lg:text-base',
+                  active
+                    ? 'font-bold text-fg'
+                    : done
+                      ? 'font-medium text-fg-2'
+                      : 'font-medium text-fg-3'
+                )}
+              >
+                {label}
+              </span>
+            </button>
+            {i < STEP_TITLES.length - 1 && (
+              <span
+                className="h-px min-w-1.5 flex-1 bg-line-2 lg:w-10 lg:flex-none"
+                aria-hidden="true"
+              />
+            )}
+          </li>
+        );
+      })}
+    </ol>
   );
 }
 
 /**
- * Mobile: 3-segment progress row, stuck just below the site header (83px on
- * phones, 87px once the header switches to its md layout).
+ * Mobile: the stepper stuck directly under the site header. `--header-h` is
+ * measured by <Header> so this can never gap or overlap it, whatever the
+ * logo/padding end up rendering at; falls back to the design height.
  */
 function MobileProgress({ step, goStep }) {
   return (
     <nav
       aria-label="Booking steps"
-      className="sticky top-header z-30 bg-canvas/92 px-4.5 pt-4 pb-3.5 backdrop-frost md:top-[5.4375rem] lg:hidden"
+      className="sticky top-[var(--header-h,var(--spacing-header))] z-30 bg-canvas/92 px-3.5 pt-8 pb-4 backdrop-frost lg:hidden"
     >
-      <ol className="flex gap-2.25">
-        {STEP_TITLES.map((label, i) => {
-          const active = i === step;
-          const done = i < step;
-          return (
-            <li key={label} className="flex flex-1 flex-col gap-2.5">
-              <button
-                type="button"
-                disabled={i > step}
-                onClick={() => goStep(i)}
-                aria-current={active ? 'step' : undefined}
-                className={cn(
-                  'flex flex-col gap-2.5 text-left',
-                  i <= step ? 'cursor-pointer' : 'cursor-default'
-                )}
-              >
-                <span
-                  className={cn(
-                    'block h-1 transition-colors duration-250',
-                    active || done ? 'bg-accent' : 'bg-line'
-                  )}
-                />
-                <span className="flex items-center gap-1.5">
-                  <span
-                    className={cn(
-                      'flex size-3.75 shrink-0 items-center justify-center rounded-full transition-colors',
-                      done && 'bg-accent text-on-accent',
-                      active && 'border-2 border-accent',
-                      !done && !active && 'border-2 border-line-2'
-                    )}
-                    aria-hidden="true"
-                  >
-                    {done && <Tick className="size-2" />}
-                  </span>
-                  <span
-                    className={cn(
-                      'text-xs whitespace-nowrap',
-                      active
-                        ? 'font-bold text-fg'
-                        : done
-                          ? 'font-semibold text-fg-2'
-                          : 'font-semibold text-fg-3'
-                    )}
-                  >
-                    {label}
-                  </span>
-                </span>
-              </button>
-            </li>
-          );
-        })}
-      </ol>
+      <Steps step={step} goStep={goStep} />
     </nav>
   );
 }
 
-/** Desktop: "Back" link + numbered stepper. */
-function DesktopStepper({ step, onBack, goStep }) {
+/** Desktop: the same stepper inline above the form. */
+function DesktopStepper({ step, goStep }) {
   return (
-    <div className="mb-11 hidden items-center gap-4 lg:flex">
-      <button
-        type="button"
-        onClick={onBack}
-        className="flex cursor-pointer items-center gap-2 text-base text-fg-3 transition-colors hover:text-fg"
-      >
-        <BackIcon className="h-3.25 w-2" />
-        Back
-      </button>
-      <ol className="ml-2.5 flex items-center gap-3">
-        {STEP_TITLES.map((label, i) => {
-          const active = i === step;
-          const done = i < step;
-          return (
-            <li key={label} className="flex items-center gap-3">
-              <button
-                type="button"
-                disabled={i > step}
-                onClick={() => goStep(i)}
-                aria-current={active ? 'step' : undefined}
-                className={cn(
-                  'flex items-center gap-2.5',
-                  i <= step ? 'cursor-pointer' : 'cursor-default'
-                )}
-              >
-                <span
-                  className={cn(
-                    'flex size-7.5 items-center justify-center rounded-full text-sm font-bold',
-                    active || done
-                      ? 'bg-accent text-on-accent'
-                      : 'bg-surface-2 text-fg-3'
-                  )}
-                >
-                  {done ? '✓' : i + 1}
-                </span>
-                <span
-                  className={cn(
-                    'text-base',
-                    active
-                      ? 'font-bold text-fg'
-                      : done
-                        ? 'font-medium text-fg-2'
-                        : 'font-medium text-fg-3'
-                  )}
-                >
-                  {label}
-                </span>
-              </button>
-              {i < STEP_TITLES.length - 1 && (
-                <span className="h-px w-10 bg-line-2" aria-hidden="true" />
-              )}
-            </li>
-          );
-        })}
-      </ol>
+    <div className="mb-11 hidden lg:block">
+      <Steps step={step} goStep={goStep} />
     </div>
   );
 }
@@ -515,12 +490,6 @@ function DesktopSummary({ summary, canGo, submitting, err, onNext, label }) {
       <div className="border border-line bg-surface p-6">
         <SectionLabel className="mb-4.5">Your booking</SectionLabel>
         <SummaryRows summary={summary} rowClassName="py-2" />
-        <div className="mt-3 flex items-baseline justify-between border-t border-line pt-4">
-          <span className="text-sm text-fg-3">{summary.estCaption}</span>
-          <span className="font-display text-3xl leading-none text-fg">
-            {summary.estLabel}
-          </span>
-        </div>
         <PrimaryButton
           className="mt-5 h-15 w-full text-lg"
           disabled={!canGo || submitting}
@@ -541,25 +510,17 @@ function DesktopSummary({ summary, canGo, submitting, err, onNext, label }) {
   );
 }
 
-/** Mobile: sticky footer with the estimate and the primary button. */
-function MobileFooter({ summary, canGo, submitting, err, onNext, label }) {
+/** Mobile: sticky footer with the primary button. */
+function MobileFooter({ canGo, submitting, err, onNext, label }) {
   return (
     <div className="sticky bottom-0 z-30 border-t border-line bg-surface/95 px-4.5 pt-3.5 pb-safe-3.5 backdrop-frost lg:hidden">
-      <div className="flex items-center gap-3.5">
-        <div className="min-w-0 flex-1">
-          <div className="text-xs text-fg-3">{summary.estCaption}</div>
-          <div className="font-display text-2xl leading-none text-fg">
-            {summary.estLabel}
-          </div>
-        </div>
-        <PrimaryButton
-          className="h-12.5 shrink-0 px-5 text-base"
-          disabled={!canGo || submitting}
-          onClick={onNext}
-        >
-          {label}
-        </PrimaryButton>
-      </div>
+      <PrimaryButton
+        className="h-12.5 w-full px-5 text-base"
+        disabled={!canGo || submitting}
+        onClick={onNext}
+      >
+        {label}
+      </PrimaryButton>
       {err && (
         <p className="mt-2.5 text-sm font-medium text-accent" role="alert">
           {err}
@@ -610,17 +571,6 @@ function Confirmed({ firstName, phone, summary }) {
             <span className={ROW_KEY}>Requested</span>
             <span className={ROW_VAL}>{summary.when}</span>
           </div>
-          <div
-            className={cn(
-              ROW,
-              'mt-1.75 items-baseline border-t border-line pt-2.75 lg:mt-2 lg:pt-3.25'
-            )}
-          >
-            <span className={ROW_KEY}>Estimated total</span>
-            <span className="font-display text-xl leading-none text-fg lg:text-2xl">
-              {summary.estLabel}
-            </span>
-          </div>
         </div>
       </div>
     </section>
@@ -645,13 +595,13 @@ const initialForm = {
 };
 
 export default function BookPage() {
-  const router = useRouter();
   const [step, setStep] = useState(0);
   const [screen, setScreen] = useState('booking');
   const [form, setForm] = useState(initialForm);
   const [days, setDays] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [err, setErr] = useState('');
+  const [attempted, setAttempted] = useState(false);
   const openedAt = useRef(Date.now());
 
   const set = (key, value) => {
@@ -685,7 +635,6 @@ export default function BookPage() {
   }, [step, screen]);
 
   const pkg = bookingPackages.find((p) => p.id === form.pkg);
-  const isRange = isPriceRange(pkg.price);
   const day = form.dayIdx != null ? days[form.dayIdx] : null;
   const firstName = form.name.trim().split(/\s+/)[0] || 'there';
   const summary = {
@@ -695,27 +644,34 @@ export default function BookPage() {
       ? `${form.vehicle} · ${form.makeModel.trim()}`
       : form.vehicle,
     when: day ? `${day.dow} ${day.day} ${day.month}` : 'To be confirmed',
-    estLabel: pkg.price,
-    estCaption: isRange ? 'Estimated range' : 'Estimated total',
   };
+
+  // Step 3 validates on submit (button stays enabled) so people get told
+  // exactly which field needs fixing instead of a dead button.
+  const fieldErrors = {
+    day: day == null ? 'Pick a day.' : '',
+    name: form.name.trim() ? '' : 'Enter your name.',
+    phone: isPhone(form.phone) ? '' : 'Enter a valid phone number.',
+    email:
+      form.email.trim() && !isEmail(form.email)
+        ? 'Enter a valid email address or leave it blank.'
+        : '',
+  };
+  const detailsValid = !Object.values(fieldErrors).some(Boolean);
+  useEffect(() => {
+    if (attempted && detailsValid) setErr('');
+  }, [attempted, detailsValid]);
 
   const canGo =
     step === 0 ||
     (step === 1 && !!form.vehicle && !!form.makeModel.trim()) ||
-    (step === 2 && day != null && !!form.name.trim() && !!form.phone.trim());
+    step === 2;
 
   const goStep = (n) => {
     if (n <= step) setStep(n);
   };
-  const back = () => {
-    if (step > 0) setStep(step - 1);
-    else router.push('/');
-  };
 
   const submit = async () => {
-    if (!isPhone(form.phone)) return setErr('Enter a valid phone number.');
-    if (form.email.trim() && !isEmail(form.email))
-      return setErr('Enter a valid email address or leave it blank.');
     setErr('');
     setSubmitting(true);
     try {
@@ -748,8 +704,17 @@ export default function BookPage() {
 
   const next = () => {
     if (!canGo || submitting) return;
-    if (step < 2) setStep(step + 1);
-    else submit();
+    if (step < 2) return setStep(step + 1);
+    if (!detailsValid) {
+      setAttempted(true);
+      setErr('Please fix the highlighted fields.');
+      const first = ['day', 'name', 'phone', 'email'].find(
+        (k) => fieldErrors[k]
+      );
+      document.getElementById(`bk-${first}`)?.focus();
+      return;
+    }
+    submit();
   };
 
   if (screen === 'confirmed') {
@@ -769,8 +734,8 @@ export default function BookPage() {
       <h1 className="sr-only">Book an appointment</h1>
       <MobileProgress step={step} goStep={goStep} />
 
-      <div className="mx-auto w-full max-w-6xl flex-1 px-5.5 pt-7 pb-8 lg:px-page lg:py-7">
-        <DesktopStepper step={step} onBack={back} goStep={goStep} />
+      <div className="mx-auto w-full max-w-6xl flex-1 px-5.5 pt-10 pb-8 lg:px-page lg:py-7">
+        <DesktopStepper step={step} goStep={goStep} />
 
         <form
           noValidate
@@ -797,6 +762,7 @@ export default function BookPage() {
                 set={set}
                 days={days}
                 summary={summary}
+                errors={attempted ? fieldErrors : {}}
               />
             )}
           </div>
@@ -813,7 +779,6 @@ export default function BookPage() {
       </div>
 
       <MobileFooter
-        summary={summary}
         canGo={canGo}
         submitting={submitting}
         err={err}

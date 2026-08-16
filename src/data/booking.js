@@ -18,7 +18,7 @@ export const DEFAULT_PACKAGE_ID = 'full-detail';
 // Vehicle type never changes the price. Required, no default.
 export const VEHICLES = ['Car', 'SUV', 'Truck', 'Van'];
 
-export const STEP_TITLES = ['Package', 'Your vehicle', 'Details'];
+export const STEP_TITLES = ['Package', 'Vehicle', 'Details'];
 
 /** Morning drop-off window — quoted in the booking flow and the confirmation email. */
 export const DROP_OFF_WINDOW = '9:30–10:00 AM';

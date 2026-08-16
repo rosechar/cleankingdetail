@@ -1,4 +1,5 @@
 import { site } from '@/data/site';
+import AddressLink from '@/components/ui/AddressLink';
 import { locationSchema } from '@/data/locationSchema';
 import LocationPage from '@/components/location/LocationPage';
 import JsonLd from '@/components/seo/JsonLd';
@@ -83,7 +84,7 @@ const content = {
       'It works best as a planned trip — a student car before a move-out, a lease return, a car you are about to sell, or a family vehicle that has not had a real interior clean in years. Book the package online, drive down, grab lunch in town, and drive home in a car that looks new.',
     ],
     info: [
-      { label: 'Shop', value: `${site.address1}, ${site.address2}` },
+      { label: 'Shop', value: <AddressLink /> },
       { label: 'Phone', value: site.phone },
       { label: 'From Ann Arbor', value: 'About 45 minutes via US-23 & US-223' },
     ],

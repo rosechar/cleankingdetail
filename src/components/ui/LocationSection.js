@@ -1,5 +1,4 @@
 import MapEmbed from '@/components/garage/MapEmbed';
-import Button from './Button';
 import Chip from './Chip';
 import Eyebrow from './Eyebrow';
 import { cn } from './cn';
@@ -68,9 +67,6 @@ export default function LocationSection({
               </div>
             )}
           </div>
-          <Button variant="ghost" href="/contact" className="mt-7">
-            Contact &amp; directions
-          </Button>
         </div>
         <div className="relative min-h-70 bg-surface-2 md:min-h-95">
           <MapEmbed />

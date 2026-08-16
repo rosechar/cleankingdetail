@@ -18,7 +18,7 @@ export function PackageGrid({ className, children }) {
 }
 
 const CARD =
-  'relative flex flex-col px-7.5 pt-8.5 pb-7.5 transition-colors duration-200';
+  'relative flex flex-col px-7.5 pt-7 pb-6 transition-colors duration-200';
 
 /**
  * A single package tile: name + price row, blurb, then whatever the page
@@ -39,7 +39,7 @@ export function PackageCard({
     <Tag
       className={cn(
         CARD,
-        'bg-surface hover:bg-surface-2',
+        'group bg-surface hover:bg-surface-2',
         popular && 'z-2 inset-ring-2 inset-ring-accent',
         className
       )}
@@ -58,7 +58,7 @@ export function PackageCard({
           {price}
         </span>
       </div>
-      <p className="mt-4 text-base text-fg-2">{blurb}</p>
+      <p className="mt-3 text-base text-fg-2">{blurb}</p>
       {children}
     </Tag>
   );
@@ -83,9 +83,14 @@ export function PackageFeatures({ items, className }) {
 }
 
 /** Row of PackageLinks pinned to the bottom of a card. */
-export function PackageActions({ children }) {
+export function PackageActions({ className, children }) {
   return (
-    <div className="mt-auto flex flex-wrap justify-between gap-x-5.5 gap-y-3 pt-5.5">
+    <div
+      className={cn(
+        'mt-auto flex flex-wrap justify-between gap-x-5.5 gap-y-3 pt-4',
+        className
+      )}
+    >
       {children}
     </div>
   );

@@ -14,6 +14,23 @@ export function FeatureGrid({ className, children }) {
   );
 }
 
+/**
+ * Horizontal swipe rail of FeatureCards (edge-to-edge on phones, in the
+ * content column from md). Cards are min(84vw, 320px) wide with 1px borders.
+ */
+export function FeatureRail({ className, children }) {
+  return (
+    <div
+      className={cn(
+        '-mx-page mt-10 flex scrollbar-visible snap-x snap-proximity scroll-px-page gap-4.5 overflow-x-auto px-page pb-3.5 *:flex-[0_0_min(84vw,320px)] *:snap-start *:border *:border-line md:mx-0 md:scroll-px-0 md:px-0',
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
 /** Surface tile with mono tag, display title, optional price / copy / bullet list. */
 export function FeatureCard({
   tag,
@@ -24,7 +41,7 @@ export function FeatureCard({
   children,
 }) {
   return (
-    <div className="bg-surface px-7.5 py-8.5">
+    <div className="flex flex-col bg-surface px-7.5 py-8.5">
       {tag && (
         <div className="font-mono text-xs tracking-label text-accent uppercase">
           {tag}

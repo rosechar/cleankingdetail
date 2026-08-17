@@ -8,13 +8,11 @@ import { site } from '@/data/site';
 import { NAV_LINKS } from '@/data/nav';
 import Button from '@/components/ui/Button';
 import { cn } from '@/components/ui/cn';
+import { useHeroReveal } from './heroReveal';
 
 export default function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  // Home hero (mobile): the header starts invisible so the photo owns the
-  // whole first screen, then fades in once the user starts scrolling.
-  const [scrolled, setScrolled] = useState(false);
   const ref = useRef(null);
 
   // Publish the rendered header height as --header-h so things that stack
@@ -40,15 +38,11 @@ export default function Header() {
     setOpen(false);
   }, [pathname]);
 
+  // Home hero (mobile): the header stays off-screen so the photo owns the
+  // whole first screen, then slides in with the sticky CTA bar (shared
+  // threshold in heroReveal) once the hero has scrolled away.
   const heroHide = pathname === '/';
-  useEffect(() => {
-    if (!heroHide) return undefined;
-    // Reveal once the hero is mostly gone (~60% of the viewport scrolled).
-    const update = () => setScrolled(window.scrollY > window.innerHeight * 0.6);
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    return () => window.removeEventListener('scroll', update);
-  }, [heroHide]);
+  const scrolled = useHeroReveal(heroHide);
 
   return (
     // Tint + blur live on the ::before so the header itself is NOT a backdrop

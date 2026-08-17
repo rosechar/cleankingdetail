@@ -32,6 +32,10 @@ const MARQUEE = [
   'Ceramic Tint',
   'Paint Protection',
 ];
+// The marquee slides one "half" then snaps back, so each half must be wider
+// than any viewport or a blank shows up at the far right just before the loop.
+// Two passes of the list (~3.3k px) covers wide desktops.
+const MARQUEE_STRIP = [...MARQUEE, ...MARQUEE];
 
 /**
  * Hero CTA: frosted glass face, 2px border and a hard 5px offset shadow in the
@@ -62,7 +66,7 @@ const Home = () => {
           photo + marquee fill exactly one viewport; desktop: cinematic photo
           on the right four-fifths, ~835px tall at 1440w. */}
       <div
-        className="-mt-header flex min-h-dvh flex-col md:-mt-header-md md:min-h-0"
+        className="-mt-header flex min-h-svh flex-col md:-mt-header-md md:min-h-0"
         id="top"
         data-hero
       >
@@ -82,7 +86,7 @@ const Home = () => {
               // Source is 1013×1520; q50 keeps the phone variant (~50 KB AVIF)
               // at the same weight the old 570px crop cost, but sharp.
               quality={50}
-              className="object-cover object-[60%_center] motion-safe:animate-fade-in motion-safe:opacity-0 md:object-center"
+              className="object-cover object-[60%_center] [animation-duration:1.4s] motion-safe:animate-fade-in motion-safe:opacity-0 md:object-center"
             />
             {/* shading: one vertical ramp on phones; on desktop a left-edge
                 fade into the canvas plus a bottom ramp */}
@@ -100,7 +104,7 @@ const Home = () => {
               the stat band pinned across the bottom of the photo */}
           <div className="absolute inset-0 flex flex-col px-4 pt-[calc(var(--spacing-header)+1.5rem)] pb-5.5 md:px-page md:pt-[calc(var(--spacing-header-md)+clamp(3rem,6.67vw,6rem))] md:pb-0">
             <p
-              className="px-1 font-mono text-[13px] leading-[1.7] tracking-[0.2em] text-accent uppercase motion-safe:animate-rise md:px-0 md:text-[0.8125rem] md:leading-normal md:tracking-[0.32em]"
+              className="px-1 font-mono text-sm leading-[1.7] tracking-[0.2em] text-accent uppercase motion-safe:animate-rise md:px-0 md:text-[0.9375rem] md:leading-normal md:tracking-[0.32em]"
               style={rise(0)}
             >
               Showroom-grade auto detailing
@@ -118,7 +122,7 @@ const Home = () => {
               <span className="text-accent">of</span> Clean
             </h1>
             <p
-              className="mt-4.5 text-lg text-fg-2 motion-safe:animate-rise md:mt-6.5 md:max-w-170 md:text-lead"
+              className="mt-4.5 text-xl text-fg motion-safe:animate-rise md:mt-6.5 md:max-w-170 md:text-[1.375rem]"
               style={rise(2)}
             >
               Book online, detailed by hand, finished like new.
@@ -130,16 +134,16 @@ const Home = () => {
               className="-mx-4 mt-4.5 flex border-y border-white/15 bg-canvas/55 backdrop-blur-[10px] motion-safe:animate-rise md:absolute md:right-0 md:bottom-0 md:left-1/5 md:mx-0 md:mt-0 md:border-b-0 md:border-white/14 md:bg-canvas/45"
               style={rise(4)}
             >
-              <div className="flex-1 border-r border-white/10 py-4 text-center md:border-white/12 md:py-6.5">
+              <div className="flex-1 border-r border-white/10 py-3 text-center md:border-white/12 md:py-6.5">
                 <div className="font-display text-stat">
                   <span className="text-accent">$</span>35
                 </div>
-                <div className="mt-1.5 font-mono text-[11px] tracking-[0.24em] text-fg-3 uppercase md:mt-2.5 md:text-[11px] md:tracking-[0.3em]">
+                <div className="mt-1.5 font-mono text-xs tracking-[0.24em] text-fg-3 uppercase md:mt-2.5 md:text-[13px] md:tracking-[0.3em]">
                   And up
                 </div>
               </div>
               <a
-                className="group flex-1 border-r border-white/10 py-4 text-center md:border-white/12 md:py-6.5"
+                className="group flex-1 border-r border-white/10 py-3 text-center md:border-white/12 md:py-6.5"
                 href={site.google}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -158,15 +162,15 @@ const Home = () => {
                     className="ml-1.5 inline-block size-[0.7em] -translate-y-[0.08em] fill-accent"
                   />
                 </div>
-                <div className="mt-1.5 font-mono text-[11px] tracking-[0.24em] text-fg-3 uppercase transition-colors group-hover:text-fg md:mt-2.5 md:text-[11px] md:tracking-[0.3em]">
+                <div className="mt-1.5 font-mono text-xs tracking-[0.24em] text-fg-3 uppercase transition-colors group-hover:text-fg md:mt-2.5 md:text-[13px] md:tracking-[0.3em]">
                   On Google
                 </div>
               </a>
-              <div className="flex-1 py-4 text-center md:py-6.5">
+              <div className="flex-1 py-3 text-center md:py-6.5">
                 <div className="font-display text-stat">
                   100<span className="text-accent">%</span>
                 </div>
-                <div className="mt-1.5 font-mono text-[11px] tracking-[0.24em] text-fg-3 uppercase md:mt-2.5 md:text-[11px] md:tracking-[0.3em]">
+                <div className="mt-1.5 font-mono text-xs tracking-[0.24em] text-fg-3 uppercase md:mt-2.5 md:text-[13px] md:tracking-[0.3em]">
                   By hand
                 </div>
               </div>
@@ -174,12 +178,12 @@ const Home = () => {
 
             {/* CTAs — "poster offset" buttons */}
             <div
-              className="mt-4.5 flex gap-3.5 pb-2 motion-safe:animate-rise md:mt-8.5 md:gap-5 md:pb-0"
+              className="mt-4 flex gap-3.5 pb-1 motion-safe:animate-rise md:mt-8.5 md:gap-5 md:pb-0"
               style={rise(3)}
             >
               <PosterButton
                 href="/appointment"
-                className="flex-1 gap-2 border-accent bg-accent/15 py-4 text-[17px] font-bold tracking-[0.04em] text-white uppercase shadow-[5px_5px_0_var(--color-accent)] hover:shadow-[2px_2px_0_var(--color-accent)] md:flex-none md:gap-2.5 md:px-9 md:py-4.25 md:text-base md:tracking-[0.03em] md:normal-case"
+                className="flex-1 gap-2 border-accent bg-accent/15 py-3.5 text-lg font-bold tracking-[0.04em] text-white uppercase shadow-[5px_5px_0_var(--color-accent)] hover:shadow-[2px_2px_0_var(--color-accent)] md:flex-none md:gap-2.5 md:px-9 md:py-4.25 md:text-lg md:tracking-[0.03em] md:normal-case"
               >
                 <GCalendar
                   aria-hidden="true"
@@ -189,7 +193,7 @@ const Home = () => {
               </PosterButton>
               <PosterButton
                 href={site.phoneHref}
-                className="w-14 border-fg bg-fg/8 py-4 text-fg shadow-[5px_5px_0_var(--color-fg)] hover:shadow-[2px_2px_0_var(--color-fg)] md:w-auto md:px-5.5 md:py-4.25"
+                className="w-16 border-fg bg-fg/8 py-3.5 text-fg shadow-[5px_5px_0_var(--color-fg)] hover:shadow-[2px_2px_0_var(--color-fg)] md:w-auto md:px-5.5 md:py-4.25"
                 aria-label={`Call ${site.phone}`}
                 title={site.phone}
               >
@@ -204,19 +208,19 @@ const Home = () => {
 
         {/* services marquee */}
         <div
-          className="flex h-12 shrink-0 items-center overflow-hidden border-y border-line md:h-16"
+          className="flex h-14 shrink-0 items-center overflow-hidden border-y border-line md:h-20"
           aria-hidden="true"
         >
-          <div className="flex w-max animate-marquee whitespace-nowrap motion-reduce:animate-none max-md:[animation-duration:24s]">
+          <div className="flex w-max shrink-0 animate-marquee whitespace-nowrap will-change-transform motion-reduce:animate-none">
             {[0, 1].map((k) => (
               <span
                 key={k}
-                className="flex items-center font-display text-marquee text-fg-2 uppercase"
+                className="inline-flex items-center gap-11 pr-11 font-display text-marquee leading-normal text-fg-2 uppercase md:gap-24 md:pr-24"
               >
-                {MARQUEE.map((m) => (
-                  <span key={m} className="contents">
-                    <span className="px-5 md:px-7.5">{m}</span>
-                    <i className="size-1.75 rotate-45 bg-accent md:size-2" />
+                {MARQUEE_STRIP.map((m, i) => (
+                  <span key={i} className="contents">
+                    {m}
+                    <i className="inline-block size-2.25 rotate-45 bg-accent" />
                   </span>
                 ))}
               </span>

@@ -66,7 +66,7 @@ const Home = () => {
           photo + marquee fill exactly one viewport; desktop: cinematic photo
           on the right four-fifths, ~835px tall at 1440w. */}
       <div
-        className="-mt-header flex min-h-svh flex-col md:-mt-header-md md:min-h-0"
+        className="-mt-header flex min-h-[calc(100svh+env(safe-area-inset-bottom))] flex-col md:-mt-header-md md:min-h-0"
         id="top"
         data-hero
       >
@@ -86,7 +86,7 @@ const Home = () => {
               // Source is 1013×1520; q50 keeps the phone variant (~50 KB AVIF)
               // at the same weight the old 570px crop cost, but sharp.
               quality={50}
-              className="object-cover object-[60%_center] [animation-duration:1.4s] motion-safe:animate-fade-in motion-safe:opacity-0 md:object-center"
+              className="object-cover object-[60%_center] [animation-duration:2.4s] motion-safe:animate-fade-in motion-safe:opacity-0 md:object-center"
             />
             {/* shading: one vertical ramp on phones; on desktop a left-edge
                 fade into the canvas plus a bottom ramp */}
@@ -99,20 +99,20 @@ const Home = () => {
             Deluxe Detail · Wheels &amp; Tires
           </span>
 
-          {/* copy: on phones a full-height column (headline top; eyebrow,
+          {/* copy: on phones a full-height column (eyebrow + headline top;
               stats + CTAs pinned to the bottom, no subline); on desktop a
               680px block top-left (eyebrow, headline, subline, CTAs) with the
               stat band pinned along the bottom of the photo */}
           <div className="absolute inset-0 flex flex-col px-4 pt-[calc(var(--spacing-header)+1.5rem)] pb-4 md:px-page md:pt-[calc(var(--spacing-header-md)+clamp(3rem,6.67vw,6rem))] md:pb-0">
             <p
-              className="px-1 font-mono text-sm leading-[1.7] tracking-[0.2em] text-accent uppercase motion-safe:animate-rise max-md:mb-3.5 md:px-0 md:text-[0.9375rem] md:leading-normal md:tracking-[0.32em]"
+              className="px-1 font-mono text-sm leading-[1.7] tracking-[0.2em] text-accent uppercase motion-safe:animate-rise md:px-0 md:text-[0.9375rem] md:leading-normal md:tracking-[0.32em]"
               style={rise(0)}
             >
               Showroom-grade auto detailing
               <br className="md:hidden" /> in Blissfield, MI
             </p>
             <h1
-              className="px-1 font-display text-hero-mobile uppercase motion-safe:animate-rise max-md:-order-1 max-md:mb-auto md:mt-6.5 md:max-w-170 md:px-0 md:text-hero"
+              className="mt-3 px-1 font-display text-hero-mobile uppercase motion-safe:animate-rise max-md:mb-auto md:mt-6.5 md:max-w-170 md:px-0 md:text-hero"
               style={rise(1)}
             >
               <span className="sr-only">

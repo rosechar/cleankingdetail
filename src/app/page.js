@@ -99,19 +99,20 @@ const Home = () => {
             Deluxe Detail · Wheels &amp; Tires
           </span>
 
-          {/* copy: on phones a full-height column (headline top, stats +
-              CTAs pinned to the bottom); on desktop a 680px block top-left with
-              the stat band pinned across the bottom of the photo */}
-          <div className="absolute inset-0 flex flex-col px-4 pt-[calc(var(--spacing-header)+1.5rem)] pb-5.5 md:px-page md:pt-[calc(var(--spacing-header-md)+clamp(3rem,6.67vw,6rem))] md:pb-0">
+          {/* copy: on phones a full-height column (headline top; eyebrow,
+              stats + CTAs pinned to the bottom, no subline); on desktop a
+              680px block top-left (eyebrow, headline, subline, CTAs) with the
+              stat band pinned along the bottom of the photo */}
+          <div className="absolute inset-0 flex flex-col px-4 pt-[calc(var(--spacing-header)+1.5rem)] pb-4 md:px-page md:pt-[calc(var(--spacing-header-md)+clamp(3rem,6.67vw,6rem))] md:pb-0">
             <p
-              className="px-1 font-mono text-sm leading-[1.7] tracking-[0.2em] text-accent uppercase motion-safe:animate-rise md:px-0 md:text-[0.9375rem] md:leading-normal md:tracking-[0.32em]"
+              className="px-1 font-mono text-sm leading-[1.7] tracking-[0.2em] text-accent uppercase motion-safe:animate-rise max-md:mb-3.5 md:px-0 md:text-[0.9375rem] md:leading-normal md:tracking-[0.32em]"
               style={rise(0)}
             >
               Showroom-grade auto detailing
               <br className="md:hidden" /> in Blissfield, MI
             </p>
             <h1
-              className="mt-3 px-1 font-display text-hero-mobile uppercase motion-safe:animate-rise max-md:mb-auto md:mt-6.5 md:max-w-170 md:px-0 md:text-hero"
+              className="px-1 font-display text-hero-mobile uppercase motion-safe:animate-rise max-md:-order-1 max-md:mb-auto md:mt-6.5 md:max-w-170 md:px-0 md:text-hero"
               style={rise(1)}
             >
               <span className="sr-only">
@@ -122,7 +123,7 @@ const Home = () => {
               <span className="text-accent">of</span> Clean
             </h1>
             <p
-              className="mt-4.5 text-xl text-fg motion-safe:animate-rise md:mt-6.5 md:max-w-170 md:text-[1.375rem]"
+              className="hidden text-xl text-fg motion-safe:animate-rise md:mt-6.5 md:block md:max-w-170 md:text-[1.375rem]"
               style={rise(2)}
             >
               Book online, detailed by hand, finished like new.
@@ -131,7 +132,7 @@ const Home = () => {
             {/* stats: edge-to-edge strip between subline and CTAs on phones;
                 glass band along the bottom of the photo (right four-fifths) on desktop */}
             <div
-              className="-mx-4 mt-4.5 flex border-y border-white/15 bg-canvas/55 backdrop-blur-[10px] motion-safe:animate-rise md:absolute md:right-0 md:bottom-0 md:left-1/5 md:mx-0 md:mt-0 md:border-b-0 md:border-white/14 md:bg-canvas/45"
+              className="-mx-4 flex border-y border-white/15 bg-canvas/55 backdrop-blur-[10px] motion-safe:animate-rise md:absolute md:right-0 md:bottom-0 md:left-1/5 md:mx-0 md:mt-0 md:border-b-0 md:border-white/14 md:bg-canvas/45"
               style={rise(4)}
             >
               <div className="flex-1 border-r border-white/10 py-3 text-center md:border-white/12 md:py-6.5">
@@ -178,12 +179,12 @@ const Home = () => {
 
             {/* CTAs — "poster offset" buttons */}
             <div
-              className="mt-4 flex gap-3.5 pb-1 motion-safe:animate-rise md:mt-8.5 md:gap-5 md:pb-0"
+              className="mt-3 flex gap-3.5 motion-safe:animate-rise md:mt-8.5 md:gap-5 md:pb-0"
               style={rise(3)}
             >
               <PosterButton
                 href="/appointment"
-                className="flex-1 gap-2 border-accent bg-accent/15 py-3.5 text-lg font-bold tracking-[0.04em] text-white uppercase shadow-[5px_5px_0_var(--color-accent)] hover:shadow-[2px_2px_0_var(--color-accent)] md:flex-none md:gap-2.5 md:px-9 md:py-4.25 md:text-lg md:tracking-[0.03em] md:normal-case"
+                className="flex-1 gap-2 border-accent bg-accent/15 py-3 text-lg font-bold tracking-[0.04em] text-white uppercase shadow-[5px_5px_0_var(--color-accent)] hover:shadow-[2px_2px_0_var(--color-accent)] md:flex-none md:gap-2.5 md:px-9 md:py-4.25 md:text-lg md:tracking-[0.03em] md:normal-case"
               >
                 <GCalendar
                   aria-hidden="true"
@@ -193,7 +194,7 @@ const Home = () => {
               </PosterButton>
               <PosterButton
                 href={site.phoneHref}
-                className="w-16 border-fg bg-fg/8 py-3.5 text-fg shadow-[5px_5px_0_var(--color-fg)] hover:shadow-[2px_2px_0_var(--color-fg)] md:w-auto md:px-5.5 md:py-4.25"
+                className="w-16 border-fg bg-fg/8 py-3 text-fg shadow-[5px_5px_0_var(--color-fg)] hover:shadow-[2px_2px_0_var(--color-fg)] md:w-auto md:px-5.5 md:py-4.25"
                 aria-label={`Call ${site.phone}`}
                 title={site.phone}
               >

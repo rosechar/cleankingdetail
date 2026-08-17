@@ -468,7 +468,7 @@ function MobileProgress({ step, goStep }) {
   return (
     <nav
       aria-label="Booking steps"
-      className="sticky top-[calc(var(--header-h,var(--spacing-header))-2px)] z-30 bg-canvas px-3.5 pt-6 pb-4 lg:hidden"
+      className="sticky top-[calc(var(--header-h,var(--spacing-header))-2px)] z-30 bg-canvas px-6 pt-6 pb-4 lg:hidden"
     >
       <Steps step={step} goStep={goStep} />
     </nav>

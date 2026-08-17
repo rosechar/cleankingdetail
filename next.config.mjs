@@ -18,9 +18,17 @@ const nextConfig = {
   images: {
     // Serve AVIF (smaller than WebP) where the browser supports it.
     formats: ['image/avif', 'image/webp'],
+    // Optimized images are static brand/hero assets: let the CDN and
+    // browsers cache them for 30 days instead of the 60s default.
+    minimumCacheTTL: 60 * 60 * 24 * 30,
   },
   async headers() {
     return [
+      {
+        // Static brand assets in /public change rarely; cache for 30 days.
+        source: '/:file*.(png|webp|jpg|svg|ico)',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=2592000' }],
+      },
       {
         source: '/(.*)',
         headers: [

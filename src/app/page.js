@@ -120,6 +120,12 @@ const Home = () => {
             fill
             sizes="(max-width: 1024px) 100vw, 45vw"
             priority
+            // `priority` only preloads; the LCP image also needs the high
+            // fetch priority so the browser doesn't queue it behind scripts.
+            fetchPriority="high"
+            // Source is 1013×1520; q50 keeps the phone variant (~50 KB AVIF)
+            // at the same weight the old 570px crop cost, but sharp.
+            quality={50}
             className="object-cover"
           />
           {/* mobile-only: CTA overlaid along the bottom of the image */}

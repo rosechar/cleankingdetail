@@ -19,8 +19,17 @@ export function useHeroReveal(enabled) {
     if (!enabled) return undefined;
     const update = () => setRevealed(isPastHero());
     update();
+    // Tab reveals it too: the hidden header can't take focus, so keyboard
+    // users would otherwise have no way to reach the nav from the top.
+    const onKey = (e) => {
+      if (e.key === 'Tab') setRevealed(true);
+    };
     window.addEventListener('scroll', update, { passive: true });
-    return () => window.removeEventListener('scroll', update);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('keydown', onKey);
+    };
   }, [enabled]);
 
   return revealed;

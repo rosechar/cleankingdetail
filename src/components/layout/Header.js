@@ -38,9 +38,9 @@ export default function Header() {
     setOpen(false);
   }, [pathname]);
 
-  // Home hero (mobile): the header stays off-screen so the photo owns the
-  // whole first screen, then slides in with the sticky CTA bar (shared
-  // threshold in heroReveal) once the hero has scrolled away.
+  // Home hero: the header stays off-screen so the photo owns the whole first
+  // screen, then slides in (with the mobile CTA bar — shared threshold in
+  // heroReveal) once the hero has scrolled away.
   const heroHide = pathname === '/';
   const scrolled = useHeroReveal(heroHide);
 
@@ -58,7 +58,7 @@ export default function Header() {
         // slides down + fades in (300ms); on the way back up it slides out
         // (300ms) at full opacity, then opacity/visibility drop off-screen
         heroHide && !scrolled && !open
-          ? 'transition-[translate,opacity,visibility] [transition-delay:0s,300ms,300ms] duration-300 ease-in max-md:invisible max-md:-translate-y-full max-md:opacity-0'
+          ? 'invisible -translate-y-full opacity-0 transition-[translate,opacity,visibility] [transition-delay:0s,300ms,300ms] duration-300 ease-in'
           : heroHide && 'transition-[translate,opacity] duration-300 ease-out'
       )}
     >

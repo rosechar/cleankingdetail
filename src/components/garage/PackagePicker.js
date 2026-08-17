@@ -340,7 +340,7 @@ export default function PackagePicker() {
   return (
     <div>
       {/* layout toggle */}
-      <div className="mb-4.5 flex justify-center border-b border-line pb-4.5">
+      <div className="flex justify-center py-6 md:py-8">
         <div
           className="flex gap-0.5 border border-line bg-surface p-0.5"
           role="group"

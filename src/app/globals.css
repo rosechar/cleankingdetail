@@ -27,12 +27,11 @@
     'Liberation Mono', monospace;
 
   /* fluid display sizes (line-height travels with the size) */
-  --text-hero: clamp(3.25rem, 6.2vw, 7.375rem);
-  --text-hero--line-height: 0.85;
-  --text-hero-tablet: clamp(3.5rem, 11vw, 6.5rem);
-  --text-hero-tablet--line-height: 0.85;
-  --text-hero-mobile: clamp(2.375rem, 11.5vw, 3.625rem);
-  --text-hero-mobile--line-height: 0.85;
+  /* home hero headline: 104px @1440 (desktop), 52px @390 (mobile) */
+  --text-hero: clamp(3.25rem, 7.22vw, 6.5rem);
+  --text-hero--line-height: 0.84;
+  --text-hero-mobile: clamp(3rem, 17vw, 4.5rem);
+  --text-hero-mobile--line-height: 0.86;
   --text-display-3xl: clamp(2.875rem, 7vw, 6.5rem);
   --text-display-3xl--line-height: 0.86;
   --text-display-2xl: clamp(2.75rem, 7vw, 5.25rem);
@@ -51,9 +50,9 @@
   --text-quote--line-height: 1.12;
   --text-quote-mark: clamp(6rem, 11vw, 9.375rem);
   --text-quote-mark--line-height: 0.7;
-  --text-stat: clamp(2.125rem, 4vw, 3.75rem);
+  --text-stat: clamp(2.125rem, 3.06vw, 2.75rem);
   --text-stat--line-height: 1;
-  --text-marquee: clamp(1.25rem, 2.4vw, 1.75rem);
+  --text-marquee: clamp(1.0625rem, 1.6vw, 1.4375rem);
   --text-marquee--line-height: 1;
   --text-lead: clamp(1rem, 1.5vw, 1.1875rem);
   --text-lead--line-height: 1.55;
@@ -68,6 +67,7 @@
   /* mobile header height (101px); the home hero tucks under it so the frosted
      header blurs the photo instead of the flat page background */
   --spacing-header: 6.3125rem;
+  --spacing-header-md: 7.0625rem; /* header height from md (113px) */
 
   /* motion */
   --ease-snap: cubic-bezier(0.2, 0.7, 0.3, 1);
@@ -150,6 +150,36 @@
     linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
   background-size: 84px 84px;
   mask-image: radial-gradient(120% 80% at 70% 0%, #000, transparent 75%);
+}
+
+/* home hero photo shading (canvas-tinted gradients over the image) */
+@utility bg-hero-shade-x {
+  background-image: linear-gradient(
+    90deg,
+    var(--color-canvas) 0%,
+    --alpha(var(--color-canvas) / 85%) 12%,
+    --alpha(var(--color-canvas) / 40%) 30%,
+    --alpha(var(--color-canvas) / 12%) 50%,
+    --alpha(var(--color-canvas) / 25%) 100%
+  );
+}
+@utility bg-hero-shade-y {
+  background-image: linear-gradient(
+    0deg,
+    --alpha(var(--color-canvas) / 82%) 0%,
+    --alpha(var(--color-canvas) / 0%) 32%
+  );
+}
+@utility bg-hero-shade-mobile {
+  background-image: linear-gradient(
+    180deg,
+    --alpha(var(--color-canvas) / 50%) 0%,
+    --alpha(var(--color-canvas) / 82%) 13%,
+    --alpha(var(--color-canvas) / 90%) 24%,
+    --alpha(var(--color-canvas) / 18%) 48%,
+    --alpha(var(--color-canvas) / 10%) 58%,
+    --alpha(var(--color-canvas) / 94%) 90%
+  );
 }
 
 /* dark-mode treatment for embedded Google Maps */

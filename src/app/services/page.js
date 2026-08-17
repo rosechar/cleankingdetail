@@ -42,10 +42,7 @@ export default function Services() {
         }
       />
 
-      <section
-        className="px-page pt-4 pb-section md:pt-5 lg:pt-6"
-        id="packages"
-      >
+      <section className="px-page pb-section" id="packages">
         {/* No max-width wrapper: the card rail bleeds to the viewport edges. */}
         <PackagePicker />
       </section>

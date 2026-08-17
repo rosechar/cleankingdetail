@@ -242,6 +242,7 @@ const Home = () => {
 
       {/* cta */}
       <CtaBand
+        className="max-md:border-t-0 max-md:pt-8"
         eyebrow="Gift certificates available"
         title={
           <>

@@ -527,10 +527,12 @@ function DesktopSummary({
   );
 }
 
-/** Mobile: sticky footer with the primary button. */
+/** Mobile: fixed footer with the primary button — stays put even when the
+ *  user scrolls past the form into the site footer. Below md the site footer
+ *  already reserves space for a bottom bar; md–lg gets a spacer in BookPage. */
 function MobileFooter({ canGo, ready = true, submitting, err, onNext, label }) {
   return (
-    <div className="sticky -bottom-0.5 z-30 border-t border-line bg-surface px-4.5 pt-3.5 pb-safe-4 lg:hidden">
+    <div className="fixed inset-x-0 -bottom-0.5 z-30 border-t border-line bg-surface px-4.5 pt-3.5 pb-safe-4 lg:hidden">
       <PrimaryButton
         className="h-12.5 w-full px-5 text-base"
         disabled={!canGo || submitting}
@@ -758,14 +760,22 @@ export default function BookPage() {
     if (match) setForm((prev) => ({ ...prev, pkg: match.id }));
   }, []);
 
-  // Each step (and the confirmation) starts at the top of the page.
+  // On desktop each step starts at the top of the page; on phones the
+  // stepper is sticky and the button fixed, so a step change keeps the
+  // current scroll position. The confirmation always starts at the top.
   const mounted = useRef(false);
+  const prevScreen = useRef(screen);
   useEffect(() => {
     if (!mounted.current) {
       mounted.current = true;
       return;
     }
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    const screenChanged = prevScreen.current !== screen;
+    prevScreen.current = screen;
+    const desktop = window.matchMedia('(min-width: 64rem)').matches;
+    if (screenChanged || desktop) {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
   }, [step, screen]);
 
   const pkg = bookingPackages.find((p) => p.id === form.pkg);
@@ -931,6 +941,8 @@ export default function BookPage() {
         </form>
       </div>
 
+      {/* keeps the fixed footer clear of the site footer on tablets */}
+      <div className="hidden h-24 md:block lg:hidden" aria-hidden="true" />
       <MobileFooter
         canGo={canGo}
         ready={looksReady}

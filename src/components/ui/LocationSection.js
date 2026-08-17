@@ -20,7 +20,7 @@ export default function LocationSection({
 }) {
   return (
     // Full-bleed on phones so the map runs edge to edge; boxed from md.
-    <section id={id} className="py-section md:px-page">
+    <section id={id} className="md:px-page md:py-section">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-px border-y border-line bg-line md:grid-cols-2 md:border">
         <div className="bg-surface px-7 py-8.5 md:px-9 md:py-11 lg:px-11.5 lg:py-13">
           <Eyebrow>{eyebrow}</Eyebrow>
@@ -69,7 +69,8 @@ export default function LocationSection({
             )}
           </div>
         </div>
-        <div className="relative min-h-70 bg-surface-2 md:min-h-95">
+        {/* map leads on phones, sits right of the copy from md */}
+        <div className="relative order-first min-h-70 bg-surface-2 md:order-none md:min-h-95">
           <MapEmbed />
         </div>
       </div>

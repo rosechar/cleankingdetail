@@ -25,9 +25,10 @@ export default function ReviewsCarousel() {
 
   return (
     // Sits between the borderless services preview and the location
-    // section, so it draws its own top and bottom dividers.
+    // section, so it draws its own dividers (on phones the full-bleed
+    // location block below brings its own top border).
     <section
-      className="border-y border-line px-page py-section"
+      className="border-t border-line px-page py-section md:border-b"
       id="reviews"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}

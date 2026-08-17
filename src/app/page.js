@@ -61,12 +61,14 @@ const PosterButton = ({ href, className, children, ...rest }) => {
 const Home = () => {
   return (
     <>
-      {/* hero — tucks under the frosted header on every size so the photo shows
-          through it (--spacing-header / --spacing-header-md). Mobile: nav +
-          photo + marquee fill exactly one viewport; desktop: cinematic photo
-          on the right four-fifths, ~835px tall at 1440w. */}
+      {/* hero — tucks under the header on every size (--spacing-header /
+          --spacing-header-md). Mobile: the header stays hidden until the user
+          scrolls (see <Header>), so photo + marquee fill exactly one viewport
+          with the brand mark inside the photo; desktop: the photo shows through
+          the frosted header, cinematic crop on the right four-fifths, ~835px
+          tall at 1440w. */}
       <div
-        className="-mt-header flex min-h-[calc(100svh+env(safe-area-inset-bottom))] flex-col md:-mt-header-md md:min-h-0"
+        className="-mt-header flex min-h-svh flex-col md:-mt-header-md md:min-h-0"
         id="top"
         data-hero
       >
@@ -103,7 +105,7 @@ const Home = () => {
               stats + CTAs pinned to the bottom, no subline); on desktop a
               680px block top-left (eyebrow, headline, subline, CTAs) with the
               stat band pinned along the bottom of the photo */}
-          <div className="absolute inset-0 flex flex-col px-4 pt-[calc(var(--spacing-header)+1.5rem)] pb-4 md:px-page md:pt-[calc(var(--spacing-header-md)+clamp(3rem,6.67vw,6rem))] md:pb-0">
+          <div className="absolute inset-0 flex flex-col px-4 pt-7 pb-4 md:px-page md:pt-[calc(var(--spacing-header-md)+clamp(3rem,6.67vw,6rem))] md:pb-0">
             <p
               className="px-1 font-mono text-sm leading-[1.7] tracking-[0.2em] text-accent uppercase motion-safe:animate-rise md:px-0 md:text-[0.9375rem] md:leading-normal md:tracking-[0.32em]"
               style={rise(0)}
@@ -122,6 +124,16 @@ const Home = () => {
               <br />
               <span className="text-accent">of</span> Clean
             </h1>
+            {/* mobile: the header is hidden while the hero is on screen, so the
+                brand mark lives here, bottom-right of the photo */}
+            <Image
+              src="/cleanking-mark.png"
+              alt={site.name}
+              width={88}
+              height={88}
+              className="mb-4 size-30 self-end motion-safe:animate-rise md:hidden"
+              style={rise(2)}
+            />
             <p
               className="hidden text-xl text-fg motion-safe:animate-rise md:mt-6.5 md:block md:max-w-170 md:text-[1.375rem]"
               style={rise(2)}

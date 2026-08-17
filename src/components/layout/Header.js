@@ -12,6 +12,9 @@ import { cn } from '@/components/ui/cn';
 export default function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  // Home hero (mobile): the header starts invisible so the photo owns the
+  // whole first screen, then fades in once the user starts scrolling.
+  const [scrolled, setScrolled] = useState(false);
   const ref = useRef(null);
 
   // Publish the rendered header height as --header-h so things that stack
@@ -37,6 +40,16 @@ export default function Header() {
     setOpen(false);
   }, [pathname]);
 
+  const heroHide = pathname === '/';
+  useEffect(() => {
+    if (!heroHide) return undefined;
+    // Reveal once the hero is mostly gone (~60% of the viewport scrolled).
+    const update = () => setScrolled(window.scrollY > window.innerHeight * 0.6);
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
+  }, [heroHide]);
+
   return (
     // Tint + blur live on the ::before so the header itself is NOT a backdrop
     // root — otherwise the mobile nav's own backdrop-filter has nothing to blur.
@@ -47,7 +60,12 @@ export default function Header() {
       ref={ref}
       className={cn(
         "sticky top-0 z-40 flex items-center justify-between gap-6 border-b px-page py-2 before:absolute before:inset-0 before:-z-1 before:bg-canvas/82 before:backdrop-frost before:content-[''] md:border-line md:py-4",
-        open ? 'border-transparent before:hidden' : 'border-line'
+        open ? 'border-transparent before:hidden' : 'border-line',
+        // slides down + fades in (300ms); on the way back up it slides out
+        // (300ms) at full opacity, then opacity/visibility drop off-screen
+        heroHide && !scrolled && !open
+          ? 'transition-[translate,opacity,visibility] [transition-delay:0s,300ms,300ms] duration-300 ease-in max-md:invisible max-md:-translate-y-full max-md:opacity-0'
+          : heroHide && 'transition-[translate,opacity] duration-300 ease-out'
       )}
     >
       <Link

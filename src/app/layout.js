@@ -60,10 +60,6 @@ export const metadata = {
 
 export const viewport = {
   themeColor: '#0d0d0f',
-  // Let the page run under the iOS home-indicator/toolbar zone so
-  // env(safe-area-inset-bottom) is real (the fixed bars, footer and the home
-  // hero all pad for it) instead of always 0.
-  viewportFit: 'cover',
 };
 
 // schema.org LocalBusiness entity for the shop. Location pages reference it

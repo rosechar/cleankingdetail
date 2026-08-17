@@ -174,9 +174,9 @@
 @utility bg-hero-shade-mobile {
   background-image: linear-gradient(
     180deg,
-    --alpha(var(--color-canvas) / 60%) 0%,
-    --alpha(var(--color-canvas) / 86%) 13%,
-    --alpha(var(--color-canvas) / 90%) 24%,
+    --alpha(var(--color-canvas) / 96%) 0%,
+    --alpha(var(--color-canvas) / 90%) 14%,
+    --alpha(var(--color-canvas) / 84%) 26%,
     --alpha(var(--color-canvas) / 18%) 48%,
     --alpha(var(--color-canvas) / 10%) 58%,
     --alpha(var(--color-canvas) / 94%) 90%

@@ -44,15 +44,20 @@ export default function Faq({
                   aria-hidden="true"
                 />
               </button>
+              {/* 0fr -> 1fr animates to the answer's real height, so long
+                  answers can't be clipped the way a fixed max-height clips
+                  them on narrow screens or at larger font sizes. */}
               <div
                 className={cn(
-                  'overflow-hidden transition-[max-height] duration-300 ease-in-out',
-                  open ? 'max-h-80' : 'max-h-0'
+                  'grid transition-[grid-template-rows] duration-300 ease-in-out',
+                  open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
                 )}
               >
-                <p className="max-w-190 pr-10 pb-6 text-base leading-relaxed text-fg-2">
-                  {answer}
-                </p>
+                <div className="min-h-0 overflow-hidden">
+                  <p className="max-w-190 pr-10 pb-6 text-base leading-relaxed text-fg-2">
+                    {answer}
+                  </p>
+                </div>
               </div>
             </div>
           );

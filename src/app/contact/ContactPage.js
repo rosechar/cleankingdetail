@@ -1,9 +1,10 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { site } from '@/data/site';
 import { faqs } from '@/data/faqs';
+import { HONEYPOT_FIELD } from '@/lib/honeypot';
 import { isEmail, isPhone } from '@/lib/validation';
 import {
   GPin,
@@ -52,9 +53,8 @@ export default function ContactPage() {
     email: '',
     msg: '',
     optIn: false,
-    company: '', // honeypot
+    honeypot: '',
   });
-  const openedAt = useRef(Date.now());
   const [sent, setSent] = useState(false);
   const [err, setErr] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -82,8 +82,7 @@ export default function ContactPage() {
           email: form.email,
           message: form.msg,
           optIn: form.optIn,
-          company: form.company,
-          elapsedMs: Date.now() - openedAt.current,
+          [HONEYPOT_FIELD]: form.honeypot,
         }),
       });
       if (!res.ok) throw new Error('Request failed');
@@ -183,9 +182,9 @@ export default function ContactPage() {
             {!sent ? (
               <form onSubmit={submit} noValidate>
                 <HoneypotField
-                  id="ct-company"
-                  value={form.company}
-                  onChange={(e) => set('company', e.target.value)}
+                  id="ct-hp"
+                  value={form.honeypot}
+                  onChange={(e) => set('honeypot', e.target.value)}
                 />
                 <h2 className="font-display text-display-sm uppercase">
                   Send a message

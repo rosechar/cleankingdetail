@@ -21,6 +21,7 @@ import BookingCelebration from '@/components/garage/BookingCelebration';
 import PageHero from '@/components/ui/PageHero';
 import AddressLink from '@/components/ui/AddressLink';
 import HoneypotField from '@/components/forms/HoneypotField';
+import { HONEYPOT_FIELD } from '@/lib/honeypot';
 import Stars from '@/components/ui/Stars';
 import { cn } from '@/components/ui/cn';
 import { RISE, riseDelay } from '@/components/ui/rise';
@@ -62,6 +63,18 @@ function Tick({ className }) {
 
 function SectionLabel({ className, children }) {
   return <div className={cn(LABEL, className)}>{children}</div>;
+}
+
+/**
+ * Accent asterisk marking a required field. Decorative only — the control
+ * itself carries `required` / `aria-required`, so screen readers hear it once.
+ */
+function Req() {
+  return (
+    <span className="text-accent" aria-hidden="true">
+      {' *'}
+    </span>
+  );
 }
 
 /** Inline validation message under a field (renders nothing when empty). */
@@ -178,10 +191,14 @@ function VehicleStep({ form, set }) {
   return (
     <div>
       <StepHeading>Your vehicle</StepHeading>
-      <SectionLabel className="mb-3.5">Vehicle type</SectionLabel>
+      <SectionLabel className="mb-3.5">
+        Vehicle type
+        <Req />
+      </SectionLabel>
       <div
         role="radiogroup"
         aria-label="Vehicle type"
+        aria-required="true"
         className="grid grid-cols-2 gap-3 lg:max-w-170 lg:grid-cols-4 lg:gap-3.5"
       >
         {VEHICLES.map((v) => {
@@ -208,6 +225,7 @@ function VehicleStep({ form, set }) {
 
       <label htmlFor="bk-make" className={cn(LABEL, 'mt-8.5 mb-3.5 block')}>
         Make &amp; model
+        <Req />
       </label>
       <input
         id="bk-make"
@@ -216,6 +234,7 @@ function VehicleStep({ form, set }) {
         onChange={(e) => set('makeModel', e.target.value)}
         placeholder="e.g. Ford Explorer"
         autoComplete="off"
+        required
       />
 
       <label htmlFor="bk-notes" className={cn(LABEL, 'mt-8.5 mb-3.5 block')}>
@@ -266,11 +285,15 @@ function DetailsStep({ form, set, days, summary, errors = {} }) {
   return (
     <div>
       <StepHeading>Day &amp; details</StepHeading>
-      <SectionLabel className="mb-3.5">Pick a day</SectionLabel>
+      <SectionLabel className="mb-3.5">
+        Pick a day
+        <Req />
+      </SectionLabel>
       <div
         id="bk-day"
         role="radiogroup"
         aria-label="Day"
+        aria-required="true"
         aria-invalid={!!errors.day || undefined}
         aria-describedby={errors.day ? 'bk-day-err' : undefined}
         tabIndex={-1}
@@ -300,8 +323,9 @@ function DetailsStep({ form, set, days, summary, errors = {} }) {
             className={cn(FIELD, invalid('name'))}
             value={form.name}
             onChange={(e) => set('name', e.target.value)}
-            placeholder="Full name"
+            placeholder="Full name *"
             aria-label="Full name"
+            required
             aria-invalid={!!errors.name || undefined}
             aria-describedby={errors.name ? 'bk-name-err' : undefined}
             autoComplete="name"
@@ -317,8 +341,9 @@ function DetailsStep({ form, set, days, summary, errors = {} }) {
               inputMode="tel"
               value={form.phone}
               onChange={(e) => set('phone', e.target.value)}
-              placeholder="Phone number"
+              placeholder="Phone number *"
               aria-label="Phone number"
+              required
               aria-invalid={!!errors.phone || undefined}
               aria-describedby={errors.phone ? 'bk-phone-err' : undefined}
               autoComplete="tel"
@@ -727,7 +752,7 @@ const initialForm = {
   phone: '',
   email: '',
   optIn: true,
-  company: '', // honeypot
+  honeypot: '',
 };
 
 export default function BookPage() {
@@ -738,7 +763,6 @@ export default function BookPage() {
   const [submitting, setSubmitting] = useState(false);
   const [err, setErr] = useState('');
   const [attempted, setAttempted] = useState(false);
-  const openedAt = useRef(Date.now());
 
   const set = (key, value) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -836,8 +860,7 @@ export default function BookPage() {
           phone: form.phone,
           email: form.email,
           optIn: form.optIn,
-          company: form.company,
-          elapsedMs: Date.now() - openedAt.current,
+          [HONEYPOT_FIELD]: form.honeypot,
         }),
       });
       if (!res.ok) throw new Error('Request failed');
@@ -908,9 +931,9 @@ export default function BookPage() {
           className="lg:flex lg:items-start lg:gap-16"
         >
           <HoneypotField
-            id="bk-company"
-            value={form.company}
-            onChange={(e) => set('company', e.target.value)}
+            id="bk-hp"
+            value={form.honeypot}
+            onChange={(e) => set('honeypot', e.target.value)}
           />
 
           <div key={step} className={cn('min-w-0 lg:flex-[1.7]', RISE)}>

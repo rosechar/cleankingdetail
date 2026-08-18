@@ -1,11 +1,13 @@
 // Origins allowed to embed this site in an <iframe> (e.g. the portfolio's
-// "side work" carousel). Everything else is still refused. Add the portfolio's
-// production origin here; localhost:* covers local dev of any port.
+// "side work" carousel). Everything else is still refused. Keep this pinned to
+// exact origins: a wildcard like https://*.vercel.app lets anyone with a Vercel
+// deploy frame the booking form. The localhost entries are dev-only.
 const FRAME_ANCESTORS = [
   "'self'",
-  'https://*.vercel.app',
-  'http://localhost:*',
-  'http://127.0.0.1:*',
+  'https://charlesrose.vercel.app',
+  ...(process.env.NODE_ENV === 'production'
+    ? []
+    : ['http://localhost:*', 'http://127.0.0.1:*']),
 ];
 
 /** @type {import('next').NextConfig} */

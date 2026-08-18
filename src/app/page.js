@@ -63,14 +63,14 @@ const Home = () => {
           --spacing-header-md). The header stays hidden until the hero has
           scrolled away (see <Header>), so the photo owns the whole first screen
           and carries the brand mark itself. Mobile: photo + marquee fill exactly
-          one viewport; desktop: cinematic crop on the right four-fifths,
-          ~835px tall at 1440w. */}
+          one viewport; desktop: the same — the photo takes whatever height is
+          left after the marquee, so the marquee always lands at the fold. */}
       <div
-        className="-mt-header flex min-h-svh flex-col md:-mt-header-md md:min-h-0"
+        className="-mt-header flex min-h-svh flex-col md:-mt-header-md"
         id="top"
         data-hero
       >
-        <section className="relative flex-1 overflow-hidden max-md:min-h-108 md:h-[calc(var(--spacing-header-md)+clamp(38rem,58vw,54rem))] md:flex-none">
+        <section className="relative flex-1 overflow-hidden max-md:min-h-108 md:min-h-104">
           {/* photo: full-bleed on phones; on desktop it occupies the right
               two-thirds and fades in from the solid canvas on its left edge */}
           <div className="absolute inset-0 md:left-1/5 md:mask-[linear-gradient(90deg,transparent,#000_30%)]">

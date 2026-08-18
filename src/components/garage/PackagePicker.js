@@ -369,8 +369,10 @@ export default function PackagePicker() {
         </div>
       </div>
 
+      {/* items-start: each column is its own stack, so expanding a card on one
+          side must not re-center (and visibly shift) the other column. */}
       {layout === 'packages' ? (
-        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 md:grid-cols-2">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 items-start gap-10 md:grid-cols-2">
           {cardColumns.map((col, i) => (
             <div key={i} className="flex flex-col gap-10">
               {col.map((p) => (

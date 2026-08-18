@@ -14,6 +14,7 @@ import {
   GGoogle,
 } from '@/components/garage/Icons';
 import HoneypotField from '@/components/forms/HoneypotField';
+import Req from '@/components/forms/Req';
 import MapEmbed from '@/components/garage/MapEmbed';
 import Button from '@/components/ui/Button';
 import Chip from '@/components/ui/Chip';
@@ -197,6 +198,7 @@ export default function ContactPage() {
                   <div className={FIELD}>
                     <label htmlFor="ct-name" className={LABEL}>
                       Name
+                      <Req />
                     </label>
                     <input
                       id="ct-name"
@@ -211,6 +213,7 @@ export default function ContactPage() {
                   <div className={FIELD}>
                     <label htmlFor="ct-phone" className={LABEL}>
                       Phone
+                      <Req />
                     </label>
                     <input
                       id="ct-phone"

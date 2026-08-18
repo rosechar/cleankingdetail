@@ -1,23 +1,30 @@
 import { HONEYPOT_FIELD } from '@/lib/honeypot';
 
 /**
- * Anti-spam decoy. `display:none` puts it out of reach of humans *and* browser
- * autofill — autofill only fills focusable fields, so unlike a visually-hidden
- * (clipped) input this one can never be populated by a real customer's saved
- * details. Plain HTTP bots that post every input in the form still set it; the
- * API routes drop those (see services/spam.js).
+ * Anti-spam decoy. Visually hidden rather than `display:none` on purpose: the
+ * bots worth catching here drive a real browser (these forms POST JSON via
+ * fetch, so there's no form `action` for a plain HTTP scraper to find), and
+ * browser automation refuses to fill an element with no bounding box — a
+ * `display:none` decoy would never be tripped. A clipped 1×1 input still gets
+ * filled by anything walking the DOM.
+ *
+ * Autofill is kept off it by the field *name* (see lib/honeypot) rather than
+ * by hiding: "company"/"organization" is in autofill's vocabulary, so a real
+ * customer could fill the trap and have their booking silently dropped.
+ * `aria-hidden` keeps it out of the screen reader's path.
  */
 export default function HoneypotField({ id, value, onChange }) {
   return (
-    <input
-      id={id}
-      className="hidden"
-      type="text"
-      name={HONEYPOT_FIELD}
-      tabIndex={-1}
-      autoComplete="off"
-      value={value}
-      onChange={onChange}
-    />
+    <div className="sr-only" aria-hidden="true">
+      <input
+        id={id}
+        type="text"
+        name={HONEYPOT_FIELD}
+        tabIndex={-1}
+        autoComplete="off"
+        value={value}
+        onChange={onChange}
+      />
+    </div>
   );
 }

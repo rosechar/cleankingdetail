@@ -21,6 +21,7 @@ import BookingCelebration from '@/components/garage/BookingCelebration';
 import PageHero from '@/components/ui/PageHero';
 import AddressLink from '@/components/ui/AddressLink';
 import HoneypotField from '@/components/forms/HoneypotField';
+import Req from '@/components/forms/Req';
 import { HONEYPOT_FIELD } from '@/lib/honeypot';
 import Stars from '@/components/ui/Stars';
 import { cn } from '@/components/ui/cn';
@@ -66,15 +67,34 @@ function SectionLabel({ className, children }) {
 }
 
 /**
- * Accent asterisk marking a required field. Decorative only — the control
- * itself carries `required` / `aria-required`, so screen readers hear it once.
+ * Keyboard behaviour for the button-based radio groups. ARIA's radiogroup
+ * contract is "one tab stop, arrows move within it" — leaving all 20 day chips
+ * tabbable meant 20 Tab presses to cross the strip while the arrow keys a
+ * screen reader promises did nothing. `selected` is -1 when nothing is picked.
  */
-function Req() {
-  return (
-    <span className="text-accent" aria-hidden="true">
-      {' *'}
-    </span>
-  );
+function useRovingRadio(count, selected, onSelect) {
+  const ref = useRef(null);
+  const focused = selected < 0 ? 0 : selected;
+  const onKeyDown = (e) => {
+    const move = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[
+      e.key
+    ];
+    let i;
+    if (move) {
+      i =
+        selected < 0
+          ? move > 0
+            ? 0
+            : count - 1
+          : (selected + move + count) % count;
+    } else if (e.key === 'Home') i = 0;
+    else if (e.key === 'End') i = count - 1;
+    else return;
+    e.preventDefault();
+    onSelect(i);
+    ref.current?.querySelectorAll('[role="radio"]')[i]?.focus();
+  };
+  return { ref, onKeyDown, tabIndexFor: (i) => (i === focused ? 0 : -1) };
 }
 
 /** Inline validation message under a field (renders nothing when empty). */
@@ -96,12 +116,19 @@ function StepHeading({ children }) {
   );
 }
 
-/** Accent primary button with the disabled state from the design. */
+/**
+ * Accent primary button with the disabled state from the design. `muted` means
+ * "nothing to do yet" rather than "unavailable": it greys the button and sets
+ * `aria-disabled`, but leaves it focusable and clickable so pressing it can
+ * explain what's missing. Only `disabled` (i.e. in-flight submits) takes it
+ * out of the tab order.
+ */
 function PrimaryButton({ disabled, muted, className, children, ...rest }) {
   return (
     <button
       type="button"
       disabled={disabled}
+      aria-disabled={muted || undefined}
       className={cn(
         'inline-flex items-center justify-center gap-2 font-body font-semibold transition-colors duration-200',
         disabled
@@ -124,6 +151,11 @@ function PrimaryButton({ disabled, muted, className, children, ...rest }) {
 /* ------------------------------------------------------------------ */
 
 function PackageStep({ value, onChange }) {
+  const { ref, onKeyDown, tabIndexFor } = useRovingRadio(
+    bookingPackages.length,
+    bookingPackages.findIndex((p) => p.id === value),
+    (i) => onChange(bookingPackages[i].id)
+  );
   return (
     <div>
       <StepHeading>Choose your detail</StepHeading>
@@ -131,11 +163,14 @@ function PackageStep({ value, onChange }) {
         Choose your detail
       </SectionLabel>
       <div
+        ref={ref}
+        onKeyDown={onKeyDown}
         role="radiogroup"
         aria-label="Package"
+        aria-required="true"
         className="flex flex-col gap-6 lg:grid lg:grid-cols-2 lg:gap-8"
       >
-        {bookingPackages.map((p) => {
+        {bookingPackages.map((p, i) => {
           const sel = p.id === value;
           return (
             <button
@@ -143,6 +178,7 @@ function PackageStep({ value, onChange }) {
               key={p.id}
               role="radio"
               aria-checked={sel}
+              tabIndex={tabIndexFor(i)}
               onClick={() => onChange(p.id)}
               className={cn(
                 'relative flex w-full cursor-pointer border bg-surface p-4.5 text-left transition-[border-color,box-shadow] duration-150 lg:p-6.5',
@@ -187,7 +223,12 @@ function PackageStep({ value, onChange }) {
   );
 }
 
-function VehicleStep({ form, set }) {
+function VehicleStep({ form, set, errors = {} }) {
+  const { ref, onKeyDown, tabIndexFor } = useRovingRadio(
+    VEHICLES.length,
+    VEHICLES.indexOf(form.vehicle),
+    (i) => set('vehicle', VEHICLES[i])
+  );
   return (
     <div>
       <StepHeading>Your vehicle</StepHeading>
@@ -196,12 +237,18 @@ function VehicleStep({ form, set }) {
         <Req />
       </SectionLabel>
       <div
+        id="bk-vehicle"
+        ref={ref}
+        onKeyDown={onKeyDown}
         role="radiogroup"
         aria-label="Vehicle type"
         aria-required="true"
+        aria-invalid={!!errors.vehicle || undefined}
+        aria-describedby={errors.vehicle ? 'bk-vehicle-err' : undefined}
+        tabIndex={-1}
         className="grid grid-cols-2 gap-3 lg:max-w-170 lg:grid-cols-4 lg:gap-3.5"
       >
-        {VEHICLES.map((v) => {
+        {VEHICLES.map((v, i) => {
           const sel = v === form.vehicle;
           return (
             <button
@@ -209,6 +256,7 @@ function VehicleStep({ form, set }) {
               key={v}
               role="radio"
               aria-checked={sel}
+              tabIndex={tabIndexFor(i)}
               onClick={() => set('vehicle', v)}
               className={cn(
                 'flex h-16 cursor-pointer items-center justify-center border bg-surface text-fg transition-colors duration-150',
@@ -223,19 +271,28 @@ function VehicleStep({ form, set }) {
         })}
       </div>
 
+      <FieldError id="bk-vehicle-err">{errors.vehicle}</FieldError>
+
       <label htmlFor="bk-make" className={cn(LABEL, 'mt-8.5 mb-3.5 block')}>
         Make &amp; model
         <Req />
       </label>
       <input
         id="bk-make"
-        className={cn(FIELD, 'lg:max-w-170')}
+        className={cn(
+          FIELD,
+          'lg:max-w-170',
+          errors.makeModel && 'border-accent!'
+        )}
         value={form.makeModel}
         onChange={(e) => set('makeModel', e.target.value)}
         placeholder="e.g. Ford Explorer"
+        aria-invalid={!!errors.makeModel || undefined}
+        aria-describedby={errors.makeModel ? 'bk-make-err' : undefined}
         autoComplete="off"
         required
       />
+      <FieldError id="bk-make-err">{errors.makeModel}</FieldError>
 
       <label htmlFor="bk-notes" className={cn(LABEL, 'mt-8.5 mb-3.5 block')}>
         Optional details
@@ -254,13 +311,14 @@ function VehicleStep({ form, set }) {
   );
 }
 
-function DayChip({ day, selected, onSelect }) {
+function DayChip({ day, selected, tabIndex, onSelect }) {
   return (
     <button
       type="button"
       role="radio"
       aria-checked={selected}
       aria-label={`${day.dow} ${day.month} ${day.day}`}
+      tabIndex={tabIndex}
       onClick={onSelect}
       className={cn(
         'flex w-17 flex-none cursor-pointer flex-col items-center justify-center border py-3 text-fg transition-colors duration-150 lg:w-20 lg:py-3.5',
@@ -282,6 +340,11 @@ function DayChip({ day, selected, onSelect }) {
 
 function DetailsStep({ form, set, days, summary, errors = {} }) {
   const invalid = (k) => (errors[k] ? 'border-accent!' : '');
+  const { ref, onKeyDown, tabIndexFor } = useRovingRadio(
+    days.length,
+    form.dayIdx ?? -1,
+    (i) => set('dayIdx', i)
+  );
   return (
     <div>
       <StepHeading>Day &amp; details</StepHeading>
@@ -291,6 +354,8 @@ function DetailsStep({ form, set, days, summary, errors = {} }) {
       </SectionLabel>
       <div
         id="bk-day"
+        ref={ref}
+        onKeyDown={onKeyDown}
         role="radiogroup"
         aria-label="Day"
         aria-required="true"
@@ -304,6 +369,7 @@ function DetailsStep({ form, set, days, summary, errors = {} }) {
             key={day.iso}
             day={day}
             selected={form.dayIdx === i}
+            tabIndex={tabIndexFor(i)}
             onSelect={() => set('dayIdx', i)}
           />
         ))}
@@ -315,6 +381,7 @@ function DetailsStep({ form, set, days, summary, errors = {} }) {
 
       <SectionLabel className="mt-8.5 mb-4 lg:mb-3.5">
         Your details
+        <Req />
       </SectionLabel>
       <div className="flex flex-col gap-3 lg:max-w-170 lg:gap-3.5">
         <div>
@@ -519,7 +586,6 @@ function ratingLine() {
 /** Desktop: sticky summary card with the primary button beneath the rows. */
 function DesktopSummary({
   summary,
-  canGo,
   ready = true,
   submitting,
   err,
@@ -533,7 +599,7 @@ function DesktopSummary({
         <SummaryRows summary={summary} rowClassName="py-2.5" />
         <PrimaryButton
           className="mt-7 h-17 w-full text-xl"
-          disabled={!canGo || submitting}
+          disabled={submitting}
           muted={!ready}
           onClick={onNext}
         >
@@ -555,12 +621,12 @@ function DesktopSummary({
 /** Mobile: fixed footer with the primary button — stays put even when the
  *  user scrolls past the form into the site footer. Below md the site footer
  *  already reserves space for a bottom bar; md–lg gets a spacer in BookPage. */
-function MobileFooter({ canGo, ready = true, submitting, err, onNext, label }) {
+function MobileFooter({ ready = true, submitting, err, onNext, label }) {
   return (
     <div className="fixed inset-x-0 -bottom-0.5 z-30 border-t border-line bg-surface px-4.5 pt-3.5 pb-safe-4 lg:hidden">
       <PrimaryButton
         className="h-12.5 w-full px-5 text-base"
-        disabled={!canGo || submitting}
+        disabled={submitting}
         muted={!ready}
         onClick={onNext}
       >
@@ -784,23 +850,26 @@ export default function BookPage() {
     if (match) setForm((prev) => ({ ...prev, pkg: match.id }));
   }, []);
 
-  // On desktop each step starts at the top of the page; on phones the
-  // stepper is sticky and the button fixed, so a step change keeps the
-  // current scroll position. The confirmation always starts at the top.
+  // Moving between steps never moves the page: the stepper is sticky on
+  // phones and the summary card is sticky on desktop, so both breakpoints
+  // keep whatever the user was looking at when they hit Continue. Only the
+  // switch to the confirmation screen starts at the top.
   const mounted = useRef(false);
-  const prevScreen = useRef(screen);
   useEffect(() => {
     if (!mounted.current) {
       mounted.current = true;
       return;
     }
-    const screenChanged = prevScreen.current !== screen;
-    prevScreen.current = screen;
-    const desktop = window.matchMedia('(min-width: 64rem)').matches;
-    if (screenChanged || desktop) {
+    // `instant` because html sets scroll-behavior: smooth and the
+    // confirmation shouldn't animate up from wherever the form was. Safari
+    // below 15.4 throws on the value rather than ignoring it, and an
+    // exception here would take the page down with the error boundary.
+    try {
       window.scrollTo({ top: 0, behavior: 'instant' });
+    } catch {
+      window.scrollTo(0, 0);
     }
-  }, [step, screen]);
+  }, [screen]);
 
   const pkg = bookingPackages.find((p) => p.id === form.pkg);
   const day = form.dayIdx != null ? days[form.dayIdx] : null;
@@ -826,20 +895,29 @@ export default function BookPage() {
         : '',
   };
   const detailsValid = !Object.values(fieldErrors).some(Boolean);
-  useEffect(() => {
-    if (attempted && detailsValid) setErr('');
-  }, [attempted, detailsValid]);
 
-  const canGo =
-    step === 0 ||
-    (step === 1 && !!form.vehicle && !!form.makeModel.trim()) ||
-    step === 2;
-  // Final step: the button stays grey until every required field is filled,
-  // but remains clickable so a tap can surface the field errors.
-  const looksReady = step < 2 || detailsValid;
+  // Step 2 validates the same way step 3 does. It used to gate on a natively
+  // disabled button, which drops out of the tab order and explains nothing —
+  // a keyboard user who skipped Make & model simply couldn't reach Continue.
+  const vehicleErrors = {
+    vehicle: form.vehicle ? '' : 'Pick a vehicle type.',
+    makeModel: form.makeModel.trim() ? '' : 'Enter your make & model.',
+  };
+  const vehicleValid = !Object.values(vehicleErrors).some(Boolean);
+
+  // The button stays grey until the step's required fields are filled, but
+  // remains clickable so a tap surfaces the field errors.
+  const looksReady = step === 0 || (step === 1 ? vehicleValid : detailsValid);
+
+  useEffect(() => {
+    if (attempted && looksReady) setErr('');
+  }, [attempted, looksReady]);
 
   const goStep = (n) => {
-    if (n <= step) setStep(n);
+    if (n <= step) {
+      setAttempted(false);
+      setStep(n);
+    }
   };
 
   const submit = async () => {
@@ -873,8 +951,19 @@ export default function BookPage() {
   };
 
   const next = () => {
-    if (!canGo || submitting) return;
-    if (step < 2) return setStep(step + 1);
+    if (submitting) return;
+    if (step === 1 && !vehicleValid) {
+      setAttempted(true);
+      setErr('Please fix the highlighted fields.');
+      document
+        .getElementById(vehicleErrors.vehicle ? 'bk-vehicle' : 'bk-make')
+        ?.focus();
+      return;
+    }
+    if (step < 2) {
+      setAttempted(false);
+      return setStep(step + 1);
+    }
     if (!detailsValid) {
       setAttempted(true);
       setErr('Please fix the highlighted fields.');
@@ -940,7 +1029,13 @@ export default function BookPage() {
             {step === 0 && (
               <PackageStep value={form.pkg} onChange={(id) => set('pkg', id)} />
             )}
-            {step === 1 && <VehicleStep form={form} set={set} />}
+            {step === 1 && (
+              <VehicleStep
+                form={form}
+                set={set}
+                errors={attempted ? vehicleErrors : {}}
+              />
+            )}
             {step === 2 && (
               <DetailsStep
                 form={form}
@@ -954,7 +1049,6 @@ export default function BookPage() {
 
           <DesktopSummary
             summary={summary}
-            canGo={canGo}
             ready={looksReady}
             submitting={submitting}
             err={err}
@@ -967,7 +1061,6 @@ export default function BookPage() {
       {/* keeps the fixed footer clear of the site footer on tablets */}
       <div className="hidden h-24 md:block lg:hidden" aria-hidden="true" />
       <MobileFooter
-        canGo={canGo}
         ready={looksReady}
         submitting={submitting}
         err={err}

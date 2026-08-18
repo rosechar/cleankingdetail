@@ -35,7 +35,7 @@ import { RISE, riseDelay } from '@/components/ui/rise';
 const LABEL = 'font-mono text-xs tracking-label text-fg-3 uppercase lg:text-sm';
 // Inputs are 16px+ so iOS Safari never auto-zooms; border turns accent on focus.
 const INPUT =
-  'w-full border border-line-2 bg-surface px-4.5 text-[17px] text-fg transition-colors focus:border-accent focus:outline-none lg:px-5 lg:text-lg';
+  'w-full border border-line-2 bg-surface px-4.5 text-[17px] text-fg transition-colors focus:border-accent lg:px-5 lg:text-lg';
 const FIELD = cn(INPUT, 'h-14 lg:h-17');
 // Key/value rows inside the summary panels.
 const ROW = 'flex justify-between gap-4 text-base lg:text-lg';

@@ -26,7 +26,7 @@ import { RISE, riseDelay } from '@/components/ui/rise';
 
 // 16px (not 15) so iOS Safari doesn't auto-zoom on focus.
 const INPUT =
-  'w-full border border-line-2 bg-canvas px-3.5 py-3.25 font-body text-base text-fg transition-colors focus:border-accent focus:outline-none';
+  'w-full border border-line-2 bg-canvas px-3.5 py-3.25 font-body text-base text-fg transition-colors focus:border-accent';
 const LABEL = 'font-mono text-xs uppercase tracking-label text-fg-3';
 const FIELD = 'flex flex-col gap-1.75';
 // Icon-only social links, same treatment as the footer, just bigger.

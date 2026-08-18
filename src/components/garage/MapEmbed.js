@@ -67,7 +67,7 @@ export default function MapEmbed() {
   return (
     <a
       ref={ref}
-      className="group absolute inset-0 block size-full overflow-hidden bg-surface-2"
+      className="group absolute inset-0 block size-full overflow-hidden bg-surface-2 -outline-offset-2"
       href={site.google}
       target="_blank"
       rel="noopener noreferrer"

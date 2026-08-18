@@ -122,6 +122,13 @@
     text-rendering: optimizeLegibility;
     font-feature-settings: 'ss01';
   }
+  /* keyboard focus: one ring for every focusable thing. Near-white reads on
+     the canvas, the surfaces and the red accent fills alike; :focus-visible
+     keeps it off mouse clicks. */
+  :focus-visible {
+    outline: 2px solid var(--color-fg);
+    outline-offset: 2px;
+  }
   ::placeholder {
     color: var(--color-fg-3);
     opacity: 1;

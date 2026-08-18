@@ -99,14 +99,20 @@ export default function ReviewsCarousel() {
                 <button
                   key={idx}
                   type="button"
-                  className={cn(
-                    'h-0.75 w-5.5 cursor-pointer transition-colors duration-200',
-                    idx === index ? 'bg-accent' : 'bg-line-2 hover:bg-fg-3'
-                  )}
+                  className="group -my-3 cursor-pointer py-3"
                   aria-label={`Show review ${idx + 1}`}
                   aria-current={idx === index}
                   onClick={() => setIndex(idx)}
-                />
+                >
+                  <span
+                    className={cn(
+                      'block h-0.75 w-5.5 transition-colors duration-200',
+                      idx === index
+                        ? 'bg-accent'
+                        : 'bg-line-2 group-hover:bg-fg-3'
+                    )}
+                  />
+                </button>
               ))}
             </div>
           )}

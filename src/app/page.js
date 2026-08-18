@@ -176,26 +176,26 @@ const Home = () => {
             </div>
 
             {/* CTAs — "poster offset" buttons */}
-            <div className="mt-3 flex gap-3.5 md:mt-8.5 md:gap-5 md:pb-0">
+            <div className="mt-3 flex gap-3.5 md:mt-8.5 md:gap-4 md:pb-0">
               <PosterButton
                 href="/appointment"
-                className="flex-1 gap-2 border-accent bg-accent/15 py-3 text-lg font-bold tracking-[0.04em] text-white uppercase shadow-[5px_5px_0_var(--color-accent)] hover:shadow-[2px_2px_0_var(--color-accent)] md:flex-none md:gap-3 md:px-11 md:py-5.5 md:text-2xl md:tracking-[0.03em] md:normal-case"
+                className="flex-1 gap-2 border-accent bg-accent/15 py-3 text-lg font-bold tracking-[0.04em] text-white uppercase shadow-[5px_5px_0_var(--color-accent)] hover:shadow-[2px_2px_0_var(--color-accent)] md:flex-none md:gap-2 md:px-6 md:py-3 md:tracking-[0.03em] md:normal-case"
               >
                 <GCalendar
                   aria-hidden="true"
-                  className="size-4 shrink-0 stroke-2 md:size-6"
+                  className="size-4 shrink-0 stroke-2 md:size-4.5"
                 />
                 Book
               </PosterButton>
               <PosterButton
                 href={site.phoneHref}
-                className="w-16 border-fg bg-fg/8 py-3 text-fg shadow-[5px_5px_0_var(--color-fg)] hover:shadow-[2px_2px_0_var(--color-fg)] md:w-auto md:px-7 md:py-5.5"
+                className="w-16 border-fg bg-fg/8 py-3 text-fg shadow-[5px_5px_0_var(--color-fg)] hover:shadow-[2px_2px_0_var(--color-fg)] md:w-auto md:px-4.5 md:py-3"
                 aria-label={`Call ${site.phone}`}
                 title={site.phone}
               >
                 <GPhoneOutline
                   aria-hidden="true"
-                  className="size-4.5 shrink-0 stroke-2 md:size-7"
+                  className="size-4.5 shrink-0 stroke-2 md:size-5"
                 />
               </PosterButton>
             </div>

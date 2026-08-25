@@ -7,11 +7,11 @@ import JsonLd from '@/components/seo/JsonLd';
 const SLUG = '/car-detailing-lenawee-county';
 
 export const metadata = {
-  title: 'Car Detailing in Lenawee County, MI | Clean King Detailing',
+  title: 'Car Detailing in Lenawee County, MI — From $35 | Clean King',
   description:
     'Auto detailing, hand car wash & window tinting for all of Lenawee County, MI from $35–$160. Family-owned in Blissfield, serving Adrian, Tecumseh, Hudson, Morenci, Clinton, Deerfield and beyond. Call (517) 682-1919.',
   openGraph: {
-    title: 'Car Detailing in Lenawee County, MI | Clean King Detailing',
+    title: 'Car Detailing in Lenawee County, MI — From $35 | Clean King',
     description:
       'Hand car wash, full detailing and ceramic window tinting across Lenawee County, MI. Flat pricing from $35–$160.',
     url: SLUG,

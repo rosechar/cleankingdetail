@@ -11,11 +11,11 @@ import PageHero from '@/components/ui/PageHero';
 import SectionHead from '@/components/ui/SectionHead';
 
 export const metadata = {
-  title: 'Car Detailing Services & Pricing | Clean King — Blissfield, MI',
+  title: 'Car Detailing Services & Pricing — Flat $35–$160 | Clean King',
   description:
     'Professional car wash and detailing services from $35-$160. Interior detail, exterior detail, full detail, window tinting. Serving Blissfield, Adrian, Tecumseh, and Lenawee County.',
   openGraph: {
-    title: 'Car Detailing Services & Pricing | Clean King — Blissfield, MI',
+    title: 'Car Detailing Services & Pricing — Flat $35–$160 | Clean King',
     description:
       'View our complete range of car wash, detailing, and window tinting services with transparent pricing from $35-$160.',
     url: '/services',

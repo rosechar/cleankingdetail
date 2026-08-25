@@ -7,11 +7,11 @@ import JsonLd from '@/components/seo/JsonLd';
 const SLUG = '/car-detailing-tecumseh-mi';
 
 export const metadata = {
-  title: 'Car Detailing in Tecumseh, MI | Clean King Detailing',
+  title: 'Car Detailing in Tecumseh, MI — From $35, Same-Day | Clean King',
   description:
     'Car detailing & ceramic window tint for Tecumseh, MI from $35–$160. Hand-washed, interior deep clean, wax and paint sealant at our Blissfield shop, about 25 minutes south. Call (517) 682-1919.',
   openGraph: {
-    title: 'Car Detailing in Tecumseh, MI | Clean King Detailing',
+    title: 'Car Detailing in Tecumseh, MI — From $35, Same-Day | Clean King',
     description:
       'Hand car wash, interior detailing & ceramic tint for Tecumseh, MI drivers. Flat pricing from $35–$160.',
     url: SLUG,

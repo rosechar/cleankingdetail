@@ -327,14 +327,33 @@ export default function PackagePicker() {
   const [expanded, setExpanded] = useState('');
 
   // Deep links like /services#deluxe-detail (home page cards): open that
-  // package's lists and scroll it into view.
+  // package's lists and scroll it into view. The timeout waits out the
+  // re-render that expands the card so we measure its final height.
+  // Desktop parks the card in the middle of the space under the header rather
+  // than hard against it; a card taller than that space just top-aligns.
   useEffect(() => {
     const id = window.location.hash.slice(1);
     if (!id || !findPackage(id)) return;
     setExpanded(id);
-    document
-      .getElementById(id)
-      ?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    const timer = setTimeout(() => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (!window.matchMedia('(min-width: 768px)').matches) {
+        el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        return;
+      }
+      const rect = el.getBoundingClientRect();
+      const headerH = document.querySelector('header')?.offsetHeight || 0;
+      const offset = Math.max(
+        headerH + 24,
+        (window.innerHeight - rect.height) / 2
+      );
+      window.scrollTo({
+        top: rect.top + window.scrollY - offset,
+        behavior: 'smooth',
+      });
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   return (

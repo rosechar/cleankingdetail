@@ -7,11 +7,11 @@ import JsonLd from '@/components/seo/JsonLd';
 const SLUG = '/car-detailing-ann-arbor-mi';
 
 export const metadata = {
-  title: 'Car Detailing near Ann Arbor, MI | Clean King Detailing',
+  title: 'Car Detailing near Ann Arbor, MI — From $35 | Clean King',
   description:
     'Ann Arbor-quality car detailing at small-town prices, from $35–$160. Hand wash, interior deep clean, paint correction and ceramic tint in Blissfield, about 45 minutes south on US-23. Call (517) 682-1919.',
   openGraph: {
-    title: 'Car Detailing near Ann Arbor, MI | Clean King Detailing',
+    title: 'Car Detailing near Ann Arbor, MI — From $35 | Clean King',
     description:
       'Hand car wash, auto detailing & ceramic window tinting for Ann Arbor, MI drivers. Flat pricing from $35–$160.',
     url: SLUG,

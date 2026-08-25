@@ -64,11 +64,11 @@
   /* layout rhythm */
   --spacing-page: clamp(1.25rem, 5.2vw, 5rem); /* horizontal page gutter */
   --spacing-section: clamp(2.5rem, 5vw, 4.5rem); /* vertical section padding */
-  /* header height on phones (81px) and from md (121px); the home hero tucks
+  /* header height on phones (81px) and from md (117px); the home hero tucks
      under it so the frosted header blurs the photo instead of the flat page
      background */
   --spacing-header: 5.0625rem;
-  --spacing-header-md: 7.5625rem;
+  --spacing-header-md: 7.3125rem;
 
   /* motion */
   --ease-snap: cubic-bezier(0.2, 0.7, 0.3, 1);
@@ -128,6 +128,14 @@
   :focus-visible {
     outline: 2px solid var(--color-fg);
     outline-offset: 2px;
+  }
+  /* Text fields already draw a red focus border of their own; the near-white
+     ring on top of it reads as two rings, so drop the outline there only.
+     Checkboxes/radios keep the shared ring — they have no border of their own. */
+  input:not([type='checkbox']):not([type='radio']):focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: none;
   }
   ::placeholder {
     color: var(--color-fg-3);

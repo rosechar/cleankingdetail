@@ -53,7 +53,7 @@ export default function Header() {
     <header
       ref={ref}
       className={cn(
-        "sticky top-0 z-40 flex items-center justify-between gap-6 border-b px-page py-2 before:absolute before:inset-0 before:-z-1 before:bg-canvas/82 before:backdrop-frost before:content-[''] md:border-line md:py-4",
+        "sticky top-0 z-40 flex items-center justify-between gap-6 border-b px-page py-2 before:absolute before:inset-0 before:-z-1 before:bg-canvas/82 before:backdrop-frost before:content-[''] md:border-line md:py-3.5",
         open ? 'border-transparent before:hidden' : 'border-line',
         // slides down + fades in (300ms); on the way back up it slides out
         // (300ms) at full opacity, then opacity/visibility drop off-screen
@@ -68,7 +68,7 @@ export default function Header() {
         onClick={() => setOpen(false)}
       >
         {/* Logo sizes + vertical padding are tuned so the header stays 81px on
-            phones (--spacing-header) and 121px from md (--spacing-header-md) —
+            phones (--spacing-header) and 117px from md (--spacing-header-md) —
             other sticky elements offset against those. */}
         <Image
           src="/cleanking-mark.png"

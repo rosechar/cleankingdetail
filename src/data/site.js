@@ -29,7 +29,7 @@ export const site = {
   // rating, `count` is how many reviews you have. Set `count` to null to show
   // just "on Google" without a number (use this until you've confirmed the
   // exact count). Links to `site.google`.
-  rating: { score: '5.0', count: null },
+  rating: { score: '5.0', count: 6 },
   reviews: [
     {
       quote:

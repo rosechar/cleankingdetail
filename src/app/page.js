@@ -187,9 +187,11 @@ const Home = () => {
                 />
                 Book
               </PosterButton>
+              {/* phones: icon only (room is tight next to Book);
+                  desktop: icon + the number itself */}
               <PosterButton
                 href={site.phoneHref}
-                className="w-16 border-fg bg-fg/8 py-3 text-fg shadow-[5px_5px_0_var(--color-fg)] hover:shadow-[2px_2px_0_var(--color-fg)] md:w-auto md:px-4.5 md:py-3"
+                className="w-16 gap-2 border-fg bg-fg/8 py-3 text-fg shadow-[5px_5px_0_var(--color-fg)] hover:shadow-[2px_2px_0_var(--color-fg)] md:w-auto md:px-5 md:py-3 md:text-lg md:font-bold md:tracking-[0.03em]"
                 aria-label={`Call ${site.phone}`}
                 title={site.phone}
               >
@@ -197,6 +199,7 @@ const Home = () => {
                   aria-hidden="true"
                   className="size-4.5 shrink-0 stroke-2 md:size-5"
                 />
+                <span className="hidden md:inline">{site.phone}</span>
               </PosterButton>
             </div>
           </div>

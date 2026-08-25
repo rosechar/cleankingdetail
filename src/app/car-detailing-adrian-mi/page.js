@@ -7,11 +7,11 @@ import JsonLd from '@/components/seo/JsonLd';
 const SLUG = '/car-detailing-adrian-mi';
 
 export const metadata = {
-  title: 'Car Detailing in Adrian, MI | Clean King Detailing',
+  title: 'Car Detailing in Adrian, MI — From $35, Same-Day | Clean King',
   description:
     'Car detailing for Adrian, MI drivers from $35–$160 — 15 minutes down US-223 in Blissfield. Hand wash, interior shampoo, clay bar, wax and ceramic window tint. Call (517) 682-1919.',
   openGraph: {
-    title: 'Car Detailing in Adrian, MI | Clean King Detailing',
+    title: 'Car Detailing in Adrian, MI — From $35, Same-Day | Clean King',
     description:
       'Hand car wash, full detailing & ceramic window tint for Adrian, MI. Flat pricing from $35–$160, 15 minutes from downtown Adrian.',
     url: SLUG,

@@ -24,14 +24,14 @@ const hanken = Hanken_Grotesk({
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
-  title: 'Car Detailing & Window Tinting in Blissfield, MI | Clean King',
+  title: 'Car Detailing & Window Tint, Blissfield MI — From $35 | Clean King',
   description:
     'Professional car detailing, window tinting & paint protection in Blissfield, MI. Hand-detailed packages from $35. Serving Adrian, Tecumseh & Lenawee County.',
   alternates: { canonical: '/' },
   openGraph: {
     siteName: site.name,
     url: '/',
-    title: 'Car Detailing & Window Tinting in Blissfield, MI | Clean King',
+    title: 'Car Detailing & Window Tint, Blissfield MI — From $35 | Clean King',
     description:
       'Expert car wash, auto detailing and ceramic tint services from $35-$160. Serving Blissfield, Adrian, Tecumseh, and Lenawee County.',
     type: 'website',
@@ -39,7 +39,7 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Car Detailing & Window Tinting in Blissfield, MI | Clean King',
+    title: 'Car Detailing & Window Tint, Blissfield MI — From $35 | Clean King',
     description:
       'Professional car detailing, window tinting & paint protection in Blissfield, MI. Hand-detailed packages from $35.',
   },
@@ -120,6 +120,20 @@ const structuredData = {
     })),
   ],
   sameAs: [site.facebook, site.google],
+  // Review-snippet markup (stars under the search result). Backed by the
+  // rating shown in the hero trust strip, so counts can't drift from the page.
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: site.rating.score,
+    bestRating: '5',
+    ratingCount: site.rating.count ?? site.reviews.length,
+  },
+  review: site.reviews.map((r) => ({
+    '@type': 'Review',
+    author: { '@type': 'Person', name: r.name },
+    reviewBody: r.quote,
+    reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
+  })),
   paymentAccepted: ['Cash', 'Credit Card', 'Debit Card'],
   currenciesAccepted: 'USD',
   hasOfferCatalog: {

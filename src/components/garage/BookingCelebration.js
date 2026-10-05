@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/components/ui/cn';
+import { themeColor } from '@/components/ui/themeColor';
 
 /**
  * Circular "you're booked" 3D scene (red car on a pedestal, check badge,
@@ -23,7 +24,7 @@ export default function BookingCelebration({ fallback, className }) {
         const { createBookingScene } = await import('./bookingScene');
         if (cancelled) return;
         ctl = createBookingScene(host, {
-          accent: '#ed2f38',
+          accent: themeColor('accent'),
           reducedMotion:
             window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ??
             false,
@@ -45,7 +46,7 @@ export default function BookingCelebration({ fallback, className }) {
   return (
     <div
       className={cn(
-        'relative mx-auto aspect-square w-56 overflow-hidden rounded-full border border-line bg-[radial-gradient(closest-side,#25262d_0%,#141419_70%,#0f0f12_100%)] lg:w-64',
+        'relative mx-auto aspect-square w-56 overflow-hidden rounded-full border border-line bg-stage-round lg:w-64',
         className
       )}
       role="img"

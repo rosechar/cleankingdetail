@@ -1,26 +1,28 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { findPackage, site } from '@/data/site';
+import { findPackage, packagesByPrice, site } from '@/data/site';
 import { isEmail, isPhone } from '@/lib/validation';
+import { postForm } from '@/lib/postForm';
 import {
-  bookingPackages,
   DEFAULT_PACKAGE_ID,
   DROP_OFF_NOTE,
   DROP_OFF_WINDOW,
   formatDayLong,
-  nextWeekdays,
-  OPT_IN_LABEL,
+  nextOpenDays,
   STEP_TITLES,
   VEHICLES,
 } from '@/data/booking';
 import Link from 'next/link';
 import { CalendarCheck, CalendarPlus, CarFront } from 'lucide-react';
-import { GArrow } from '@/components/garage/Icons';
+import { GArrow, GTick } from '@/components/garage/Icons';
 import BookingCelebration from '@/components/garage/BookingCelebration';
 import PageHero from '@/components/ui/PageHero';
 import AddressLink from '@/components/ui/AddressLink';
+import FieldError, { fieldErrorProps } from '@/components/forms/FieldError';
+import { INPUT_BASE, INPUT_INVALID } from '@/components/forms/fieldStyles';
 import HoneypotField from '@/components/forms/HoneypotField';
+import OptInCheckbox from '@/components/forms/OptInCheckbox';
 import Req from '@/components/forms/Req';
 import { HONEYPOT_FIELD } from '@/lib/honeypot';
 import Stars from '@/components/ui/Stars';
@@ -33,34 +35,15 @@ import { RISE, riseDelay } from '@/components/ui/rise';
 
 // Section eyebrow ("Choose your detail", "Pick a day"…) — the site's mono label.
 const LABEL = 'font-mono text-xs tracking-label text-fg-3 uppercase lg:text-sm';
-// Inputs are 16px+ so iOS Safari never auto-zooms; border turns accent on focus.
-const INPUT =
-  'w-full border border-line-2 bg-surface px-4.5 text-[17px] text-fg transition-colors focus:border-accent lg:px-5 lg:text-lg';
+const INPUT = cn(
+  INPUT_BASE,
+  'bg-surface px-4.5 text-[17px] lg:px-5 lg:text-lg'
+);
 const FIELD = cn(INPUT, 'h-14 lg:h-17');
 // Key/value rows inside the summary panels.
 const ROW = 'flex justify-between gap-4 text-base lg:text-lg';
 const ROW_KEY = 'text-fg-3';
 const ROW_VAL = 'text-right font-semibold text-fg';
-
-const CHECK_PATH = (
-  <path
-    d="M2 6.5l2.5 2.5L10 3"
-    stroke="currentColor"
-    strokeWidth="2"
-    fill="none"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  />
-);
-
-/** Tiny 12×12 check used inside radios, step dots and the opt-in box. */
-function Tick({ className }) {
-  return (
-    <svg viewBox="0 0 12 12" className={className} aria-hidden="true">
-      {CHECK_PATH}
-    </svg>
-  );
-}
 
 function SectionLabel({ className, children }) {
   return <div className={cn(LABEL, className)}>{children}</div>;
@@ -97,16 +80,6 @@ function useRovingRadio(count, selected, onSelect) {
   return { ref, onKeyDown, tabIndexFor: (i) => (i === focused ? 0 : -1) };
 }
 
-/** Inline validation message under a field (renders nothing when empty). */
-function FieldError({ id, children }) {
-  if (!children) return null;
-  return (
-    <p id={id} className="mt-1.5 text-sm font-medium text-accent" role="alert">
-      {children}
-    </p>
-  );
-}
-
 /** Desktop-only step heading (the mobile header carries the title instead). */
 function StepHeading({ children }) {
   return (
@@ -132,9 +105,9 @@ function PrimaryButton({ disabled, muted, className, children, ...rest }) {
       className={cn(
         'inline-flex items-center justify-center gap-2 font-body font-semibold transition-colors duration-200',
         disabled
-          ? 'cursor-not-allowed bg-[#34343a] text-[#7a766f]'
+          ? 'cursor-not-allowed bg-muted text-fg-disabled'
           : muted
-            ? 'cursor-pointer bg-[#34343a] text-[#a9a59e] hover:bg-[#3d3d44]'
+            ? 'cursor-pointer bg-muted text-fg-muted hover:bg-muted-hover'
             : 'cursor-pointer bg-accent text-on-accent hover:opacity-90',
         className
       )}
@@ -152,9 +125,9 @@ function PrimaryButton({ disabled, muted, className, children, ...rest }) {
 
 function PackageStep({ value, onChange }) {
   const { ref, onKeyDown, tabIndexFor } = useRovingRadio(
-    bookingPackages.length,
-    bookingPackages.findIndex((p) => p.id === value),
-    (i) => onChange(bookingPackages[i].id)
+    packagesByPrice.length,
+    packagesByPrice.findIndex((p) => p.id === value),
+    (i) => onChange(packagesByPrice[i].id)
   );
   return (
     <div>
@@ -170,7 +143,7 @@ function PackageStep({ value, onChange }) {
         aria-required="true"
         className="flex flex-col gap-6 lg:grid lg:grid-cols-2 lg:gap-8"
       >
-        {bookingPackages.map((p, i) => {
+        {packagesByPrice.map((p, i) => {
           const sel = p.id === value;
           return (
             <button
@@ -183,7 +156,7 @@ function PackageStep({ value, onChange }) {
               className={cn(
                 'relative flex w-full cursor-pointer border bg-surface p-4.5 text-left transition-[border-color,box-shadow] duration-150 lg:p-6.5',
                 sel
-                  ? 'border-accent shadow-[0_8px_22px_rgba(237,47,56,0.16)] inset-ring inset-ring-accent'
+                  ? 'border-accent shadow-accent-glow inset-ring inset-ring-accent'
                   : 'border-line hover:border-line-2'
               )}
             >
@@ -211,7 +184,7 @@ function PackageStep({ value, onChange }) {
                     )}
                     aria-hidden="true"
                   >
-                    {sel && <Tick className="size-3.25" />}
+                    {sel && <GTick className="size-3.25" aria-hidden="true" />}
                   </span>
                 </span>
               </span>
@@ -243,8 +216,7 @@ function VehicleStep({ form, set, errors = {} }) {
         role="radiogroup"
         aria-label="Vehicle type"
         aria-required="true"
-        aria-invalid={!!errors.vehicle || undefined}
-        aria-describedby={errors.vehicle ? 'bk-vehicle-err' : undefined}
+        {...fieldErrorProps('bk-vehicle', errors.vehicle)}
         tabIndex={-1}
         className="grid grid-cols-2 gap-3 lg:max-w-170 lg:grid-cols-4 lg:gap-3.5"
       >
@@ -271,7 +243,7 @@ function VehicleStep({ form, set, errors = {} }) {
         })}
       </div>
 
-      <FieldError id="bk-vehicle-err">{errors.vehicle}</FieldError>
+      <FieldError id="bk-vehicle">{errors.vehicle}</FieldError>
 
       <label htmlFor="bk-make" className={cn(LABEL, 'mt-8.5 mb-3.5 block')}>
         Make &amp; model
@@ -279,20 +251,15 @@ function VehicleStep({ form, set, errors = {} }) {
       </label>
       <input
         id="bk-make"
-        className={cn(
-          FIELD,
-          'lg:max-w-170',
-          errors.makeModel && 'border-accent!'
-        )}
+        className={cn(FIELD, 'lg:max-w-170', errors.makeModel && INPUT_INVALID)}
         value={form.makeModel}
         onChange={(e) => set('makeModel', e.target.value)}
         placeholder="e.g. Ford Explorer"
-        aria-invalid={!!errors.makeModel || undefined}
-        aria-describedby={errors.makeModel ? 'bk-make-err' : undefined}
+        {...fieldErrorProps('bk-make', errors.makeModel)}
         autoComplete="off"
         required
       />
-      <FieldError id="bk-make-err">{errors.makeModel}</FieldError>
+      <FieldError id="bk-make">{errors.makeModel}</FieldError>
 
       <label htmlFor="bk-notes" className={cn(LABEL, 'mt-8.5 mb-3.5 block')}>
         Optional details
@@ -339,7 +306,7 @@ function DayChip({ day, selected, tabIndex, onSelect }) {
 }
 
 function DetailsStep({ form, set, days, summary, errors = {} }) {
-  const invalid = (k) => (errors[k] ? 'border-accent!' : '');
+  const invalid = (k) => errors[k] && INPUT_INVALID;
   const { ref, onKeyDown, tabIndexFor } = useRovingRadio(
     days.length,
     form.dayIdx ?? -1,
@@ -359,10 +326,9 @@ function DetailsStep({ form, set, days, summary, errors = {} }) {
         role="radiogroup"
         aria-label="Day"
         aria-required="true"
-        aria-invalid={!!errors.day || undefined}
-        aria-describedby={errors.day ? 'bk-day-err' : undefined}
+        {...fieldErrorProps('bk-day', errors.day)}
         tabIndex={-1}
-        className="-mx-5.5 flex gap-2.5 overflow-x-auto px-5.5 pb-3 lg:mx-0 lg:gap-3.5 lg:px-0 lg:pb-3.5 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-line-2 [&::-webkit-scrollbar-track]:bg-line"
+        className="-mx-5.5 flex scrollbar-visible gap-2.5 overflow-x-auto px-5.5 pb-3 lg:mx-0 lg:gap-3.5 lg:px-0 lg:pb-3.5"
       >
         {days.map((day, i) => (
           <DayChip
@@ -374,7 +340,7 @@ function DetailsStep({ form, set, days, summary, errors = {} }) {
           />
         ))}
       </div>
-      <FieldError id="bk-day-err">{errors.day}</FieldError>
+      <FieldError id="bk-day">{errors.day}</FieldError>
       <p className="mt-4 text-sm leading-normal text-fg-3 lg:mt-3.5 lg:max-w-170">
         {DROP_OFF_NOTE}
       </p>
@@ -393,11 +359,10 @@ function DetailsStep({ form, set, days, summary, errors = {} }) {
             placeholder="Full name *"
             aria-label="Full name"
             required
-            aria-invalid={!!errors.name || undefined}
-            aria-describedby={errors.name ? 'bk-name-err' : undefined}
+            {...fieldErrorProps('bk-name', errors.name)}
             autoComplete="name"
           />
-          <FieldError id="bk-name-err">{errors.name}</FieldError>
+          <FieldError id="bk-name">{errors.name}</FieldError>
         </div>
         <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:gap-3.5">
           <div className="lg:flex-1">
@@ -411,11 +376,10 @@ function DetailsStep({ form, set, days, summary, errors = {} }) {
               placeholder="Phone number *"
               aria-label="Phone number"
               required
-              aria-invalid={!!errors.phone || undefined}
-              aria-describedby={errors.phone ? 'bk-phone-err' : undefined}
+              {...fieldErrorProps('bk-phone', errors.phone)}
               autoComplete="tel"
             />
-            <FieldError id="bk-phone-err">{errors.phone}</FieldError>
+            <FieldError id="bk-phone">{errors.phone}</FieldError>
           </div>
           <div className="lg:flex-1">
             <input
@@ -427,36 +391,19 @@ function DetailsStep({ form, set, days, summary, errors = {} }) {
               onChange={(e) => set('email', e.target.value)}
               placeholder="Email (optional)"
               aria-label="Email (optional)"
-              aria-invalid={!!errors.email || undefined}
-              aria-describedby={errors.email ? 'bk-email-err' : undefined}
+              {...fieldErrorProps('bk-email', errors.email)}
               autoComplete="email"
             />
-            <FieldError id="bk-email-err">{errors.email}</FieldError>
+            <FieldError id="bk-email">{errors.email}</FieldError>
           </div>
         </div>
       </div>
-      <button
-        type="button"
-        role="checkbox"
-        aria-checked={form.optIn}
-        onClick={() => set('optIn', !form.optIn)}
-        className="mt-4.5 flex cursor-pointer items-center gap-3 text-left"
-      >
-        <span
-          className={cn(
-            'flex size-6 shrink-0 items-center justify-center',
-            form.optIn
-              ? 'bg-accent text-on-accent'
-              : 'border-[1.5px] border-line-2'
-          )}
-          aria-hidden="true"
-        >
-          {form.optIn && <Tick className="size-3.5" />}
-        </span>
-        <span className="text-[15px] leading-snug text-fg-3">
-          {OPT_IN_LABEL}
-        </span>
-      </button>
+      <OptInCheckbox
+        id="bk-optin"
+        checked={form.optIn}
+        onChange={(checked) => set('optIn', checked)}
+        className="mt-4.5"
+      />
 
       {/* Mobile booking summary — the desktop card lives in the sidebar. */}
       <div className="mt-7 border border-line bg-surface p-4.5 lg:hidden">
@@ -838,7 +785,7 @@ export default function BookPage() {
   // Day chips depend on "today", so build them after mount — the prerendered
   // HTML then never disagrees with the visitor's clock/timezone.
   useEffect(() => {
-    setDays(nextWeekdays(20));
+    setDays(nextOpenDays(20));
   }, []);
 
   // Optional ?pkg= preselect (package id or name, case-insensitive) — the
@@ -871,7 +818,7 @@ export default function BookPage() {
     }
   }, [screen]);
 
-  const pkg = bookingPackages.find((p) => p.id === form.pkg);
+  const pkg = packagesByPrice.find((p) => p.id === form.pkg);
   const day = form.dayIdx != null ? days[form.dayIdx] : null;
   const firstName = form.name.trim().split(/\s+/)[0] || 'there';
   const summary = {
@@ -924,10 +871,9 @@ export default function BookPage() {
     setErr('');
     setSubmitting(true);
     try {
-      const res = await fetch('/api/book', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      await postForm(
+        '/api/book',
+        {
           pkg: pkg.name,
           price: pkg.price,
           vehicle: form.vehicle,
@@ -939,12 +885,12 @@ export default function BookPage() {
           email: form.email,
           optIn: form.optIn,
           [HONEYPOT_FIELD]: form.honeypot,
-        }),
-      });
-      if (!res.ok) throw new Error('Request failed');
+        },
+        'Something went wrong sending your request. Please call us.'
+      );
       setScreen('confirmed');
-    } catch {
-      setErr('Something went wrong sending your request. Please call us.');
+    } catch (error) {
+      setErr(error.message);
     } finally {
       setSubmitting(false);
     }

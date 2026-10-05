@@ -27,8 +27,8 @@ const MAX_DIST = 11;
 /**
  * @param {HTMLElement} host  empty block element the canvas is appended to
  * @param {object} opts
- * @param {string} [opts.accent]      accent colour (hex)
- * @param {string} [opts.bg]          solid background colour, used to fade unselected parts
+ * @param {string} opts.accent        accent colour (theme --color-accent)
+ * @param {string} opts.bg            solid background colour, used to fade unselected parts
  * @param {string} [opts.fx]          wash style: scrub | sheet | wipe | fade
  * @param {boolean} [opts.reducedMotion]  skip the wash demo + auto-rotate
  * @param {(zone: string) => void} [opts.onPick]  a car panel was tapped ('' = empty space)
@@ -37,8 +37,8 @@ export function createCarScene(host, opts = {}) {
   const S = {
     zone: '',
     fxStyle: opts.fx || 'scrub',
-    accent: opts.accent || '#ed2f38',
-    bg: opts.bg || '#0d0d0f',
+    accent: opts.accent,
+    bg: opts.bg,
     reduced: !!opts.reducedMotion,
     az: HOME.az,
     el: HOME.el,

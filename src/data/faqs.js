@@ -1,3 +1,6 @@
+import { PRICE_FROM, PRICE_TO, priceOf, site } from './site';
+import { DROP_OFF_WINDOW } from './booking';
+
 export const faqs = [
   {
     id: 1,
@@ -8,8 +11,7 @@ export const faqs = [
   {
     id: 2,
     question: 'What time should I drop off my vehicle?',
-    answer:
-      'To ensure we can deliver the highest quality detail, we ask that you drop off your vehicle between 9:30 AM - 10:00 AM. This allows us enough time to give your vehicle the thorough attention it deserves!',
+    answer: `To ensure we can deliver the highest quality detail, we ask that you drop off your vehicle between ${DROP_OFF_WINDOW}. This allows us enough time to give your vehicle the thorough attention it deserves!`,
   },
   {
     id: 3,
@@ -69,20 +71,17 @@ export const areaFaqs = {
     {
       id: 'adrian-distance',
       question: 'How far is Clean King from Adrian?',
-      answer:
-        'About 15 minutes. From downtown Adrian or the Adrian Mall take US-223 east and we are at 610 W Adrian St in Blissfield, right on the way toward Toledo.',
+      answer: `About 15 minutes. From downtown Adrian or the Adrian Mall take US-223 east and we are at ${site.street} in Blissfield, right on the way toward Toledo.`,
     },
     {
       id: 'adrian-mobile',
       question: 'Do you offer mobile detailing in Adrian?',
-      answer:
-        'No — every vehicle is detailed by hand at our shop in Blissfield, where we have the water, power and lighting to do the job properly. Drop off between 9:30 and 10:00 AM and most details are ready the same day.',
+      answer: `No — every vehicle is detailed by hand at our shop in Blissfield, where we have the water, power and lighting to do the job properly. Drop off between ${DROP_OFF_WINDOW} and most details are ready the same day.`,
     },
     {
       id: 'adrian-price',
       question: 'Is pricing the same for Adrian customers?',
-      answer:
-        'Yes. Every package is flat-priced from $35 to $160 and posted on our services page — the price you see online is the price you pay, wherever you drive in from.',
+      answer: `Yes. Every package is flat-priced from ${PRICE_FROM} to ${PRICE_TO} and posted on our services page — the price you see online is the price you pay, wherever you drive in from.`,
     },
   ],
   '/car-detailing-tecumseh-mi': [
@@ -109,14 +108,12 @@ export const areaFaqs = {
     {
       id: 'a2-worth-it',
       question: 'Is it worth driving from Ann Arbor for a detail?',
-      answer:
-        'Our Full Detail is $140 and the Deluxe is $160 — typically about half of what the same work costs inside Ann Arbor. It is roughly 45 minutes down US-23 and US-223, and many customers pair the trip with an errand run to Toledo or Cabela’s.',
+      answer: `Our Full Detail is ${priceOf('full-detail')} and the Deluxe is ${priceOf('deluxe-detail')} — typically about half of what the same work costs inside Ann Arbor. It is roughly 45 minutes down US-23 and US-223, and many customers pair the trip with an errand run to Toledo or Cabela’s.`,
     },
     {
       id: 'a2-wait',
       question: 'Can I wait while my car is detailed?',
-      answer:
-        'A full detail takes 3–6 hours, so most Ann Arbor customers drop off between 9:30 and 10:00 AM and pick up in the afternoon. Downtown Blissfield is a short walk from the shop if you would rather stay local.',
+      answer: `A full detail takes 3–6 hours, so most Ann Arbor customers drop off between ${DROP_OFF_WINDOW} and pick up in the afternoon. Downtown Blissfield is a short walk from the shop if you would rather stay local.`,
     },
     {
       id: 'a2-mobile',
@@ -129,14 +126,12 @@ export const areaFaqs = {
     {
       id: 'lenawee-where',
       question: 'Where in Lenawee County are you located?',
-      answer:
-        'We are at 610 W Adrian St in Blissfield, on US-223 in the southeast corner of the county — 15 minutes from Adrian, 25 from Tecumseh, and an easy drive from Deerfield, Palmyra, Ottawa Lake, Morenci and Hudson.',
+      answer: `We are at ${site.street} in Blissfield, on US-223 in the southeast corner of the county — 15 minutes from Adrian, 25 from Tecumseh, and an easy drive from Deerfield, Palmyra, Ottawa Lake, Morenci and Hudson.`,
     },
     {
       id: 'lenawee-mobile',
       question: 'Do you offer mobile detailing across Lenawee County?',
-      answer:
-        'We detail exclusively at our Blissfield shop so every vehicle gets the same equipment, water and lighting. Drop off between 9:30 and 10:00 AM and most vehicles are ready the same day.',
+      answer: `We detail exclusively at our Blissfield shop so every vehicle gets the same equipment, water and lighting. Drop off between ${DROP_OFF_WINDOW} and most vehicles are ready the same day.`,
     },
     {
       id: 'lenawee-salt',

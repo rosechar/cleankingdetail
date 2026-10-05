@@ -211,6 +211,15 @@ export const PRICE_BOUNDS = packages
     [Infinity, -Infinity]
   );
 
+// Display forms of PRICE_BOUNDS for page titles, meta descriptions and copy,
+// so a price change in `packages` reaches every "From $35" line.
+/** e.g. "$35" */
+export const PRICE_FROM = `$${PRICE_BOUNDS[0]}`;
+/** e.g. "$160" */
+export const PRICE_TO = `$${PRICE_BOUNDS[1]}`;
+/** e.g. "$35–$160" */
+export const PRICE_RANGE = `${PRICE_FROM}–${PRICE_TO}`;
+
 /** Look up a package by id or (case-insensitive) display name. */
 export function findPackage(idOrName) {
   const needle = String(idOrName ?? '')
@@ -221,3 +230,19 @@ export function findPackage(idOrName) {
     (p) => p.id === needle || p.name.toLowerCase() === needle
   );
 }
+
+/** Display price of one package, e.g. priceOf('full-detail') → "$140". */
+export const priceOf = (id) => findPackage(id)?.price ?? '';
+
+// Cheapest first, À La Carte last — the order every package switcher, picker
+// and compare table lists them in.
+const PACKAGE_ORDER = [
+  'spiffy-detail',
+  'interior-detail',
+  'full-detail',
+  'deluxe-detail',
+  'a-la-carte',
+];
+export const packagesByPrice = PACKAGE_ORDER.map((id) =>
+  findPackage(id)
+).filter(Boolean);

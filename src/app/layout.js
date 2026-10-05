@@ -6,7 +6,14 @@ import MobileCTA from '@/components/layout/MobileCTA';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/react';
 import JsonLd from '@/components/seo/JsonLd';
-import { packages, PRICE_BOUNDS, site, SITE_URL } from '@/data/site';
+import {
+  packages,
+  PRICE_BOUNDS,
+  PRICE_FROM,
+  PRICE_RANGE,
+  site,
+  SITE_URL,
+} from '@/data/site';
 
 const anton = Anton({
   subsets: ['latin'],
@@ -24,24 +31,21 @@ const hanken = Hanken_Grotesk({
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
-  title: 'Car Detailing & Window Tint, Blissfield MI — From $35 | Clean King',
-  description:
-    'Professional car detailing, window tinting & paint protection in Blissfield, MI. Hand-detailed packages from $35. Serving Adrian, Tecumseh & Lenawee County.',
+  title: `Car Detailing & Window Tint, Blissfield MI — From ${PRICE_FROM} | Clean King`,
+  description: `Professional car detailing, window tinting & paint protection in Blissfield, MI. Hand-detailed packages from ${PRICE_FROM}. Serving Adrian, Tecumseh & Lenawee County.`,
   alternates: { canonical: '/' },
   openGraph: {
     siteName: site.name,
     url: '/',
-    title: 'Car Detailing & Window Tint, Blissfield MI — From $35 | Clean King',
-    description:
-      'Expert car wash, auto detailing and ceramic tint services from $35-$160. Serving Blissfield, Adrian, Tecumseh, and Lenawee County.',
+    title: `Car Detailing & Window Tint, Blissfield MI — From ${PRICE_FROM} | Clean King`,
+    description: `Expert car wash, auto detailing and ceramic tint services from ${PRICE_RANGE}. Serving Blissfield, Adrian, Tecumseh, and Lenawee County.`,
     type: 'website',
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Car Detailing & Window Tint, Blissfield MI — From $35 | Clean King',
-    description:
-      'Professional car detailing, window tinting & paint protection in Blissfield, MI. Hand-detailed packages from $35.',
+    title: `Car Detailing & Window Tint, Blissfield MI — From ${PRICE_FROM} | Clean King`,
+    description: `Professional car detailing, window tinting & paint protection in Blissfield, MI. Hand-detailed packages from ${PRICE_FROM}.`,
   },
   other: {
     'geo.region': 'US-MI',

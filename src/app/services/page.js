@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { site, findPackage } from '@/data/site';
+import { site, findPackage, PRICE_RANGE } from '@/data/site';
 import { servicesFaqs, faqJsonLd } from '@/data/faqs';
 import JsonLd from '@/components/seo/JsonLd';
 import Faq from '@/components/ui/Faq';
@@ -11,13 +11,11 @@ import PageHero from '@/components/ui/PageHero';
 import SectionHead from '@/components/ui/SectionHead';
 
 export const metadata = {
-  title: 'Car Detailing Services & Pricing — Flat $35–$160 | Clean King',
-  description:
-    'Professional car wash and detailing services from $35-$160. Interior detail, exterior detail, full detail, window tinting. Serving Blissfield, Adrian, Tecumseh, and Lenawee County.',
+  title: `Car Detailing Services & Pricing — Flat ${PRICE_RANGE} | Clean King`,
+  description: `Professional car wash and detailing services from ${PRICE_RANGE}. Interior detail, exterior detail, full detail, window tinting. Serving Blissfield, Adrian, Tecumseh, and Lenawee County.`,
   openGraph: {
-    title: 'Car Detailing Services & Pricing — Flat $35–$160 | Clean King',
-    description:
-      'View our complete range of car wash, detailing, and window tinting services with transparent pricing from $35-$160.',
+    title: `Car Detailing Services & Pricing — Flat ${PRICE_RANGE} | Clean King`,
+    description: `View our complete range of car wash, detailing, and window tinting services with transparent pricing from ${PRICE_RANGE}.`,
     url: '/services',
   },
   alternates: {

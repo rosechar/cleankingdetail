@@ -5,7 +5,7 @@
 // There is deliberately no submit-timing check. A real customer autofilling
 // their details can beat any threshold worth setting, and a bot can send
 // whatever elapsed time it likes — it cost real leads without stopping anyone.
-// Flood protection belongs in a rate limit, not here.
+// Flood protection is the rate limit in ./rateLimit.
 import { HONEYPOT_FIELD } from '@/lib/honeypot';
 
 export function isLikelySpam(data) {

@@ -1,4 +1,5 @@
-import { site } from '@/data/site';
+import { PRICE_FROM, PRICE_RANGE, PRICE_TO, site } from '@/data/site';
+import { DROP_OFF_WINDOW } from '@/data/booking';
 import AddressLink from '@/components/ui/AddressLink';
 import { locationSchema } from '@/data/locationSchema';
 import LocationPage from '@/components/location/LocationPage';
@@ -7,13 +8,11 @@ import JsonLd from '@/components/seo/JsonLd';
 const SLUG = '/car-detailing-tecumseh-mi';
 
 export const metadata = {
-  title: 'Car Detailing in Tecumseh, MI — From $35, Same-Day | Clean King',
-  description:
-    'Car detailing & ceramic window tint for Tecumseh, MI from $35–$160. Hand-washed, interior deep clean, wax and paint sealant at our Blissfield shop, about 25 minutes south. Call (517) 682-1919.',
+  title: `Car Detailing in Tecumseh, MI — From ${PRICE_FROM}, Same-Day | Clean King`,
+  description: `Car detailing & ceramic window tint for Tecumseh, MI from ${PRICE_RANGE}. Hand-washed, interior deep clean, wax and paint sealant at our Blissfield shop, about 25 minutes south. Call ${site.phone}.`,
   openGraph: {
-    title: 'Car Detailing in Tecumseh, MI — From $35, Same-Day | Clean King',
-    description:
-      'Hand car wash, interior detailing & ceramic tint for Tecumseh, MI drivers. Flat pricing from $35–$160.',
+    title: `Car Detailing in Tecumseh, MI — From ${PRICE_FROM}, Same-Day | Clean King`,
+    description: `Hand car wash, interior detailing & ceramic tint for Tecumseh, MI drivers. Flat pricing from ${PRICE_RANGE}.`,
     url: SLUG,
   },
   alternates: {
@@ -55,7 +54,7 @@ const whyUs = [
   },
   {
     name: 'No Surprise Add-Ons',
-    desc: '$35 to $160 across five packages, priced on the site. If your vehicle needs something extra we tell you before we start, not at pickup.',
+    desc: `${PRICE_FROM} to ${PRICE_TO} across five packages, priced on the site. If your vehicle needs something extra we tell you before we start, not at pickup.`,
   },
   {
     name: 'Detailed By Hand',
@@ -74,14 +73,14 @@ const content = {
         in Tecumseh, MI
       </>
     ),
-    lead: 'Hand car wash, full interior detailing and ceramic window tint from $35–$160. Clean King is a family-owned shop in Blissfield, about 25 minutes south of Tecumseh, and every vehicle is finished by hand.',
+    lead: `Hand car wash, full interior detailing and ceramic window tint from ${PRICE_RANGE}. Clean King is a family-owned shop in Blissfield, about 25 minutes south of Tecumseh, and every vehicle is finished by hand.`,
   },
   location: {
     eyebrow: 'Serving Tecumseh & Lenawee',
     title: 'Worth the drive from Tecumseh',
     description: [
       'Tecumseh has plenty of places to run a car through a wash, but not many that will hand-shampoo the carpets, condition the leather and clay the paint. That is the work we do at Clean King, and it is why drivers from Tecumseh, Clinton and Britton make the trip down to Blissfield.',
-      'Take M-52 south to Adrian and US-223 east, or cut across through Britton and Deerfield — about 25 minutes either way. Drop the car off between 9:30 and 10, and it is ready to go home the same afternoon.',
+      `Take M-52 south to Adrian and US-223 east, or cut across through Britton and Deerfield — about 25 minutes either way. Drop the car off between ${DROP_OFF_WINDOW}, and it is ready to go home the same afternoon.`,
     ],
     info: [
       { label: 'Shop', value: <AddressLink /> },

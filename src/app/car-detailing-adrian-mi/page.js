@@ -1,4 +1,4 @@
-import { site } from '@/data/site';
+import { PRICE_FROM, PRICE_RANGE, PRICE_TO, site } from '@/data/site';
 import AddressLink from '@/components/ui/AddressLink';
 import { locationSchema } from '@/data/locationSchema';
 import LocationPage from '@/components/location/LocationPage';
@@ -7,13 +7,11 @@ import JsonLd from '@/components/seo/JsonLd';
 const SLUG = '/car-detailing-adrian-mi';
 
 export const metadata = {
-  title: 'Car Detailing in Adrian, MI — From $35, Same-Day | Clean King',
-  description:
-    'Car detailing for Adrian, MI drivers from $35–$160 — 15 minutes down US-223 in Blissfield. Hand wash, interior shampoo, clay bar, wax and ceramic window tint. Call (517) 682-1919.',
+  title: `Car Detailing in Adrian, MI — From ${PRICE_FROM}, Same-Day | Clean King`,
+  description: `Car detailing for Adrian, MI drivers from ${PRICE_RANGE} — 15 minutes down US-223 in Blissfield. Hand wash, interior shampoo, clay bar, wax and ceramic window tint. Call ${site.phone}.`,
   openGraph: {
-    title: 'Car Detailing in Adrian, MI — From $35, Same-Day | Clean King',
-    description:
-      'Hand car wash, full detailing & ceramic window tint for Adrian, MI. Flat pricing from $35–$160, 15 minutes from downtown Adrian.',
+    title: `Car Detailing in Adrian, MI — From ${PRICE_FROM}, Same-Day | Clean King`,
+    description: `Hand car wash, full detailing & ceramic window tint for Adrian, MI. Flat pricing from ${PRICE_RANGE}, 15 minutes from downtown Adrian.`,
     url: SLUG,
   },
   alternates: {
@@ -55,7 +53,7 @@ const whyUs = [
   },
   {
     name: 'Posted, Flat Pricing',
-    desc: '$35 to $160 for every package, listed on the site. What we quote is what you pay — no upsells at pickup.',
+    desc: `${PRICE_FROM} to ${PRICE_TO} for every package, listed on the site. What we quote is what you pay — no upsells at pickup.`,
   },
   {
     name: 'Family-Owned & By Hand',
@@ -74,13 +72,13 @@ const content = {
         in Adrian, MI
       </>
     ),
-    lead: 'Hand car wash, interior and exterior detailing and ceramic window tint from $35–$160 — a 15-minute drive from downtown Adrian to our family-owned shop in Blissfield.',
+    lead: `Hand car wash, interior and exterior detailing and ceramic window tint from ${PRICE_RANGE} — a 15-minute drive from downtown Adrian to our family-owned shop in Blissfield.`,
   },
   location: {
     eyebrow: 'Serving Adrian & Lenawee',
     title: 'The county seat’s closest hand-detail shop',
     description: [
-      'Adrian is our biggest customer base and our closest neighbor. From the Adrian Mall or Siena Heights, hop on US-223 heading east and you are pulling into Clean King at 610 W Adrian St in Blissfield about fifteen minutes later — no appointment lottery, no waiting in a tunnel line.',
+      `Adrian is our biggest customer base and our closest neighbor. From the Adrian Mall or Siena Heights, hop on US-223 heading east and you are pulling into Clean King at ${site.street} in Blissfield about fifteen minutes later — no appointment lottery, no waiting in a tunnel line.`,
       'Most Adrian drivers book a Full or Deluxe Detail after winter to get the road salt out of the carpets and off the paint, and a Spiffy Detail in between. If you commute on M-52 or park downtown all day, ask about ceramic tint — it makes a noticeable difference in July.',
     ],
     info: [

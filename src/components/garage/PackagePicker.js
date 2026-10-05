@@ -2,8 +2,10 @@
 
 import { Fragment, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { findPackage } from '@/data/site';
+import { findPackage, packagesByPrice } from '@/data/site';
+import { lineItemsOf, zoneOf } from '@/data/coverage';
 import { cn } from '@/components/ui/cn';
+import ItemList from '@/components/ui/ItemList';
 
 // Services page package browser: a grid of full package cards (name, price,
 // blurb, collapsible line items + inherited-services accordion), or a
@@ -16,48 +18,31 @@ const CARD_COLUMNS = [
   ['full-detail', 'interior-detail'],
   ['deluxe-detail', 'spiffy-detail', 'a-la-carte'],
 ];
-const TABLE_ORDER = [
-  'spiffy-detail',
-  'interior-detail',
-  'full-detail',
-  'deluxe-detail',
-  'a-la-carte',
-];
 
 const byIds = (ids) => ids.map((id) => findPackage(id)).filter(Boolean);
 const cardColumns = CARD_COLUMNS.map(byIds);
-const tablePkgs = byIds(TABLE_ORDER);
 
-/** Everything a package delivers: its own line items + inherited ones. */
-const allOf = (p) => [...(p.details || p.items), ...(p.includes || [])];
-
-// Compare-all groupings. Matching is by keyword so new line items in
-// data/site.js land in a sensible bucket without touching this file.
-const SECTIONS = [
-  {
-    title: 'Trunk & engine bay',
-    test: /^vacuum trunk$|trunk channels|engine/i,
-  },
-  { title: 'Glass', test: /glass/i },
-  {
-    title: 'Interior',
-    test: /interior|upholster|carpet|dash|door panel|instrument|vent|seat/i,
-  },
-  { title: 'Exterior', test: /./ }, // everything else
-];
+// Compare-all sections, built from the car zones in data/coverage.
+const SECTION_OF_ZONE = {
+  cabin: 'Interior',
+  paint: 'Exterior',
+  wheels: 'Exterior',
+  glass: 'Glass',
+  engine: 'Trunk & engine bay',
+  trunk: 'Trunk & engine bay',
+};
 const ORDER = ['Interior', 'Exterior', 'Glass', 'Trunk & engine bay'];
 
 function buildRows() {
   const universe = [];
-  tablePkgs.forEach((p) =>
-    allOf(p).forEach((label) => {
+  packagesByPrice.forEach((p) =>
+    lineItemsOf(p).forEach((label) => {
       if (!universe.includes(label)) universe.push(label);
     })
   );
   const grouped = new Map(ORDER.map((t) => [t, []]));
   universe.forEach((label) => {
-    const sec = SECTIONS.find((s) => s.test.test(label));
-    grouped.get(sec.title).push(label);
+    grouped.get(SECTION_OF_ZONE[zoneOf(label)]).push(label);
   });
   return ORDER.map((title) => ({ title, rows: grouped.get(title) })).filter(
     (s) => s.rows.length
@@ -85,32 +70,6 @@ function PlusIcon({ open }) {
         <path d="M6 1v10M1 6h10" />
       </svg>
     </span>
-  );
-}
-
-function ItemList({ items, className, columns = false }) {
-  return (
-    <ul
-      className={cn(
-        columns ? 'grid grid-cols-1 gap-x-6 md:grid-cols-2' : 'flex flex-col',
-        className
-      )}
-    >
-      {items.map((it) => (
-        <li
-          key={it}
-          className="flex items-baseline gap-2.5 py-1.75 text-sm leading-[1.45] text-fg-2 sm:text-base"
-        >
-          <span
-            className="flex-none text-[10px] text-accent"
-            aria-hidden="true"
-          >
-            ■
-          </span>
-          <span className="flex-1">{it}</span>
-        </li>
-      ))}
-    </ul>
   );
 }
 
@@ -243,7 +202,7 @@ function CompareTable() {
               >
                 Service
               </th>
-              {tablePkgs.map((p) => (
+              {packagesByPrice.map((p) => (
                 <th
                   key={p.id}
                   scope="col"
@@ -269,7 +228,7 @@ function CompareTable() {
                   <tr>
                     <th
                       scope="rowgroup"
-                      colSpan={tablePkgs.length + 1}
+                      colSpan={packagesByPrice.length + 1}
                       className="border-t border-line bg-surface-2 p-0 text-left font-normal"
                     >
                       <button
@@ -295,8 +254,8 @@ function CompareTable() {
                         >
                           {label}
                         </th>
-                        {tablePkgs.map((p) => {
-                          const on = allOf(p).includes(label);
+                        {packagesByPrice.map((p) => {
+                          const on = lineItemsOf(p).includes(label);
                           return (
                             <td
                               key={p.id}

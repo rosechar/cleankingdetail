@@ -1,4 +1,4 @@
-import { site } from '@/data/site';
+import { PRICE_FROM, PRICE_RANGE, PRICE_TO, priceOf, site } from '@/data/site';
 import AddressLink from '@/components/ui/AddressLink';
 import { locationSchema } from '@/data/locationSchema';
 import LocationPage from '@/components/location/LocationPage';
@@ -7,13 +7,11 @@ import JsonLd from '@/components/seo/JsonLd';
 const SLUG = '/car-detailing-lenawee-county';
 
 export const metadata = {
-  title: 'Car Detailing in Lenawee County, MI — From $35 | Clean King',
-  description:
-    'Auto detailing, hand car wash & window tinting for all of Lenawee County, MI from $35–$160. Family-owned in Blissfield, serving Adrian, Tecumseh, Hudson, Morenci, Clinton, Deerfield and beyond. Call (517) 682-1919.',
+  title: `Car Detailing in Lenawee County, MI — From ${PRICE_FROM} | Clean King`,
+  description: `Auto detailing, hand car wash & window tinting for all of Lenawee County, MI from ${PRICE_RANGE}. Family-owned in Blissfield, serving Adrian, Tecumseh, Hudson, Morenci, Clinton, Deerfield and beyond. Call ${site.phone}.`,
   openGraph: {
-    title: 'Car Detailing in Lenawee County, MI — From $35 | Clean King',
-    description:
-      'Hand car wash, full detailing and ceramic window tinting across Lenawee County, MI. Flat pricing from $35–$160.',
+    title: `Car Detailing in Lenawee County, MI — From ${PRICE_FROM} | Clean King`,
+    description: `Hand car wash, full detailing and ceramic window tinting across Lenawee County, MI. Flat pricing from ${PRICE_RANGE}.`,
     url: SLUG,
   },
   alternates: {
@@ -32,7 +30,7 @@ const detailedServices = [
   },
   {
     name: 'Full & Deluxe Detail',
-    desc: 'Interior shampoo plus exterior wash and wax ($140), or add engine bay and trunk for the Deluxe ($160). The two packages most county customers book once or twice a year.',
+    desc: `Interior shampoo plus exterior wash and wax (${priceOf('full-detail')}), or add engine bay and trunk for the Deluxe (${priceOf('deluxe-detail')}). The two packages most county customers book once or twice a year.`,
   },
   {
     name: 'Ceramic Window Tint',
@@ -40,7 +38,7 @@ const detailedServices = [
   },
   {
     name: 'Clay Bar, Buff & Premium Wax',
-    desc: 'À la carte paint work: clay to strip bonded contaminants, a machine buff to clear swirls, and a premium wax to protect it — $70–$110 depending on the job.',
+    desc: `À la carte paint work: clay to strip bonded contaminants, a machine buff to clear swirls, and a premium wax to protect it — ${priceOf('a-la-carte')} depending on the job.`,
   },
   {
     name: 'Pre-Sale & Lease-Return Detail',
@@ -55,7 +53,7 @@ const whyUs = [
   },
   {
     name: 'Same Price for Everyone',
-    desc: '$35 to $160, listed publicly and the same whether you drive in from Hudson or walk over from downtown Blissfield.',
+    desc: `${PRICE_FROM} to ${PRICE_TO}, listed publicly and the same whether you drive in from Hudson or walk over from downtown Blissfield.`,
   },
   {
     name: 'A Lenawee Family Business',
@@ -74,7 +72,7 @@ const content = {
         across Lenawee County
       </>
     ),
-    lead: 'Hand car wash, full auto detailing and ceramic window tint from $35–$160 for every corner of Lenawee County — Adrian, Tecumseh, Hudson, Morenci, Clinton, Deerfield and the townships in between. Family-owned in Blissfield.',
+    lead: `Hand car wash, full auto detailing and ceramic window tint from ${PRICE_RANGE} for every corner of Lenawee County — Adrian, Tecumseh, Hudson, Morenci, Clinton, Deerfield and the townships in between. Family-owned in Blissfield.`,
   },
   location: {
     eyebrow: 'Serving all of Lenawee',
@@ -93,7 +91,7 @@ const content = {
     ],
   },
   packages: {
-    note: 'Flat, posted pricing for every vehicle in the county — from a $35 Spiffy to the $160 Deluxe.',
+    note: `Flat, posted pricing for every vehicle in the county — from a ${priceOf('spiffy-detail')} Spiffy to the ${priceOf('deluxe-detail')} Deluxe.`,
   },
   services: {
     title: 'Built for Lenawee County roads',

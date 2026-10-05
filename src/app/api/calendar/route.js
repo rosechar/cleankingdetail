@@ -1,5 +1,5 @@
 import { findPackage, site } from '@/data/site';
-import { DROP_OFF_WINDOW } from '@/data/booking';
+import { DROP_OFF, DROP_OFF_WINDOW } from '@/data/booking';
 
 // GET /api/calendar?date=YYYY-MM-DD&pkg=<id>
 // Serves a one-event .ics for the requested drop-off so the confirmation
@@ -14,13 +14,25 @@ const ics = (s) =>
     .replace(/([,;\\])/g, '\\$1')
     .replace(/\n/g, '\\n');
 
+/** "09:30" → "093000" (iCalendar local time). */
+const icsTime = (hhmm) => `${hhmm.replace(':', '')}00`;
+
+/** "YYYY-MM-DD" → "YYYYMMDD", or null unless it's a real calendar date. */
+function icsDate(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  if (!m) return null;
+  const [y, mo, d] = m.slice(1).map(Number);
+  const date = new Date(Date.UTC(y, mo - 1, d));
+  // Date rolls overflow forward (Feb 31 → Mar 3), so a mismatch means invalid.
+  if (date.getUTCMonth() !== mo - 1 || date.getUTCDate() !== d) return null;
+  return `${m[1]}${m[2]}${m[3]}`;
+}
+
 export function GET(req) {
   const { searchParams } = new URL(req.url);
-  const date = searchParams.get('date') || '';
+  const ymd = icsDate(searchParams.get('date') || '');
   const pkg = findPackage(searchParams.get('pkg'));
-  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
-  if (!m || !pkg) return new Response('Bad request', { status: 400 });
-  const ymd = `${m[1]}${m[2]}${m[3]}`;
+  if (!ymd || !pkg) return new Response('Bad request', { status: 400 });
 
   const summary = `Clean King drop-off — ${pkg.name}`;
   const description = [
@@ -43,8 +55,8 @@ export function GET(req) {
     'BEGIN:VEVENT',
     `UID:${ymd}-${pkg.id}@cleankingdetail.com`,
     `DTSTAMP:${stamp}`,
-    `DTSTART:${ymd}T093000`,
-    `DTEND:${ymd}T100000`,
+    `DTSTART:${ymd}T${icsTime(DROP_OFF.start)}`,
+    `DTEND:${ymd}T${icsTime(DROP_OFF.end)}`,
     `SUMMARY:${ics(summary)}`,
     `DESCRIPTION:${ics(description)}`,
     `LOCATION:${ics(location)}`,

@@ -18,6 +18,20 @@
   --color-line-2: rgb(255 255 255 / 0.26);
   --color-accent: #ed2f38;
   --color-on-accent: #fbfaf6;
+  /* inactive primary button: "not ready yet" (muted) and in-flight (disabled) */
+  --color-muted: #34343a;
+  --color-muted-hover: #3d3d44;
+  --color-fg-muted: #a9a59e;
+  --color-fg-disabled: #7a766f;
+  /* backdrop behind the three.js scenes (explorer car, booking celebration);
+     `stage` is also the WebGL clear colour so the canvas blends in */
+  --color-stage-hi: #23242b;
+  --color-stage: #141419;
+  --color-stage-lo: #0f0f12;
+
+  /* selected booking package card */
+  --shadow-accent-glow: 0 8px 22px
+    color-mix(in oklab, var(--color-accent) 16%, transparent);
 
   /* type families (next/font variables are set on <html>) */
   --font-display: var(--font-anton), 'Anton', sans-serif;
@@ -212,6 +226,24 @@
       color-mix(in oklch, var(--color-fg) 6%, transparent) 14px 15px
     ),
     var(--color-surface-2);
+}
+
+/* lit backdrop behind the 3D scenes: a soft top light (stage) and the round
+   booking-celebration variant (stage-round) */
+@utility bg-stage {
+  background-image: radial-gradient(
+    120% 90% at 50% 20%,
+    var(--color-stage-hi) 0%,
+    var(--color-stage-lo) 70%
+  );
+}
+@utility bg-stage-round {
+  background-image: radial-gradient(
+    closest-side,
+    var(--color-stage-hi) 0%,
+    var(--color-stage) 70%,
+    var(--color-stage-lo) 100%
+  );
 }
 
 /* frosted translucent panel (header, mobile nav, mobile CTA bar) */

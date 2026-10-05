@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { site } from '@/data/site';
+import { themeColor } from '@/components/ui/themeColor';
 
 const KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_STATIC_KEY;
 const WHERE = `${site.address1}, ${site.address2}`;
@@ -22,7 +23,7 @@ function thumbUrl({ mobile, aspect }) {
     zoom: String(zoom),
     size: `${w}x${h}`,
     scale: '2',
-    markers: `${mobile ? '' : 'size:mid|'}color:0xed2f38|${WHERE}`,
+    markers: `${mobile ? '' : 'size:mid|'}color:${themeColor('accent').replace('#', '0x')}|${WHERE}`,
     key: KEY,
   });
   return `https://maps.googleapis.com/maps/api/staticmap?${params.toString()}`;

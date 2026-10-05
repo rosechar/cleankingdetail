@@ -1,4 +1,5 @@
-import { site } from '@/data/site';
+import { PRICE_FROM, PRICE_RANGE, PRICE_TO, priceOf, site } from '@/data/site';
+import { DROP_OFF_START } from '@/data/booking';
 import AddressLink from '@/components/ui/AddressLink';
 import { locationSchema } from '@/data/locationSchema';
 import LocationPage from '@/components/location/LocationPage';
@@ -7,13 +8,11 @@ import JsonLd from '@/components/seo/JsonLd';
 const SLUG = '/car-detailing-ann-arbor-mi';
 
 export const metadata = {
-  title: 'Car Detailing near Ann Arbor, MI — From $35 | Clean King',
-  description:
-    'Ann Arbor-quality car detailing at small-town prices, from $35–$160. Hand wash, interior deep clean, paint correction and ceramic tint in Blissfield, about 45 minutes south on US-23. Call (517) 682-1919.',
+  title: `Car Detailing near Ann Arbor, MI — From ${PRICE_FROM} | Clean King`,
+  description: `Ann Arbor-quality car detailing at small-town prices, from ${PRICE_RANGE}. Hand wash, interior deep clean, paint correction and ceramic tint in Blissfield, about 45 minutes south on US-23. Call ${site.phone}.`,
   openGraph: {
-    title: 'Car Detailing near Ann Arbor, MI — From $35 | Clean King',
-    description:
-      'Hand car wash, auto detailing & ceramic window tinting for Ann Arbor, MI drivers. Flat pricing from $35–$160.',
+    title: `Car Detailing near Ann Arbor, MI — From ${PRICE_FROM} | Clean King`,
+    description: `Hand car wash, auto detailing & ceramic window tinting for Ann Arbor, MI drivers. Flat pricing from ${PRICE_RANGE}.`,
     url: SLUG,
   },
   alternates: {
@@ -23,7 +22,7 @@ export const metadata = {
 
 const detailedServices = [
   {
-    name: 'Full Detail — $140',
+    name: `Full Detail — ${priceOf('full-detail')}`,
     desc: 'The package Ann Arbor drivers compare us on: complete interior shampoo and conditioning plus a hand wash, jambs, wheels, glass and wax. Typically half of what the same job costs inside the city.',
   },
   {
@@ -32,7 +31,7 @@ const detailedServices = [
   },
   {
     name: 'Paint Correction & Premium Wax',
-    desc: 'Clay bar, machine buff and a premium hand wax to clear swirls from years of touchless washes and bring the depth back to dark paint. À la carte, $70–$110.',
+    desc: `Clay bar, machine buff and a premium hand wax to clear swirls from years of touchless washes and bring the depth back to dark paint. À la carte, ${priceOf('a-la-carte')}.`,
   },
   {
     name: 'Ceramic Window Tint',
@@ -55,7 +54,7 @@ const whyUs = [
   },
   {
     name: 'Small-Town Pricing',
-    desc: '$35 to $160 for the same interior-and-exterior work you would pay considerably more for near campus or in Saline. Prices are posted, no quotes needed.',
+    desc: `${PRICE_FROM} to ${PRICE_TO} for the same interior-and-exterior work you would pay considerably more for near campus or in Saline. Prices are posted, no quotes needed.`,
   },
   {
     name: 'Detailed By Hand',
@@ -74,13 +73,13 @@ const content = {
         near Ann Arbor, MI
       </>
     ),
-    lead: 'City-quality hand detailing without the city price. Clean King is a family-owned shop in Blissfield, about 45 minutes south of Ann Arbor on US-23, with flat-priced packages from $35–$160.',
+    lead: `City-quality hand detailing without the city price. Clean King is a family-owned shop in Blissfield, about 45 minutes south of Ann Arbor on US-23, with flat-priced packages from ${PRICE_RANGE}.`,
   },
   location: {
     eyebrow: 'Serving Ann Arbor & Washtenaw',
     title: 'Why Ann Arbor drivers head south',
     description: [
-      'We will be honest: Blissfield is not around the corner from Ann Arbor. It is about 45 minutes down US-23. Ann Arbor customers come anyway because a hand-done Full Detail here runs $140 with no add-on surprises, and a car dropped off at 9:30 is ready the same afternoon.',
+      `We will be honest: Blissfield is not around the corner from Ann Arbor. It is about 45 minutes down US-23. Ann Arbor customers come anyway because a hand-done Full Detail here runs ${priceOf('full-detail')} with no add-on surprises, and a car dropped off at ${DROP_OFF_START} is ready the same afternoon.`,
       'It works best as a planned trip — a student car before a move-out, a lease return, a car you are about to sell, or a family vehicle that has not had a real interior clean in years. Book the package online, drive down, grab lunch in town, and drive home in a car that looks new.',
     ],
     info: [

@@ -1,27 +1,42 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Pause, Play } from 'lucide-react';
 import { site } from '@/data/site';
 import Eyebrow from '@/components/ui/Eyebrow';
 import Stars from '@/components/ui/Stars';
 import { cn } from '@/components/ui/cn';
 import { GExternal } from './Icons';
 
+const ROTATE_MS = 6000;
+
 export default function ReviewsCarousel() {
   const reviews = site.reviews;
   const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
+  // Auto-advance is off for a single review and under reduced motion; decided
+  // after mount since the media query only exists in the browser.
+  const [autoplay, setAutoplay] = useState(false);
+  // Pointer or keyboard focus inside the section holds the current review.
+  const [held, setHeld] = useState(false);
+  // The visible pause button (WCAG 2.2.2) — the only stop touch users have.
+  const [stopped, setStopped] = useState(false);
+  const rotating = autoplay && !held && !stopped;
 
   useEffect(() => {
-    if (reviews.length < 2 || paused) return;
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (mq.matches) return;
+    setAutoplay(
+      reviews.length > 1 &&
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    );
+  }, [reviews.length]);
+
+  useEffect(() => {
+    if (!rotating) return;
     const id = setInterval(
       () => setIndex((prev) => (prev + 1) % reviews.length),
-      6000
+      ROTATE_MS
     );
     return () => clearInterval(id);
-  }, [paused, reviews.length]);
+  }, [rotating, reviews.length]);
 
   return (
     // Sits between the borderless services preview and the location
@@ -30,10 +45,10 @@ export default function ReviewsCarousel() {
     <section
       className="border-t border-line px-page py-section md:border-b"
       id="reviews"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
+      onMouseEnter={() => setHeld(true)}
+      onMouseLeave={() => setHeld(false)}
+      onFocus={() => setHeld(true)}
+      onBlur={() => setHeld(false)}
     >
       <Eyebrow as="h2" className="mx-auto mb-7 max-w-5xl md:mb-9">
         Our customers love us, and you will too
@@ -50,7 +65,9 @@ export default function ReviewsCarousel() {
         </div>
         {/* all reviews stacked in one grid cell so the block stays as tall as
             the longest review (no layout shift); only the active one shows. */}
-        <div className="grid">
+        {/* Announce review changes only when they're user-driven, not every
+            auto-advance. */}
+        <div className="grid" aria-live={rotating ? 'off' : 'polite'}>
           {reviews.map((rev, idx) => (
             <blockquote
               key={idx}
@@ -114,6 +131,26 @@ export default function ReviewsCarousel() {
                   />
                 </button>
               ))}
+              {autoplay && (
+                <button
+                  type="button"
+                  className="-my-3 ml-1 flex cursor-pointer items-center px-1.5 py-3 text-fg-3 transition-colors hover:text-fg"
+                  aria-label={stopped ? 'Play reviews' : 'Pause reviews'}
+                  onClick={() => setStopped((s) => !s)}
+                >
+                  {stopped ? (
+                    <Play
+                      className="size-3.5 fill-current"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    <Pause
+                      className="size-3.5 fill-current"
+                      aria-hidden="true"
+                    />
+                  )}
+                </button>
+              )}
             </div>
           )}
         </div>

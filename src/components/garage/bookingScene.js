@@ -13,11 +13,11 @@ const LOOP = 8;
 /**
  * @param {HTMLElement} host   block element the canvas is appended to
  * @param {object} [opts]
- * @param {string}  [opts.accent]         paint / badge colour
+ * @param {string}  opts.accent           paint / badge colour (theme --color-accent)
  * @param {boolean} [opts.reducedMotion]  render a single still frame instead of animating
  */
 export function createBookingScene(host, opts = {}) {
-  const accent = new THREE.Color(opts.accent || '#ed2f38');
+  const accent = new THREE.Color(opts.accent);
   const reduced = !!opts.reducedMotion;
   let dead = false;
   let raf = 0;

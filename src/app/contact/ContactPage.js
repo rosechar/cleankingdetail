@@ -6,6 +6,7 @@ import { site } from '@/data/site';
 import { faqs } from '@/data/faqs';
 import { HONEYPOT_FIELD } from '@/lib/honeypot';
 import { isEmail, isPhone } from '@/lib/validation';
+import { postForm } from '@/lib/postForm';
 import {
   GPin,
   GPhone,
@@ -13,7 +14,10 @@ import {
   GFacebook,
   GGoogle,
 } from '@/components/garage/Icons';
+import FieldError, { fieldErrorProps } from '@/components/forms/FieldError';
+import { INPUT_BASE, INPUT_INVALID } from '@/components/forms/fieldStyles';
 import HoneypotField from '@/components/forms/HoneypotField';
+import OptInCheckbox from '@/components/forms/OptInCheckbox';
 import Req from '@/components/forms/Req';
 import MapEmbed from '@/components/garage/MapEmbed';
 import Button from '@/components/ui/Button';
@@ -24,9 +28,7 @@ import Faq from '@/components/ui/Faq';
 import { cn } from '@/components/ui/cn';
 import { RISE, riseDelay } from '@/components/ui/rise';
 
-// 16px (not 15) so iOS Safari doesn't auto-zoom on focus.
-const INPUT =
-  'w-full border border-line-2 bg-canvas px-3.5 py-3.25 font-body text-base text-fg transition-colors focus:border-accent';
+const INPUT = cn(INPUT_BASE, 'bg-canvas px-3.5 py-3.25 font-body text-base');
 const LABEL = 'font-mono text-xs uppercase tracking-label text-fg-3';
 const FIELD = 'flex flex-col gap-1.75';
 // Icon-only social links, same treatment as the footer, just bigger.
@@ -59,37 +61,50 @@ export default function ContactPage() {
   const [sent, setSent] = useState(false);
   const [err, setErr] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  // Field errors only show once a submit has been tried, then track edits live.
+  const [attempted, setAttempted] = useState(false);
   const set = (key, value) => {
     setForm((prev) => ({ ...prev, [key]: value }));
     setErr('');
   };
 
+  const fieldErrors = {
+    name: form.name.trim() ? '' : 'Enter your name.',
+    phone: isPhone(form.phone) ? '' : 'Enter a valid phone number.',
+    email:
+      form.email.trim() && !isEmail(form.email)
+        ? 'Enter a valid email address or leave it blank.'
+        : '',
+  };
+  const errors = attempted ? fieldErrors : {};
+
   const submit = async (e) => {
     e.preventDefault();
-    if (!form.name.trim()) return setErr('Please enter your name.');
-    if (!isPhone(form.phone)) return setErr('Enter a valid phone number.');
-    if (form.email.trim() && !isEmail(form.email))
-      return setErr('Enter a valid email address or leave it blank.');
+    const firstInvalid = Object.keys(fieldErrors).find((k) => fieldErrors[k]);
+    if (firstInvalid) {
+      setAttempted(true);
+      document.getElementById(`ct-${firstInvalid}`)?.focus();
+      return;
+    }
 
     setErr('');
     setSubmitting(true);
     try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      await postForm(
+        '/api/contact',
+        {
           name: form.name,
           phone: form.phone,
           email: form.email,
           message: form.msg,
           optIn: form.optIn,
           [HONEYPOT_FIELD]: form.honeypot,
-        }),
-      });
-      if (!res.ok) throw new Error('Request failed');
+        },
+        'Something went wrong sending your message. Please call us.'
+      );
       setSent(true);
-    } catch {
-      setErr('Something went wrong sending your message. Please call us.');
+    } catch (error) {
+      setErr(error.message);
     } finally {
       setSubmitting(false);
     }
@@ -202,13 +217,15 @@ export default function ContactPage() {
                     </label>
                     <input
                       id="ct-name"
-                      className={INPUT}
+                      className={cn(INPUT, errors.name && INPUT_INVALID)}
                       value={form.name}
                       onChange={(e) => set('name', e.target.value)}
                       placeholder="Jane Doe"
                       autoComplete="name"
                       required
+                      {...fieldErrorProps('ct-name', errors.name)}
                     />
+                    <FieldError id="ct-name">{errors.name}</FieldError>
                   </div>
                   <div className={FIELD}>
                     <label htmlFor="ct-phone" className={LABEL}>
@@ -217,7 +234,7 @@ export default function ContactPage() {
                     </label>
                     <input
                       id="ct-phone"
-                      className={INPUT}
+                      className={cn(INPUT, errors.phone && INPUT_INVALID)}
                       type="tel"
                       inputMode="tel"
                       value={form.phone}
@@ -225,7 +242,9 @@ export default function ContactPage() {
                       placeholder="(517) 000-0000"
                       autoComplete="tel"
                       required
+                      {...fieldErrorProps('ct-phone', errors.phone)}
                     />
+                    <FieldError id="ct-phone">{errors.phone}</FieldError>
                   </div>
                   <div className={cn(FIELD, 'sm:col-span-2')}>
                     <label htmlFor="ct-email" className={LABEL}>
@@ -233,14 +252,16 @@ export default function ContactPage() {
                     </label>
                     <input
                       id="ct-email"
-                      className={INPUT}
+                      className={cn(INPUT, errors.email && INPUT_INVALID)}
                       type="email"
                       inputMode="email"
                       value={form.email}
                       onChange={(e) => set('email', e.target.value)}
                       placeholder="you@email.com"
                       autoComplete="email"
+                      {...fieldErrorProps('ct-email', errors.email)}
                     />
+                    <FieldError id="ct-email">{errors.email}</FieldError>
                   </div>
                   <div className={cn(FIELD, 'sm:col-span-2')}>
                     <label htmlFor="ct-message" className={LABEL}>
@@ -255,15 +276,12 @@ export default function ContactPage() {
                     />
                   </div>
                 </div>
-                <label className="mt-5 flex cursor-pointer items-start gap-2.5 text-sm leading-normal text-fg-3">
-                  <input
-                    className="mt-0.5 size-4 shrink-0 cursor-pointer accent-accent"
-                    type="checkbox"
-                    checked={form.optIn}
-                    onChange={(e) => set('optIn', e.target.checked)}
-                  />
-                  Send me occasional offers and detailing tips from Clean King.
-                </label>
+                <OptInCheckbox
+                  id="ct-optin"
+                  checked={form.optIn}
+                  onChange={(checked) => set('optIn', checked)}
+                  className="mt-5"
+                />
                 {err && (
                   <p
                     className="mt-3.5 text-sm font-medium text-accent"

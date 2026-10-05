@@ -14,6 +14,7 @@ export default function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
+  const toggleRef = useRef(null);
 
   // Publish the rendered header height as --header-h so things that stack
   // under it (mobile nav panel, booking step bar) line up exactly instead of
@@ -38,6 +39,28 @@ export default function Header() {
     setOpen(false);
   }, [pathname]);
 
+  // Escape closes the open menu and hands focus back to the toggle.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => {
+      if (e.key !== 'Escape') return;
+      setOpen(false);
+      toggleRef.current?.focus();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open]);
+
+  // Close the menu once keyboard focus leaves the header (e.g. tabbing past
+  // the last link) so the panel never sits over the page focus moved into.
+  // A null relatedTarget (clicks on non-focusable spots, Safari's unfocused
+  // link taps) is ignored so it can't hide the menu mid-tap.
+  const onBlur = (e) => {
+    if (open && e.relatedTarget && !e.currentTarget.contains(e.relatedTarget)) {
+      setOpen(false);
+    }
+  };
+
   // Home hero: the header stays off-screen so the photo owns the whole first
   // screen, then slides in (with the mobile CTA bar — shared threshold in
   // heroReveal) once the hero has scrolled away.
@@ -52,6 +75,7 @@ export default function Header() {
     // hidden, so header + menu are ONE blur surface with no seam.
     <header
       ref={ref}
+      onBlur={onBlur}
       className={cn(
         "sticky top-0 z-40 flex items-center justify-between gap-6 border-b px-page py-2 before:absolute before:inset-0 before:-z-1 before:bg-canvas/82 before:backdrop-frost before:content-[''] md:border-line md:py-3.5",
         open ? 'border-transparent before:hidden' : 'border-line',
@@ -78,6 +102,38 @@ export default function Header() {
           className="size-16 md:size-22"
         />
       </Link>
+
+      {/* Before the nav in the DOM (it's absolutely positioned on phones, so
+          the visual order is unchanged) so Tab goes from the toggle straight
+          into the open menu. */}
+      <button
+        ref={toggleRef}
+        type="button"
+        className="-m-2 flex size-10.5 shrink-0 cursor-pointer flex-col items-center justify-center gap-1.25 md:hidden"
+        aria-label={open ? 'Close menu' : 'Open menu'}
+        aria-expanded={open}
+        aria-controls="site-nav"
+        onClick={() => setOpen((o) => !o)}
+      >
+        <span
+          className={cn(
+            'block h-0.5 w-6 bg-fg transition-transform duration-200',
+            open && 'translate-y-1.75 rotate-45'
+          )}
+        />
+        <span
+          className={cn(
+            'block h-0.5 w-6 bg-fg transition-opacity duration-200',
+            open && 'opacity-0'
+          )}
+        />
+        <span
+          className={cn(
+            'block h-0.5 w-6 bg-fg transition-transform duration-200',
+            open && '-translate-y-1.75 -rotate-45'
+          )}
+        />
+      </button>
 
       <nav
         id="site-nav"
@@ -114,34 +170,6 @@ export default function Header() {
           Book Now
         </Button>
       </div>
-
-      <button
-        type="button"
-        className="-m-2 flex size-10.5 shrink-0 cursor-pointer flex-col items-center justify-center gap-1.25 md:hidden"
-        aria-label={open ? 'Close menu' : 'Open menu'}
-        aria-expanded={open}
-        aria-controls="site-nav"
-        onClick={() => setOpen((o) => !o)}
-      >
-        <span
-          className={cn(
-            'block h-0.5 w-6 bg-fg transition-transform duration-200',
-            open && 'translate-y-1.75 rotate-45'
-          )}
-        />
-        <span
-          className={cn(
-            'block h-0.5 w-6 bg-fg transition-opacity duration-200',
-            open && 'opacity-0'
-          )}
-        />
-        <span
-          className={cn(
-            'block h-0.5 w-6 bg-fg transition-transform duration-200',
-            open && '-translate-y-1.75 -rotate-45'
-          )}
-        />
-      </button>
     </header>
   );
 }

@@ -94,3 +94,17 @@ export function GGoogle(props) {
     </svg>
   );
 }
+
+/** Small 12×12 check used inside radios, step dots and checkboxes. */
+export function GTick(props) {
+  return (
+    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" {...props}>
+      <path
+        d="M2 6.5l2.5 2.5L10 3"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}

@@ -2,9 +2,12 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { packages, findPackage } from '@/data/site';
+import { packages, packagesByPrice, findPackage } from '@/data/site';
+import { lineItemsOf, zoneOf, ZONES } from '@/data/coverage';
 import { cn } from '@/components/ui/cn';
+import ItemList from '@/components/ui/ItemList';
 import SectionHead from '@/components/ui/SectionHead';
+import { themeColor } from '@/components/ui/themeColor';
 
 // "What gets touched, where" — an interactive low-poly car. Tap a panel on
 // the car (or a zone chip) to see the line items a package covers there,
@@ -12,7 +15,6 @@ import SectionHead from '@/components/ui/SectionHead';
 // compare. The three.js scene lives in ./carScene.js and is only fetched
 // once the viewer scrolls near.
 
-const ZONES = ['paint', 'wheels', 'glass', 'cabin', 'engine', 'trunk'];
 const ZONE_LABEL = {
   paint: 'Paint & panels',
   wheels: 'Wheels & tires',
@@ -30,25 +32,12 @@ const ZONE_SHORT = {
   trunk: 'Trunk',
 };
 
-// Package line item → car zone. Keyword matching (first hit wins) so new
-// items in data/site.js land somewhere sensible without touching this file.
-const ZONE_RULES = [
-  ['trunk', /^vacuum trunk$|trunk channels/i],
-  ['engine', /engine/i],
-  ['glass', /glass|window/i],
-  ['wheels', /tire|wheel/i],
-  ['cabin', /interior|upholster|carpet|dash|door panel|instrument|vent|seat/i],
-];
-const zoneOf = (label) =>
-  (ZONE_RULES.find(([, re]) => re.test(label)) || ['paint'])[0];
-
 /** Every line item a package delivers (own + inherited), deduped, by zone. */
 const itemsByZone = (pkg) => {
   const out = Object.fromEntries(ZONES.map((z) => [z, []]));
-  const all = [
-    ...(pkg.details || pkg.items || []),
-    ...(pkg.includes || []),
-  ].filter((label, i, arr) => arr.indexOf(label) === i);
+  const all = lineItemsOf(pkg).filter(
+    (label, i, arr) => arr.indexOf(label) === i
+  );
   all.forEach((label) => {
     // "All Glass Cleaned (Interior Only)" is subsumed by the
     // "(Interior & Exterior)" line when a package has both.
@@ -67,20 +56,11 @@ const COVERAGE = Object.fromEntries(
   packages.map((p) => [p.id, itemsByZone(p)])
 );
 
-// Order the package switcher cheapest → priciest, à la carte last.
-const PKG_ORDER = [
-  'spiffy-detail',
-  'interior-detail',
-  'full-detail',
-  'deluxe-detail',
-  'a-la-carte',
-];
-const PKGS = PKG_ORDER.map((id) => findPackage(id)).filter(Boolean);
 const DEFAULT_PKG = 'deluxe-detail';
 
 /** Other packages that do cover zone `z`. */
 const alsoIn = (pkgId, z) =>
-  PKGS.filter((p) => p.id !== pkgId && COVERAGE[p.id][z].length);
+  packagesByPrice.filter((p) => p.id !== pkgId && COVERAGE[p.id][z].length);
 
 const MONO = 'font-mono text-[10px] tracking-[.12em] uppercase';
 
@@ -114,8 +94,8 @@ function CarViewer({ zone, coverage, onPick, className }) {
           window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ??
           false;
         const ctl = createCarScene(host, {
-          accent: '#ed2f38',
-          bg: '#141419',
+          accent: themeColor('accent'),
+          bg: themeColor('stage'),
           fx: 'scrub',
           reducedMotion,
           onPick: (z) => onPickRef.current?.(z),
@@ -164,7 +144,7 @@ function CarViewer({ zone, coverage, onPick, className }) {
   return (
     <div
       className={cn(
-        'relative overflow-hidden border border-line bg-[radial-gradient(120%_90%_at_50%_20%,#22232a_0%,#101014_70%)]',
+        'relative overflow-hidden border border-line bg-stage',
         className
       )}
     >
@@ -203,32 +183,6 @@ function CarViewer({ zone, coverage, onPick, className }) {
 /* ------------------------------------------------------------------ */
 /* Section                                                             */
 /* ------------------------------------------------------------------ */
-
-function ItemList({ items, className }) {
-  return (
-    <ul
-      className={cn(
-        'grid grid-cols-1 gap-x-[clamp(14px,3vw,30px)] sm:grid-cols-2',
-        className
-      )}
-    >
-      {items.map((it) => (
-        <li
-          key={it}
-          className="flex items-baseline gap-2.5 py-1.75 text-[15px] leading-[1.45] text-fg-2 sm:text-base"
-        >
-          <span
-            className="flex-none text-[10px] text-accent"
-            aria-hidden="true"
-          >
-            ■
-          </span>
-          <span className="flex-1">{it}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
 
 /** "Not in this package — but it is in: …" with one-tap package switches. */
 function AlsoIn({ note, pkgs, onPick, className }) {
@@ -295,7 +249,7 @@ export default function CarExplorer({
     [onPkgChange]
   );
   const [zone, setZone] = useState('');
-  const pkg = findPackage(pkgId) || PKGS[0];
+  const pkg = findPackage(pkgId) || packagesByPrice[0];
   const coverage = COVERAGE[pkg.id];
   const coveredZones = useMemo(
     () => ZONES.filter((z) => coverage[z].length > 0),
@@ -373,7 +327,7 @@ export default function CarExplorer({
           aria-label="Package"
         >
           <span className={cn(MONO, 'mr-1 text-fg-3')}>Package</span>
-          {PKGS.map((p) => {
+          {packagesByPrice.map((p) => {
             const active = p.id === pkg.id;
             return (
               <button
@@ -511,7 +465,11 @@ export default function CarExplorer({
                   {panel.sub}
                 </p>
                 {panel.items.length > 0 ? (
-                  <ItemList items={panel.items} />
+                  <ItemList
+                    items={panel.items}
+                    columns
+                    className="sm:grid-cols-2"
+                  />
                 ) : (
                   <AlsoIn
                     note={panel.note}

@@ -55,9 +55,9 @@ export default function Footer() {
             ))}
           </div>
           <div className="flex flex-wrap gap-5.5">
-            {AREA_LINKS.map(({ href, label }) => (
+            {AREA_LINKS.map(({ href, linkText }) => (
               <Link key={href} className={LINK} href={href}>
-                {label}
+                {linkText}
               </Link>
             ))}
           </div>

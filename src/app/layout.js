@@ -55,6 +55,10 @@ export const metadata = {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
       { url: '/icon-96.png', type: 'image/png', sizes: '96x96' },
+      // Google Search shows the favicon at up to ~60px on high-DPI phones and
+      // wants a square multiple of 48px; without a large source it upscales
+      // the .ico and the badge comes out blurry.
+      { url: '/icon-192.png', type: 'image/png', sizes: '192x192' },
     ],
     shortcut: ['/favicon.ico'],
     apple: [{ url: '/apple-icon.png', sizes: '180x180' }],

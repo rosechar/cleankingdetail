@@ -9,10 +9,29 @@ export const NAV_LINKS = [
   { href: '/contact', label: 'Contact' },
 ];
 
-// City / county landing pages (footer + sitemap).
+// City / county landing pages (footer, sitemap, "Proudly serving" chips).
+// `label` is the short chip text; `linkText` is the footer link, worded as
+// what the page is about — Google builds sitelink titles partly from internal
+// link text, and a bare "Adrian" there is what it ends up showing.
 export const AREA_LINKS = [
-  { href: '/car-detailing-adrian-mi', label: 'Adrian' },
-  { href: '/car-detailing-tecumseh-mi', label: 'Tecumseh' },
-  { href: '/car-detailing-ann-arbor-mi', label: 'Ann Arbor' },
-  { href: '/car-detailing-lenawee-county', label: 'Lenawee County' },
+  {
+    href: '/car-detailing-adrian-mi',
+    label: 'Adrian',
+    linkText: 'Adrian car detailing',
+  },
+  {
+    href: '/car-detailing-tecumseh-mi',
+    label: 'Tecumseh',
+    linkText: 'Tecumseh car detailing',
+  },
+  {
+    href: '/car-detailing-ann-arbor-mi',
+    label: 'Ann Arbor',
+    linkText: 'Ann Arbor car detailing',
+  },
+  {
+    href: '/car-detailing-lenawee-county',
+    label: 'Lenawee County',
+    linkText: 'Lenawee County car detailing',
+  },
 ];

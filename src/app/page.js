@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { site, packages } from '@/data/site';
+import { site, packagesByPrice } from '@/data/site';
 import { AREA_LINKS } from '@/data/nav';
 import ReviewsCarousel from '@/components/garage/ReviewsCarousel';
 import Button from '@/components/ui/Button';
@@ -245,10 +245,14 @@ const Home = () => {
           </Link>
         </SectionHead>
         <PackageGrid>
-          {packages.map((s) => (
+          {packagesByPrice.map((s) => (
             <PackageCard
               as={Link}
-              href={`/services#${s.id}`}
+              // À La Carte has no package card on /services, just the
+              // add-ons section.
+              href={
+                s.id === 'a-la-carte' ? '/services#addons' : `/services#${s.id}`
+              }
               key={s.name}
               name={s.name}
               price={s.price}

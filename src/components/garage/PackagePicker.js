@@ -2,25 +2,20 @@
 
 import { Fragment, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { findPackage, packagesByPrice } from '@/data/site';
+import { packagesByPrice } from '@/data/site';
 import { lineItemsOf, zoneOf } from '@/data/coverage';
 import { cn } from '@/components/ui/cn';
 import ItemList from '@/components/ui/ItemList';
+import { GArrow } from './Icons';
 
 // Services page package browser: a grid of full package cards (name, price,
 // blurb, collapsible line items + inherited-services accordion), or a
 // "Compare all" matrix grouped into accordion sections. Tapping a card or a
 // table column heading goes straight to booking with that package selected.
 
-// Card columns: Full + Interior on the left, Deluxe, Spiffy and À La Carte on
-// the right (md+). Phones read left column then right, top to bottom.
-const CARD_COLUMNS = [
-  ['full-detail', 'interior-detail'],
-  ['deluxe-detail', 'spiffy-detail', 'a-la-carte'],
-];
-
-const byIds = (ids) => ids.map((id) => findPackage(id)).filter(Boolean);
-const cardColumns = CARD_COLUMNS.map(byIds);
+// Cheapest first, like every other package list. À La Carte isn't a package
+// here — the page's "À la carte & add-ons" section covers it.
+const PACKAGES = packagesByPrice.filter((p) => p.id !== 'a-la-carte');
 
 // Compare-all sections, built from the car zones in data/coverage.
 const SECTION_OF_ZONE = {
@@ -35,7 +30,7 @@ const ORDER = ['Interior', 'Exterior', 'Glass', 'Trunk & engine bay'];
 
 function buildRows() {
   const universe = [];
-  packagesByPrice.forEach((p) =>
+  PACKAGES.forEach((p) =>
     lineItemsOf(p).forEach((label) => {
       if (!universe.includes(label)) universe.push(label);
     })
@@ -76,7 +71,13 @@ function PlusIcon({ open }) {
 /** Collapsible item list ("What's included", "Includes <tier> services").
  *  `defaultOpen` is honoured on mount and whenever it flips to true (deep
  *  links from the home page open that package's lists). */
-function Includes({ title, items, defaultOpen = false, columns = false }) {
+function Includes({
+  title,
+  items,
+  defaultOpen = false,
+  columns = false,
+  className,
+}) {
   const [open, setOpen] = useState(defaultOpen);
   useEffect(() => {
     if (defaultOpen) setOpen(true);
@@ -85,7 +86,7 @@ function Includes({ title, items, defaultOpen = false, columns = false }) {
   const stop = (e) => e.stopPropagation();
   return (
     <div
-      className="relative z-1 border-t border-line"
+      className={cn('relative z-1 border-t border-line', className)}
       onClick={stop}
       onKeyDown={stop}
     >
@@ -119,7 +120,7 @@ function PackageCard({ pkg, expanded }) {
     <article
       id={pkg.id}
       className={cn(
-        'relative flex scroll-mt-28 flex-col border border-line bg-surface transition-colors duration-[180ms] focus-within:border-line-2 hover:border-line-2',
+        'group relative flex scroll-mt-28 flex-col border border-line bg-surface transition-colors duration-[180ms] focus-within:border-line-2 hover:border-line-2',
         pkg.popular && 'border-l-[3px] border-l-accent hover:border-l-accent'
       )}
     >
@@ -130,7 +131,7 @@ function PackageCard({ pkg, expanded }) {
         className="absolute inset-0 z-0"
         aria-label={`Book ${pkg.name}`}
       />
-      <div className="flex-1 p-4 sm:p-5.5">
+      <div className="p-4 sm:p-5.5">
         <div className="flex items-start justify-between gap-3">
           <h2 className="font-display text-[26px] leading-[.95] uppercase">
             {pkg.name}
@@ -146,8 +147,22 @@ function PackageCard({ pkg, expanded }) {
             </span>
           )}
         </div>
-        <div className="mt-3 font-display text-[30px] leading-none whitespace-nowrap text-accent tabular-nums">
-          {pkg.price}
+        {/* visible "this books" cue — the stretched link above carries the
+            accessible name, so this is decorative */}
+        <div className="mt-3 flex items-baseline justify-between gap-3">
+          <div className="font-display text-[30px] leading-none whitespace-nowrap text-accent tabular-nums">
+            {pkg.price}
+          </div>
+          <span
+            className={cn(
+              MONO_LABEL,
+              'inline-flex items-center gap-1.5 text-xs tracking-label whitespace-nowrap text-fg-2 transition-colors group-hover:text-fg'
+            )}
+            aria-hidden="true"
+          >
+            Book {pkg.short}
+            <GArrow className="size-3.5 shrink-0 fill-none stroke-accent stroke-2 transition-transform duration-200 group-hover:translate-x-1" />
+          </span>
         </div>
         <p className="mt-3 text-sm leading-normal text-fg-2">{pkg.blurb}</p>
       </div>
@@ -168,6 +183,7 @@ function PackageCard({ pkg, expanded }) {
           items={pkg.includes}
           defaultOpen={expanded}
           columns
+          className="mt-auto"
         />
       )}
     </article>
@@ -202,7 +218,7 @@ function CompareTable() {
               >
                 Service
               </th>
-              {packagesByPrice.map((p) => (
+              {PACKAGES.map((p) => (
                 <th
                   key={p.id}
                   scope="col"
@@ -228,7 +244,7 @@ function CompareTable() {
                   <tr>
                     <th
                       scope="rowgroup"
-                      colSpan={packagesByPrice.length + 1}
+                      colSpan={PACKAGES.length + 1}
                       className="border-t border-line bg-surface-2 p-0 text-left font-normal"
                     >
                       <button
@@ -254,7 +270,7 @@ function CompareTable() {
                         >
                           {label}
                         </th>
-                        {packagesByPrice.map((p) => {
+                        {PACKAGES.map((p) => {
                           const on = lineItemsOf(p).includes(label);
                           return (
                             <td
@@ -292,7 +308,7 @@ export default function PackagePicker() {
   // than hard against it; a card taller than that space just top-aligns.
   useEffect(() => {
     const id = window.location.hash.slice(1);
-    if (!id || !findPackage(id)) return;
+    if (!PACKAGES.some((p) => p.id === id)) return;
     setExpanded(id);
     const timer = setTimeout(() => {
       const el = document.getElementById(id);
@@ -347,16 +363,12 @@ export default function PackagePicker() {
         </div>
       </div>
 
-      {/* items-start: each column is its own stack, so expanding a card on one
-          side must not re-center (and visibly shift) the other column. */}
+      {/* Cards in a row share a height; the inherited-services accordion is
+          pushed to the bottom so paired accordions line up. */}
       {layout === 'packages' ? (
-        <div className="mx-auto grid max-w-6xl grid-cols-1 items-start gap-10 md:grid-cols-2">
-          {cardColumns.map((col, i) => (
-            <div key={i} className="flex flex-col gap-10">
-              {col.map((p) => (
-                <PackageCard key={p.id} pkg={p} expanded={expanded === p.id} />
-              ))}
-            </div>
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 md:grid-cols-2">
+          {PACKAGES.map((p) => (
+            <PackageCard key={p.id} pkg={p} expanded={expanded === p.id} />
           ))}
         </div>
       ) : (

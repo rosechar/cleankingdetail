@@ -6,7 +6,12 @@ import Faq from '@/components/ui/Faq';
 import PackagePicker from '@/components/garage/PackagePicker';
 import Button from '@/components/ui/Button';
 import CtaBand from '@/components/ui/CtaBand';
-import { FeatureCard, FeatureRail } from '@/components/ui/FeatureCard';
+import {
+  FeatureCard,
+  FeatureGrid,
+  FeatureRail,
+} from '@/components/ui/FeatureCard';
+import { PICKUP_NOTE } from '@/data/booking';
 import PageHero from '@/components/ui/PageHero';
 import SectionHead from '@/components/ui/SectionHead';
 
@@ -58,7 +63,14 @@ export default function Services() {
               price={alaCarte.price}
               description="Pick exactly what your car needs — no full package required."
               items={alaCarte.items}
-            />
+            >
+              <Link
+                href={`/appointment?pkg=${alaCarte.id}`}
+                className="mt-auto pt-5 text-sm text-accent"
+              >
+                Book à la carte →
+              </Link>
+            </FeatureCard>
             {site.addons.map((a) => (
               <FeatureCard
                 key={a.name}
@@ -75,6 +87,40 @@ export default function Services() {
               Ask us for a recommendation →
             </Link>
           </p>
+        </div>
+      </section>
+
+      {/* how it works — the shop is drop-off only, so set that expectation
+          before the FAQ and booking band */}
+      <section className="border-t border-line px-page py-section" id="how">
+        <div className="mx-auto max-w-6xl">
+          <SectionHead
+            eyebrow="How it works"
+            title={
+              <>
+                Morning drop-off,
+                <br />
+                same-day pickup
+              </>
+            }
+          />
+          <FeatureGrid>
+            <FeatureCard
+              tag="Step 01"
+              title="Book online"
+              description="Pick a package and a weekday. We'll call to confirm your spot."
+            />
+            <FeatureCard
+              tag="Step 02"
+              title="Morning drop off"
+              description="A morning start gives us time to give your vehicle the thorough attention it deserves."
+            />
+            <FeatureCard
+              tag="Step 03"
+              title="Same day pickup"
+              description={PICKUP_NOTE}
+            />
+          </FeatureGrid>
         </div>
       </section>
 

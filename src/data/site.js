@@ -23,7 +23,14 @@ export const site = {
   hoursNote: 'Mon–Fri · 9 AM – 6 PM',
   // schema.org openingHours form of `hoursNote`.
   openingHours: ['Mo-Fr 09:00-18:00'],
-  areas: ['Blissfield', 'Adrian', 'Tecumseh', 'Monroe', 'Lenawee County'],
+  areas: [
+    'Blissfield',
+    'Adrian',
+    'Tecumseh',
+    'Ann Arbor',
+    'Monroe',
+    'Lenawee County',
+  ],
   // Google review summary shown as the hero trust strip. IMPORTANT: keep these
   // in sync with your live Google Business Profile — `score` is the average
   // rating, `count` is how many reviews you have. Set `count` to null to show

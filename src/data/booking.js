@@ -32,7 +32,9 @@ export const DROP_OFF_WINDOW =
     ? `${dropStart.time}–${dropEnd.time} ${dropEnd.period}`
     : `${DROP_OFF_START}–${dropEnd.time} ${dropEnd.period}`;
 
-export const DROP_OFF_NOTE = `To ensure we can deliver the highest quality detail, we ask that you drop off your vehicle between ${DROP_OFF_WINDOW}.`;
+/** Turnaround varies by package, but it's almost always same-day. */
+export const PICKUP_NOTE =
+  'Pickup time varies by vehicle and package. To give the best detail, we give every car the time it deserves.';
 
 /** Marketing opt-in wording, shared by the booking and contact forms. */
 export const OPT_IN_LABEL =

@@ -6,7 +6,6 @@ import { isEmail, isPhone } from '@/lib/validation';
 import { postForm } from '@/lib/postForm';
 import {
   DEFAULT_PACKAGE_ID,
-  DROP_OFF_NOTE,
   DROP_OFF_WINDOW,
   formatDayLong,
   nextOpenDays,
@@ -341,31 +340,36 @@ function DetailsStep({ form, set, days, summary, errors = {} }) {
         ))}
       </div>
       <FieldError id="bk-day">{errors.day}</FieldError>
-      <p className="mt-4 text-sm leading-normal text-fg-3 lg:mt-3.5 lg:max-w-170">
-        {DROP_OFF_NOTE}
+      <p className="mt-4 border-l-[3px] border-accent bg-surface px-4.5 py-3.5 text-sm leading-normal text-fg-2 lg:mt-3.5 lg:max-w-170 lg:text-base">
+        Drop off {DROP_OFF_WINDOW} · pickup time varies by vehicle and package.
       </p>
 
-      <SectionLabel className="mt-8.5 mb-4 lg:mb-3.5">
-        Your details
-        <Req />
-      </SectionLabel>
-      <div className="flex flex-col gap-3 lg:max-w-170 lg:gap-3.5">
+      {/* Visible labels (not placeholder-only) so a field still says what it
+          is once it's been typed in — same pattern as the vehicle step. */}
+      <div className="mt-8.5 flex flex-col gap-5 lg:max-w-170">
         <div>
+          <label htmlFor="bk-name" className={cn(LABEL, 'mb-3 block')}>
+            Full name
+            <Req />
+          </label>
           <input
             id="bk-name"
             className={cn(FIELD, invalid('name'))}
             value={form.name}
             onChange={(e) => set('name', e.target.value)}
-            placeholder="Full name *"
-            aria-label="Full name"
+            placeholder="Jane Doe"
             required
             {...fieldErrorProps('bk-name', errors.name)}
             autoComplete="name"
           />
           <FieldError id="bk-name">{errors.name}</FieldError>
         </div>
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:gap-3.5">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-3.5">
           <div className="lg:flex-1">
+            <label htmlFor="bk-phone" className={cn(LABEL, 'mb-3 block')}>
+              Phone
+              <Req />
+            </label>
             <input
               id="bk-phone"
               className={cn(FIELD, invalid('phone'))}
@@ -373,8 +377,7 @@ function DetailsStep({ form, set, days, summary, errors = {} }) {
               inputMode="tel"
               value={form.phone}
               onChange={(e) => set('phone', e.target.value)}
-              placeholder="Phone number *"
-              aria-label="Phone number"
+              placeholder="(517) 000-0000"
               required
               {...fieldErrorProps('bk-phone', errors.phone)}
               autoComplete="tel"
@@ -382,6 +385,9 @@ function DetailsStep({ form, set, days, summary, errors = {} }) {
             <FieldError id="bk-phone">{errors.phone}</FieldError>
           </div>
           <div className="lg:flex-1">
+            <label htmlFor="bk-email" className={cn(LABEL, 'mb-3 block')}>
+              Email (optional)
+            </label>
             <input
               id="bk-email"
               className={cn(FIELD, invalid('email'))}
@@ -389,8 +395,7 @@ function DetailsStep({ form, set, days, summary, errors = {} }) {
               inputMode="email"
               value={form.email}
               onChange={(e) => set('email', e.target.value)}
-              placeholder="Email (optional)"
-              aria-label="Email (optional)"
+              placeholder="you@email.com"
               {...fieldErrorProps('bk-email', errors.email)}
               autoComplete="email"
             />
@@ -523,12 +528,8 @@ function DesktopStepper({ step, goStep }) {
   );
 }
 
-function ratingLine() {
-  const { score, count } = site.rating;
-  return count
-    ? `Rated ${score} by ${count}+ local drivers`
-    : `Rated ${score} on Google`;
-}
+// No review count: at the shop's current volume a number undersells it.
+const ratingLine = () => `Rated ${site.rating.score} on Google`;
 
 /** Desktop: sticky summary card with the primary button beneath the rows. */
 function DesktopSummary({
@@ -599,7 +600,7 @@ function Confirmed({ firstName, phone, summary, day, pkg }) {
       : null;
   const rows = [
     ['Package', summary.pkgName],
-    ['Vehicle', summary.vehicleFull],
+    ['Vehicle', summary.vehicle],
     ['Requested', summary.when],
     ['Drop-off', DROP_OFF_WINDOW],
     ['Where', <AddressLink key="addr" stacked className="hover:text-accent" />],
@@ -823,10 +824,9 @@ export default function BookPage() {
   const firstName = form.name.trim().split(/\s+/)[0] || 'there';
   const summary = {
     pkgName: pkg.name,
-    vehicle: form.vehicle || 'To be confirmed',
-    vehicleFull: form.makeModel.trim()
-      ? `${form.vehicle} · ${form.makeModel.trim()}`
-      : form.vehicle,
+    vehicle:
+      [form.vehicle, form.makeModel.trim()].filter(Boolean).join(' · ') ||
+      'To be confirmed',
     when: day ? `${day.dow} ${day.day} ${day.month}` : 'To be confirmed',
   };
 
@@ -942,16 +942,7 @@ export default function BookPage() {
 
   return (
     <div className="flex min-h-[calc(100dvh-var(--spacing-header))] flex-1 flex-col lg:min-h-0">
-      <PageHero
-        eyebrow="Book online"
-        title={
-          <>
-            Ready to
-            <br />
-            get clean?
-          </>
-        }
-      />
+      <PageHero eyebrow="Book online" title="Ready to get clean?" />
       <MobileProgress step={step} goStep={goStep} />
 
       <div className="mx-auto w-full max-w-6xl flex-1 px-5.5 pt-4 pb-8 lg:max-w-[84rem] lg:px-page lg:py-10">

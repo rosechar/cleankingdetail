@@ -212,10 +212,10 @@
   );
 }
 
-/* dark-mode treatment for embedded Google Maps */
+/* darkens the light static shop map (public/shop-map.webp) to suit the site */
 @utility filter-map {
-  filter: invert(0.88) hue-rotate(180deg) brightness(1.08) contrast(0.92)
-    grayscale(0.15);
+  filter: invert(0.82) hue-rotate(180deg) brightness(1.35) contrast(0.85)
+    grayscale(0.2);
 }
 
 /* striped photo placeholder */

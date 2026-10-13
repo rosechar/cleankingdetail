@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { findPackage, packagesByPrice, site } from '@/data/site';
 import { isEmail, isPhone } from '@/lib/validation';
 import { postForm } from '@/lib/postForm';
@@ -605,6 +606,12 @@ function Confirmed({ firstName, phone, summary, day, pkg }) {
     ['Drop-off', DROP_OFF_WINDOW],
     ['Where', <AddressLink key="addr" stacked className="hover:text-accent" />],
   ];
+  // The form unmounts on submit; move focus here so screen reader users hear
+  // the booking went through instead of landing on <body>.
+  const heading = useRef(null);
+  useEffect(() => {
+    heading.current?.focus({ preventScroll: true });
+  }, []);
   const cardBtn =
     'flex flex-1 basis-[150px] cursor-pointer items-center justify-center gap-2 px-4.5 py-3.25 text-center font-display text-[15px] tracking-[.05em] whitespace-nowrap uppercase transition-all duration-200 ease-snap hover:-translate-y-0.5';
   return (
@@ -620,7 +627,11 @@ function Confirmed({ firstName, phone, summary, day, pkg }) {
             )}
             style={riseDelay(1)}
           >
-            <h1 className="mb-3 font-display text-display-lg text-fg uppercase lg:mb-3.5">
+            <h1
+              ref={heading}
+              tabIndex={-1}
+              className="mb-3 font-display text-display-lg text-fg uppercase focus:outline-hidden lg:mb-3.5"
+            >
               Confirmation
             </h1>
             <p className="text-[15px] leading-relaxed text-fg-2 lg:text-base">
@@ -898,9 +909,13 @@ export default function BookPage() {
 
   const next = () => {
     if (submitting) return;
+    // Errors are flushed before focusing so the field's aria-describedby
+    // message is in place when focus lands and gets announced with it.
     if (step === 1 && !vehicleValid) {
-      setAttempted(true);
-      setErr('Please fix the highlighted fields.');
+      flushSync(() => {
+        setAttempted(true);
+        setErr('Please fix the highlighted fields.');
+      });
       document
         .getElementById(vehicleErrors.vehicle ? 'bk-vehicle' : 'bk-make')
         ?.focus();
@@ -911,8 +926,10 @@ export default function BookPage() {
       return setStep(step + 1);
     }
     if (!detailsValid) {
-      setAttempted(true);
-      setErr('Please fix the highlighted fields.');
+      flushSync(() => {
+        setAttempted(true);
+        setErr('Please fix the highlighted fields.');
+      });
       const first = ['day', 'name', 'phone', 'email'].find(
         (k) => fieldErrors[k]
       );

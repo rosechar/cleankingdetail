@@ -19,7 +19,10 @@ export function useHeroReveal(enabled) {
 
   useEffect(() => {
     if (!enabled) return undefined;
-    const update = () => setRevealed(isPastHero());
+    // Once a Tab press has revealed it, it stays revealed: scrolling back to
+    // the top must not hide it again, or the nav would become unreachable
+    // (and any focus inside it stranded in an invisible element).
+    const update = () => setRevealed(revealedRef.current || isPastHero());
     update();
     // Tab reveals it too: the hidden header can't take focus, so keyboard
     // users would otherwise have no way to reach the nav from the top.

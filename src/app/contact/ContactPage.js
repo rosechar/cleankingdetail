@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 import Link from 'next/link';
 import { site } from '@/data/site';
 import { faqs } from '@/data/faqs';
@@ -59,6 +60,12 @@ export default function ContactPage() {
     honeypot: '',
   });
   const [sent, setSent] = useState(false);
+  // The form unmounts on success; move focus to the confirmation so screen
+  // reader users hear that it went through instead of landing on <body>.
+  const sentHeading = useRef(null);
+  useEffect(() => {
+    if (sent) sentHeading.current?.focus();
+  }, [sent]);
   const [err, setErr] = useState('');
   const [submitting, setSubmitting] = useState(false);
   // Field errors only show once a submit has been tried, then track edits live.
@@ -82,7 +89,9 @@ export default function ContactPage() {
     e.preventDefault();
     const firstInvalid = Object.keys(fieldErrors).find((k) => fieldErrors[k]);
     if (firstInvalid) {
-      setAttempted(true);
+      // Render the errors (and aria-describedby) before focusing, so the
+      // field announces its message when focus lands on it.
+      flushSync(() => setAttempted(true));
       document.getElementById(`ct-${firstInvalid}`)?.focus();
       return;
     }
@@ -132,7 +141,7 @@ export default function ContactPage() {
           </h1>
         </div>
         <div className="relative h-70 border-t border-line motion-safe:animate-fade-in motion-safe:opacity-0 md:h-auto md:min-h-90 md:border-t-0 md:border-l">
-          <MapEmbed />
+          <MapEmbed priority />
         </div>
       </section>
 
@@ -301,7 +310,11 @@ export default function ContactPage() {
                 <div className="inline-flex size-16.5 items-center justify-center rounded-full bg-accent">
                   <GCheck className="size-8 fill-none stroke-on-accent stroke-3" />
                 </div>
-                <h2 className="mt-6.5 font-display text-display-md uppercase">
+                <h2
+                  ref={sentHeading}
+                  tabIndex={-1}
+                  className="mt-6.5 font-display text-display-md uppercase focus:outline-hidden"
+                >
                   Message sent
                 </h2>
                 <p className="mx-auto mt-3.5 max-w-115 text-base text-fg-2">

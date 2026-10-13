@@ -17,13 +17,14 @@ Open [http://localhost:3000](http://localhost:3000). `npm run dev` uses webpack 
 
 Copy `.env.example` to `.env.local` and fill in the values. The booking and contact forms email leads via [Resend](https://resend.com); without the first three set, form submissions return a 500.
 
-| Variable                             | Purpose                                                                                        |
-| ------------------------------------ | ---------------------------------------------------------------------------------------------- |
-| `RESEND_API_KEY`                     | Resend API key                                                                                 |
-| `RESEND_FROM`                        | Verified sender address (e.g. `Clean King <hello@domain.com>`)                                 |
-| `OWNER_ALERT_EMAILS`                 | Comma-separated list of shop owner addresses that receive leads                                |
-| `RESEND_SEGMENT_ID`                  | Optional — Resend segment that collects promo opt-ins                                          |
-| `NEXT_PUBLIC_GOOGLE_MAPS_STATIC_KEY` | Optional — Google Static Maps key for the map thumbnail (public; restrict it by HTTP referrer) |
+| Variable             | Purpose                                                         |
+| -------------------- | --------------------------------------------------------------- |
+| `RESEND_API_KEY`     | Resend API key                                                  |
+| `RESEND_FROM`        | Verified sender address (e.g. `Clean King <hello@domain.com>`)  |
+| `OWNER_ALERT_EMAILS` | Comma-separated list of shop owner addresses that receive leads |
+| `RESEND_SEGMENT_ID`  | Optional — Resend segment that collects promo opt-ins           |
+
+The contact-page map is a static OpenStreetMap image committed to the repo, so it needs no key; regenerate it with `node scripts/build-map.mjs` if the address changes.
 
 ## Project layout
 
@@ -32,9 +33,10 @@ src/
   app/                 Routes (App Router) + globals.css (Tailwind theme)
     api/book           Booking form endpoint → owner alert + customer confirmation
     api/contact        Contact form endpoint → owner alert
+    api/calendar       .ics download for a confirmed booking day
     sitemap.js         Generated from data/nav.js
   components/
-    forms/             Shared form pieces (honeypot)
+    forms/             Shared form pieces (honeypot, field errors, opt-in, input styles)
     garage/            Page-specific pieces (icons, reviews carousel, map, gallery)
     layout/            Header, footer, top strip, mobile CTA bar
     location/          Shared template for the city landing pages
@@ -42,7 +44,8 @@ src/
     ui/                Reusable Tailwind building blocks (Button, Eyebrow, cards…)
   data/                Site content: business facts + SITE_URL, packages, nav, FAQs
   lib/                 Framework-free helpers shared by client and server (validation)
-  services/            Server-only: email (Resend), form-endpoint plumbing, spam heuristics
+  services/            Server-only: email (Resend), form-endpoint plumbing, spam check, rate limit
+scripts/               One-off generators (build-map.mjs → static contact-page map)
 ```
 
 Design notes: the site is dark-only by choice. Styling is Tailwind v4 utilities in JSX. Design tokens (palette, fonts, fluid display type sizes, `px-page` / `py-section` rhythm, motion) live in the `@theme` block of `src/app/globals.css`, alongside a few `@utility` helpers (`bg-grid`, `filter-map`, `bg-stripes`, `backdrop-frost`, `pb-safe-*`) for things utilities can't express. Repeated patterns are React components in `src/components/ui/` (Button, Eyebrow, SectionHead, PageHero, CtaBand, package/feature cards, LocationSection). Prettier sorts class names via `prettier-plugin-tailwindcss`.
@@ -51,7 +54,7 @@ Business facts (phone, address, hours, prices, packages) live in `src/data/site.
 
 ## Forms & spam
 
-Both forms POST JSON to their API route. Every submission carries a hidden honeypot field and the time the form was open; the route silently accepts (and drops) anything that trips those checks (`src/services/spam.js`). Payloads are trimmed, length-capped and validated server-side (`src/lib/validation.js`); the booking route resolves the package and price from `data/site.js` rather than trusting the client.
+Both forms POST JSON to their API route. Every submission carries a hidden honeypot field; the route silently accepts (and drops) anything that fills it (`src/services/spam.js`). There is deliberately no submit-timing check — autofill beat any useful threshold and it cost real leads. Flood protection is a per-IP rate limit (5 submissions per 15 minutes, answered with a 429; `src/services/rateLimit.js`); it lives in each server instance's memory, so on serverless it blunts scripted floods rather than enforcing a hard global cap. Payloads are trimmed, length-capped and validated server-side (`src/lib/validation.js`); the booking route resolves the package and price from `data/site.js` rather than trusting the client.
 
 ## Scripts
 

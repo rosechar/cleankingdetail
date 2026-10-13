@@ -131,6 +131,10 @@ const Home = () => {
                 alt={site.name}
                 width={395}
                 height={395}
+                // Above the fold and often the LCP element on phones: load it
+                // eagerly, at its displayed size rather than the 395px intrinsic.
+                sizes="(min-width: 768px) 208px, 120px"
+                priority
                 className="absolute right-4 bottom-full mb-4 size-30 md:right-page md:mb-8 md:size-52"
               />
               <div className="flex-1 border-r border-white/10 py-3 text-center md:border-white/12 md:py-6.5">

@@ -7,8 +7,11 @@ import { site } from '@/data/site';
  * (scripts/build-map.mjs) — no API key, billing or runtime request — and
  * `object-cover` keeps its centre in the middle of the pane, so the pin drawn
  * there always sits on the shop. Fills its positioned parent.
+ *
+ * Pass `priority` where the map is above the fold (the contact hero, where it's
+ * the LCP element on phones); elsewhere it lazy-loads.
  */
-export default function MapEmbed() {
+export default function MapEmbed({ priority = false }) {
   return (
     <>
       <a
@@ -26,6 +29,7 @@ export default function MapEmbed() {
           // Street labels go soft at the default q75.
           quality={90}
           className="object-cover filter-map"
+          priority={priority}
         />
         {/* pin: its tip sits on the image centre, i.e. the shop */}
         <svg
